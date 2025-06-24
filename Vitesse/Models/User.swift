@@ -8,6 +8,8 @@
 import Foundation
 
 class User: Codable, ObservableObject {
-    var name: String = ""
+    var firstName: String = ""
+    var lastName: String = ""
+    var email: String = ""
     var password: String = ""
 }
