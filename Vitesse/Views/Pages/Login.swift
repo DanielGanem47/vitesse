@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct Login: View {
-    @State var navigated: Bool = false
-    
     @StateObject private var user: User = User()
 
     var body: some View {
         VStack {
             NavigationStack() {
                 Image("Vitesse")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
                 Text("Login")
                     .font(.largeTitle)
                     .fontDesign(.default)
@@ -28,27 +28,23 @@ struct Login: View {
                     UserLoginForm(user: user)
                     
                     Spacer()
-                    
-                    CustomButton(text: "Sign in",
-                                 symbol: "",
-                                 color: .blue) {
-                        // Action
-                    }
+
+                    NavigationLink(destination: CandidatesList(), label: {
+                        CustomButton(text: "Sign in",
+                                     symbol: "",
+                                     color: .blue)
+                    })
                     
                     Spacer()
                         .frame(height: 10)
                     
-                    CustomButton(text: "Register",
-                                 symbol: "",
-                                 color: .blue) {
-                        // Action
-                        navigated.toggle()
-                    }
+                    NavigationLink(destination: Register(), label: {
+                        CustomButton(text: "Register",
+                                     symbol: "",
+                                     color: .blue)
+                    })
                 }
                 .padding(40)
-                .navigationDestination(isPresented: $navigated) {
-                    Register(user: user)
-                }
             }
             .padding()
         }

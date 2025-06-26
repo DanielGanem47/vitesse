@@ -26,7 +26,7 @@ struct TextFieldWithTitle: View {
                 .font(.title2)
             
             Spacer()
-                .frame(height:-10)
+                .frame(height:1)
             
             if isPassword {
                 SecureField(placeholder, text: $user.password)

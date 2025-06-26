@@ -11,14 +11,17 @@ struct CandidateListRow: View {
     let candidate: Candidate
     
     var body: some View {
-        Text(candidate.name)
-            .frame(alignment: .leading)
-        Image(systemName: candidate.isFavorite ? "star.fill" : "star")
-            .tint(.yellow)
-            .frame(alignment: .trailing)
+        HStack {
+            Text(candidate.name)
+                .frame(alignment: .leading)
+            Spacer()
+            Image(systemName: candidate.isFavorite ? "star.fill" : "star")
+                .frame(alignment: .trailing)
+        }
+        .padding()
     }
 }
 
 #Preview {
-    CandidateListRow(candidate: Candidate())
+    CandidateListRow(candidate: Candidate(id: "1", name: "Daniel G.", phoneNumber: "06 37 93 62 65", email: "daniel.ganem@icloud.com", linkedInUrl: "www.linkedin.com", Note: "tres bon eleve", isFavorite: true))
 }

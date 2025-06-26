@@ -23,6 +23,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		37D34F3C2E0C3FFE00A3DA7C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		370A23282E09A56800DFF13E /* Vitesse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vitesse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		370A23352E09A56A00DFF13E /* VitesseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +92,7 @@
 				370A23382E09A56A00DFF13E /* VitesseTests */,
 				370A23422E09A56A00DFF13E /* VitesseUITests */,
 				370A23292E09A56800DFF13E /* Products */,
+				37D34EB12E0C3ACC00A3DA7C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +106,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		37D34EB12E0C3ACC00A3DA7C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -102,6 +123,7 @@
 				370A23242E09A56800DFF13E /* Sources */,
 				370A23252E09A56800DFF13E /* Frameworks */,
 				370A23262E09A56800DFF13E /* Resources */,
+				37D34F3C2E0C3FFE00A3DA7C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

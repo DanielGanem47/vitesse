@@ -9,7 +9,19 @@ import SwiftUI
 
 struct CandidatesList: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        @ObservedObject var candidates: Candidates = Candidates()
+
+        NavigationView{
+            VStack {
+                CandidateListToolbar()
+                List(candidates.list) { candidate in
+                    NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                        CandidateListRow(candidate: candidate)
+                    }
+                }
+                .navigationTitle("Candidats")
+            }
+        }
     }
 }
 

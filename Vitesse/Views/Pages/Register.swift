@@ -22,10 +22,8 @@ struct Register: View {
 
                 CustomButton(text: "Create",
                              symbol: "",
-                             color: .blue) {
-                    // Action
-                }
-                             .padding(40)
+                             color: .blue)
+                .padding(40)
             }
         }
         .padding()
