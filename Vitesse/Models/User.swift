@@ -7,7 +7,8 @@
 
 import Foundation
 
-class User: Codable, ObservableObject {
+class User: Codable, ObservableObject, Identifiable {
+    var id: UUID = UUID()
     var firstName: String = ""
     var lastName: String = ""
     var email: String = ""
