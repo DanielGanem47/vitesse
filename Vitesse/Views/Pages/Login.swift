@@ -11,8 +11,8 @@ struct Login: View {
     @StateObject private var user: User = User()
 
     var body: some View {
-        VStack {
-            NavigationStack() {
+        NavigationStack {
+            VStack {
                 Image("Vitesse")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -20,13 +20,13 @@ struct Login: View {
                     .font(.largeTitle)
                     .fontDesign(.default)
                     .fontWeight(.bold)
-                
+
                 Spacer()
                     .frame(height: 40)
-                
+
                 VStack(alignment: .leading) {
                     UserLoginForm(user: user)
-                    
+
                     Spacer()
 
                     NavigationLink(destination: CandidatesList(), label: {
@@ -34,10 +34,10 @@ struct Login: View {
                                      symbol: "",
                                      color: .blue)
                     })
-                    
+
                     Spacer()
                         .frame(height: 10)
-                    
+
                     NavigationLink(destination: Register(), label: {
                         CustomButton(text: "Register",
                                      symbol: "",

@@ -8,23 +8,42 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    var body: some View {
-        @ObservedObject var candidates: Candidates = Candidates()
 
-        NavigationView{
-            VStack {
-                CandidateListToolbar()
-                List(candidates.list) { candidate in
-                    NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                        CandidateListRow(candidate: candidate)
+    @Environment(\.editMode)
+    private var editMode
+
+    @ObservedObject var candidates: Candidates = Candidates()
+
+    var body: some View {
+        VStack {
+            CandidateListToolbar()
+
+            Form {
+                List {
+                    ForEach(candidates.list) { candidate in
+                        NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                            CandidateListRow(candidate: candidate)
+                        }
+                    }
+                    .onDelete { element in
+                        print("DELETE")
                     }
                 }
-                .navigationTitle("Candidats")
             }
+        }
+        .navigationTitle("Candidats")
+        .toolbar {
+            EditButton()
         }
     }
 }
 
+#if DEBUG
+
 #Preview {
-    CandidatesList()
+    NavigationView {
+        CandidatesList()
+    }
 }
+
+#endif
