@@ -11,6 +11,7 @@ struct CustomButton: View {
     var text: String
     var symbol: String
     var color: Color
+    var action: () -> Void
    
     var body: some View {
         HStack(spacing: 10) {
@@ -24,11 +25,15 @@ struct CustomButton: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .foregroundStyle(.white)
         .fontWeight(.semibold)
+        .onTapGesture {
+            action()
+        }
     }
 }
 
 #Preview {
     CustomButton(text: "Get quote",
                  symbol: "arrow.clockwise",
-                 color: .blue)
+                 color: .blue) {
+    }
 }

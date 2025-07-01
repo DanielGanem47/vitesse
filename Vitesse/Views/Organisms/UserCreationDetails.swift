@@ -8,24 +8,25 @@
 import SwiftUI
 
 struct UserCreationDetails: View {
-    var user: User = User()
+    @ObservedObject var loginViewModel: LoginViewModel
     
     var body: some View {
         VStack() {
-            TextFieldWithTitle(user: user, title: "First Name", placeholder: "First Name", isPassword: false)
+            TextFieldUserWithTitle(title: "First Name", placeholder: "First Name", isPassword: false, loginViewModel: loginViewModel)
             
-            TextFieldWithTitle(user: user, title: "Last Name", placeholder: "Last Name", isPassword: false)
+            TextFieldUserWithTitle(title: "Last Name", placeholder: "Last Name", isPassword: false, loginViewModel: loginViewModel)
             
-            TextFieldWithTitle(user: user, title: "Email", placeholder: "Email", isPassword: false)
+            TextFieldUserWithTitle(title: "Email", placeholder: "Email", isPassword: false, loginViewModel: loginViewModel)
             
-            TextFieldWithTitle(user: user, title: "Password", placeholder: "Password", isPassword: true)
+            TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, loginViewModel: loginViewModel)
             
-            TextFieldWithTitle(user: user, title: "Confirm password", placeholder: "Confirm password", isPassword: true)
+            TextFieldUserWithTitle(title: "Confirm password", placeholder: "Confirm password", isPassword: true, loginViewModel: loginViewModel)
         }
         .padding(50)
     }
 }
 
 #Preview {
-    UserCreationDetails()
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    UserCreationDetails(loginViewModel: loginViewModel)
 }

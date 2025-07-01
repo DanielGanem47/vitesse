@@ -10,13 +10,10 @@ import SwiftUI
 struct CandidateListToolbar: View {
     var body: some View {
         HStack {
-            Button("Edit") {
-            }
-            Spacer()
+            EditButton()
             Image(systemName: "star")
                 .frame(alignment: .trailing)
         }
-        .padding()
     }
 }
 

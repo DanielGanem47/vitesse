@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct TextFieldWithTitle: View {
-    @ObservedObject var user: User = User()
+struct TextFieldUserWithTitle: View {
+    @ObservedObject var loginViewModel: LoginViewModel
+    
     var title: String = ""
     var placeholder: String = ""
     var isPassword: Bool = false
     
-    init(user: User, title: String, placeholder: String, isPassword: Bool) {
-        self.user = user
+    init(title: String, placeholder: String, isPassword: Bool, loginViewModel: LoginViewModel) {
+        self.loginViewModel = loginViewModel
         self.title = title
         self.placeholder = placeholder
         self.isPassword = isPassword
@@ -29,19 +30,19 @@ struct TextFieldWithTitle: View {
                 .frame(height:1)
             
             if isPassword {
-                SecureField(placeholder, text: $user.password)
+                SecureField(placeholder, text: $loginViewModel.authenticatedUser.password)
                     .padding(4)
                     .frame(height: 30)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 4)
+                        RoundedRectangle(cornerRadius: 0)
                             .stroke(Color.black)
                     )
             } else {
-                TextField(placeholder, text: $user.firstName)
+                TextField(placeholder, text: $loginViewModel.authenticatedUser.email)
                     .padding(4)
                     .frame(height: 30)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 4)
+                        RoundedRectangle(cornerRadius: 0)
                             .stroke(Color.black)
                     )
             }
@@ -50,7 +51,7 @@ struct TextFieldWithTitle: View {
 }
 
 #Preview {
-    var user: User = User()
-    TextFieldWithTitle(user: user, title: "Email/username", placeholder: "Email/username", isPassword: false)
-    TextFieldWithTitle(user: user, title: "Password", placeholder: "Password", isPassword: true)
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    TextFieldUserWithTitle(title: "Email/username", placeholder: "Email/username", isPassword: false, loginViewModel: loginViewModel)
+    TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, loginViewModel: loginViewModel)
 }

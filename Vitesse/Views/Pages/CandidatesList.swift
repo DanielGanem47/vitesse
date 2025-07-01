@@ -9,16 +9,22 @@ import SwiftUI
 
 struct CandidatesList: View {
     var body: some View {
-        @ObservedObject var candidates: Candidates = Candidates()
+        @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
 
         NavigationView{
             VStack {
-                CandidateListToolbar()
-                List(candidates.list) { candidate in
-                    NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                        CandidateListRow(candidate: candidate)
+                List{
+                    ForEach(candidatesViewModel.list) { candidate in
+                        NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                            CandidateListRow(candidate: candidate)
+                        }
+                    }
+                    .onDelete { indexSet in
                     }
                 }
+                .toolbar(content: {
+                    CandidateListToolbar()
+                })
                 .navigationTitle("Candidats")
             }
         }
