@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct CandidateListRow: View {
-    let candidate: Candidate
+    let candidate: CandidateDTO
     
     var body: some View {
         HStack {
             Text(candidate.name)
                 .frame(alignment: .leading)
+            
             Spacer()
+            
             Image(systemName: candidate.isFavorite ? "star.fill" : "star")
                 .frame(alignment: .trailing)
         }
@@ -22,6 +24,16 @@ struct CandidateListRow: View {
     }
 }
 
-#Preview {
-    CandidateListRow(candidate: Candidate(id: "1", name: "Daniel G.", phoneNumber: "06 37 93 62 65", email: "daniel.ganem@icloud.com", linkedInUrl: "www.linkedin.com", Note: "tres bon eleve", isFavorite: true))
+#Preview("Default mode") {
+    CandidateListRow(
+        candidate: CandidateDTO(
+            id: UUID(),
+            name: "Daniel G.",
+            phoneNumber: "06 37 93 62 65",
+            email: "daniel.ganem@icloud.com",
+            linkedInUrl: "www.linkedin.com",
+            Note: "tres bon eleve",
+            isFavorite: true
+        )
+    )
 }

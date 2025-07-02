@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Register: View {
-    var user: User = User()
+    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel()
     
     var body: some View {
         VStack {
@@ -18,11 +18,13 @@ struct Register: View {
                 .fontWeight(.bold)
 
             VStack(alignment: .leading) {
-                UserCreationDetails(user: user)
+                UserCreationDetails(loginViewModel: loginViewModel)
 
                 CustomButton(text: "Create",
                              symbol: "",
-                             color: .blue)
+                             color: .blue) {
+                    
+                }
                 .padding(40)
             }
         }
@@ -31,5 +33,5 @@ struct Register: View {
 }
 
 #Preview {
-    Register(user: User())
+    Register()
 }

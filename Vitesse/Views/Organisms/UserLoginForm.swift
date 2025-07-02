@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct UserLoginForm: View {
-    var user: User = User()
+    @ObservedObject var loginViewModel: LoginViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextFieldWithTitle(user: user, title: "Email/username", placeholder: "Email/username", isPassword: false)
+            TextFieldUserWithTitle(title: "Email", placeholder: "Email", isPassword: false, storedValue: loginViewModel.authenticatedUser.email)
             
-            TextFieldWithTitle(user: user, title: "Password", placeholder: "Password", isPassword: true)
+            TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: loginViewModel.authenticatedUser.password)
             
             Button("Forget password?") {
                 // Action
@@ -24,5 +24,6 @@ struct UserLoginForm: View {
 }
 
 #Preview {
-    UserLoginForm(user: User())
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    UserLoginForm(loginViewModel: loginViewModel)
 }

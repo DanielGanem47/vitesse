@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Candidate: Codable, Identifiable {
+class CandidateDTO: ObservableObject, Codable, Identifiable {
     var id: UUID
     var name: String
     var phoneNumber: String
@@ -28,5 +28,9 @@ class Candidate: Codable, Identifiable {
 }
 
 class Candidates: ObservableObject {
-    @Published private(set) var list: [Candidate] = [Candidate(id: UUID(), name: "Daniel G.", phoneNumber: "06 37 93 62 65", email: "daniel.ganem@icloud.com", linkedInUrl: "www.linkedin.com", Note: "tres bon eleve", isFavorite: true)]
+    @Published var list: [CandidateDTO] = []
+    
+    init(list: [CandidateDTO]) {
+        self.list = list
+    }
 }
