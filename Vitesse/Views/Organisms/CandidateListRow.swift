@@ -32,7 +32,7 @@ struct CandidateListRow: View {
             phoneNumber: "06 37 93 62 65",
             email: "daniel.ganem@icloud.com",
             linkedInUrl: "www.linkedin.com",
-            Note: "tres bon eleve",
+            note: "tres bon eleve",
             isFavorite: true
         )
     )

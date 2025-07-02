@@ -13,16 +13,16 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
     var phoneNumber: String
     var email: String
     var linkedInUrl: String
-    var Note: String
+    var note: String
     var isFavorite: Bool
     
-    init(id: UUID, name: String, phoneNumber: String, email: String, linkedInUrl: String, Note: String, isFavorite: Bool) {
+    init(id: UUID, name: String, phoneNumber: String, email: String, linkedInUrl: String, note: String, isFavorite: Bool) {
         self.id = id
         self.name = name
         self.phoneNumber = phoneNumber
         self.email = email
         self.linkedInUrl = linkedInUrl
-        self.Note = Note
+        self.note = note
         self.isFavorite = isFavorite
     }
 }

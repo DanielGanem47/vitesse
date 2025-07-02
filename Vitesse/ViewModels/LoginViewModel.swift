@@ -11,7 +11,7 @@ class LoginViewModel: ObservableObject {
     @Published var login = LoginDTO(email: "", password: "")
     @Published var tokenAdmin = TokenAdminDTO(token: "", isAdmin: false)
     @Published var isLogged = false
-    @Published var authenticatedUser: UserDTO = UserDTO(id: UUID(), firstName: "", lastName: "", email: "", password: "")
+    @Published var authenticatedUser: UserDTO = UserDTO(id: UUID(), firstName: "", lastName: "", email: "admin@vitesse.com", password: "test123")
     @Published var loginError: String? = nil
     
     private let executeDataRequestTokenAdmin: (URLRequest) async throws -> (Data, URLResponse)

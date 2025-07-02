@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct TextFieldUserWithTitle: View {
+    var title: String
+    var placeholder: String
+    var isPassword: Bool
     @Binding var storedValue: String
     
-    var title: String = ""
-    var placeholder: String = ""
-    var isPassword: Bool = false
-    
-    init(title: String, placeholder: String, isPassword: Bool, storedValue: String) {
-        self.storedValue = storedValue
+    init(title: String, placeholder: String, isPassword: Bool, storedValue: Binding<String>) {
         self.title = title
         self.placeholder = placeholder
         self.isPassword = isPassword
+        self._storedValue = storedValue
     }
     
     var body: some View {
@@ -51,7 +50,6 @@ struct TextFieldUserWithTitle: View {
 }
 
 #Preview {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    TextFieldUserWithTitle(title: "Email/username", placeholder: "Email/username", isPassword: false, storedValue: loginViewModel.authenticatedUser.email)
-    TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: loginViewModel.authenticatedUser.password)
+    TextFieldUserWithTitle(title: "Email/username", placeholder: "Email/username", isPassword: false, storedValue: .constant(""))
+    TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: .constant(""))
 }
