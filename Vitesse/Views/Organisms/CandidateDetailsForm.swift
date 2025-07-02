@@ -14,6 +14,9 @@ struct CandidateDetailsForm: View {
         VStack(alignment: .leading) {
             Text(candidate.name)
                 .font(.title)
+            
+            Spacer()
+                .frame(height: 40)
 
             HStack {
                 Text("Phone")
@@ -34,7 +37,7 @@ struct CandidateDetailsForm: View {
             }
             
             HStack {
-                Text("LinjedIn")
+                Text("LinkedIn")
                     .font(.title2)
 
                 Spacer()
@@ -61,7 +64,7 @@ struct CandidateDetailsForm: View {
                                                phoneNumber: "06 37 93 62 65",
                                                email: "daniel.ganem@icloud.com",
                                                linkedInUrl: "www.linkedin.com",
-                                               note: "",
+                                               note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
     CandidateDetailsForm(candidate: candidate)
 }
