@@ -22,10 +22,10 @@ struct CandidateDetails: View {
             HStack {
                 CandidateDetailsForm(candidate: candidate)
             }
-            .toolbar {
-                EditButton()
-            }
          }
+        .toolbar {
+            EditButton()
+        }
     }
 }
 

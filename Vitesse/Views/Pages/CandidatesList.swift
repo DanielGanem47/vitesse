@@ -18,6 +18,9 @@ struct CandidatesList: View {
         isFavorite: true
     )])
 
+    @Environment(\.editMode)
+    private var editMode
+
     var body: some View {
         @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
         
@@ -26,8 +29,12 @@ struct CandidatesList: View {
                 Form {
                     List {
                         ForEach(candidates.list) { candidate in
-                            NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                            if editMode?.wrappedValue == .active {
                                 CandidateListRow(candidate: candidate)
+                            } else {
+                                NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                                    CandidateListRow(candidate: candidate)
+                                }
                             }
                         }
                         .onDelete { element in
