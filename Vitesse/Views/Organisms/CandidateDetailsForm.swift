@@ -20,10 +20,12 @@ struct CandidateDetailsForm: View {
     }
     
     var body: some View {
-        if editMode?.wrappedValue == .active {
-            CandidateDetailsEditable(candidate: candidate)
-        } else {
-            CandidateDetailsStatic(candidate: candidate)
+        NavigationView {
+            if editMode?.wrappedValue == .active {
+                CandidateDetailsEditable(candidate: candidate)
+            } else {
+                CandidateDetailsStatic(candidate: candidate)
+            }
         }
     }
 }
