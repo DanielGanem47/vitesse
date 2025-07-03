@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TextFieldUserWithTitle: View {
+struct TextFieldWithTitle: View {
     var title: String
     var placeholder: String
     var isPassword: Bool
@@ -50,6 +50,6 @@ struct TextFieldUserWithTitle: View {
 }
 
 #Preview {
-    TextFieldUserWithTitle(title: "Email/username", placeholder: "Email/username", isPassword: false, storedValue: .constant(""))
-    TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: .constant(""))
+    TextFieldWithTitle(title: "Email/username", placeholder: "Email/username", isPassword: false, storedValue: .constant(""))
+    TextFieldWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: .constant(""))
 }

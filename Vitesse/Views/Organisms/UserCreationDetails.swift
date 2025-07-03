@@ -12,15 +12,15 @@ struct UserCreationDetails: View {
     
     var body: some View {
         VStack() {
-            TextFieldUserWithTitle(title: "First Name", placeholder: "First Name", isPassword: false, storedValue: $loginViewModel.authenticatedUser.firstName)
+            TextFieldWithTitle(title: "First Name", placeholder: "First Name", isPassword: false, storedValue: $loginViewModel.authenticatedUser.firstName)
             
-            TextFieldUserWithTitle(title: "Last Name", placeholder: "Last Name", isPassword: false, storedValue: $loginViewModel.authenticatedUser.lastName)
+            TextFieldWithTitle(title: "Last Name", placeholder: "Last Name", isPassword: false, storedValue: $loginViewModel.authenticatedUser.lastName)
             
-            TextFieldUserWithTitle(title: "Email", placeholder: "Email", isPassword: false, storedValue: $loginViewModel.authenticatedUser.email)
+            TextFieldWithTitle(title: "Email", placeholder: "Email", isPassword: false, storedValue: $loginViewModel.authenticatedUser.email)
             
-            TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
+            TextFieldWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
             
-            TextFieldUserWithTitle(title: "Confirm password", placeholder: "Confirm password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
+            TextFieldWithTitle(title: "Confirm password", placeholder: "Confirm password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
         }
         .padding(50)
     }

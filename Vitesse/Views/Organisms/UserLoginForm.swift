@@ -12,9 +12,9 @@ struct UserLoginForm: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextFieldUserWithTitle(title: "Email", placeholder: "Email", isPassword: false, storedValue: $loginViewModel.authenticatedUser.email)
+            TextFieldWithTitle(title: "Email", placeholder: "Email", isPassword: false, storedValue: $loginViewModel.authenticatedUser.email)
             
-            TextFieldUserWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
+            TextFieldWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
             
             Button("Forget password?") {
                 // Action

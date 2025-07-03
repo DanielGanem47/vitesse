@@ -9,51 +9,21 @@ import SwiftUI
 
 struct CandidateDetailsForm: View {
     @ObservedObject var candidate: CandidateDTO
+    @State var isFavorite: Bool
+    
+    @Environment(\.editMode)
+    private var editMode
+
+    init(candidate: CandidateDTO) {
+        self.candidate = candidate
+        self.isFavorite = candidate.isFavorite
+    }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(candidate.name)
-                .font(.title)
-            
-            Spacer()
-                .frame(height: 40)
-
-            HStack {
-                Text("Phone")
-                    .font(.title2)
-
-                Spacer()
-                
-                Text(candidate.phoneNumber)
-            }
-            
-            HStack {
-                Text("Email")
-                    .font(.title2)
-
-                Spacer()
-                
-                Text(candidate.email)
-            }
-            
-            HStack {
-                Text("LinkedIn")
-                    .font(.title2)
-
-                Spacer()
-                
-                CustomButton(text: candidate.linkedInUrl,
-                             symbol: "",
-                             color: .blue) {
-                    // Faire qqc
-                }
-            }
-            
-            Text("Note")
-                .font(.title2)
-            Text(candidate.note)
-                .font(.footnote)
-                .padding()
+        if editMode?.wrappedValue == .active {
+            CandidateDetailsEditable(candidate: candidate)
+        } else {
+            CandidateDetailsStatic(candidate: candidate)
         }
     }
 }
