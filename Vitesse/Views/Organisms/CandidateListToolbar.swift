@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CandidateListToolbar: View {
-    @Environment(\.editMode)
-    private var editMode
-
    var body: some View {
         HStack {
             EditButton()
-            Image(systemName: "star")
+            Button("",
+                   systemImage: "star") {
+                
+            }
                 .frame(alignment: .trailing)
         }
     }
