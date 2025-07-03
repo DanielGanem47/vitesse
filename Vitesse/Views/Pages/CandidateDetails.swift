@@ -18,14 +18,12 @@ struct CandidateDetails: View {
     }
     
     var body: some View {
-        NavigationView {
             HStack {
                 CandidateDetailsForm(candidate: candidate)
             }
             .toolbar {
                 EditButton()
             }
-         }
     }
 }
 
