@@ -18,27 +18,40 @@ struct CandidatesList: View {
         isFavorite: true
     )])
 
+    @Environment(\.editMode)
+    private var editMode
+
     var body: some View {
         @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
         
         NavigationView{
             VStack {
                 Form {
-                    List {
-                        ForEach(candidates.list) { candidate in
-                            NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                    if editMode?.wrappedValue == .active {
+                        List {
+                            ForEach(candidates.list) { candidate in
                                 CandidateListRow(candidate: candidate)
                             }
                         }
-                        .onDelete { element in
-                            print("DELETE")
+                        .navigationTitle("Candidats")
+                    } else {
+                        List {
+                            ForEach(candidates.list) { candidate in
+                                NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                                    CandidateListRow(candidate: candidate)
+                                }
+                            }
                         }
-                    }
-                    .navigationTitle("Candidats")
-                    .toolbar {
-                        CandidateListToolbar()
+                        .navigationTitle("Candidats")
                     }
                 }
+            }
+        }
+        .toolbar {
+            if editMode?.wrappedValue == .active {
+                CandidateListToolbarDelete()
+            } else {
+                CandidateListToolbar()
             }
         }
     }

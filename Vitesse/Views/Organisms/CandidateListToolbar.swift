@@ -11,6 +11,7 @@ struct CandidateListToolbar: View {
    var body: some View {
         HStack {
             EditButton()
+            
             Button("",
                    systemImage: "star") {
                 
