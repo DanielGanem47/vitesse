@@ -27,8 +27,6 @@ struct CandidateListRow: View {
                     // Faire qqc
                     selected.toggle()
                 }
-                
-                Spacer()
             }
             
             Text(candidate.name)
