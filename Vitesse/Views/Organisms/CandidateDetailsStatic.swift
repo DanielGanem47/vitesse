@@ -19,61 +19,58 @@ struct CandidateDetailsStatic: View {
     var body: some View {
         VStack(alignment: .leading) {
             Form {
-                HStack {
-                    Text(candidate.name)
-                        .font(.title)
+                Section(header: Text("Name")) {
+                    HStack {
+                        Text(candidate.name)
+                            .font(.title)
+                        
+                        Spacer()
+                        
+                        Button("",
+                               systemImage: isFavorite ? "star.fill" : "star") {
+                            isFavorite.toggle()
+                        }
+                    }
+                }
+
+                Section(header: Text("Details")) {
+                    HStack {
+                        Text("Phone")
+                        
+                        Spacer()
+                        
+                        Text(candidate.phoneNumber)
+                            .monospacedDigit()
+                            .foregroundStyle(.secondary)
+                    }
                     
-                    Spacer()
+                    HStack {
+                        Text("Email")
+                        
+                        Spacer()
+                        
+                        Text(candidate.email)
+                            .foregroundStyle(.secondary)
+                    }
                     
-                    Button("",
-                           systemImage: isFavorite ? "star.fill" : "star") {
-                        isFavorite.toggle()
+                    HStack {
+                        Text("LinkedIn")
+                        
+                        Spacer()
+                        
+                        CustomButton(text: "Go on LinkedIn",
+                                     symbol: "",
+                                     color: .blue) {
+                            // Faire qqc
+                        }
+                                     .frame(width: 200)
                     }
                 }
                 
-                Spacer()
-                    .frame(height: 40)
-                
-                HStack {
-                    Text("Phone")
-                        .font(.title2)
-                    
-                    Spacer()
-                    
-                    Text(candidate.phoneNumber)
-                        .foregroundStyle(.secondary)
+                Section(header: Text("Note")) {
+                    Text(candidate.note)
+                        .frame(alignment: .top)
                 }
-                
-                HStack {
-                    Text("Email")
-                        .font(.title2)
-                    
-                    Spacer()
-                    
-                    Text(candidate.email)
-                        .foregroundStyle(.secondary)
-                }
-                
-                HStack {
-                    Text("LinkedIn")
-                        .font(.title2)
-                    
-                    Spacer()
-                    
-                    CustomButton(text: "Go on LinkedIn",
-                                 symbol: "",
-                                 color: .blue) {
-                        // Faire qqc
-                    }
-                                 .frame(width: 200)
-                }
-                
-                Text("Note")
-                    .font(.title2)
-                Text(candidate.note)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .frame(alignment: .top)
             }
         }
     }

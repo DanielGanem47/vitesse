@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @ObservedObject var candidates: Candidates = Candidates(list: [CandidateDTO(
+    var candidates: Candidates = Candidates(list: [CandidateDTO(
         id: UUID(),
         name: "Daniel G.",
         phoneNumber: "06 37 93 62 65",
@@ -21,36 +21,30 @@ struct CandidatesList: View {
     @Environment(\.editMode)
     private var editMode
 
+    @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
+
     var body: some View {
-        @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-        
-        NavigationView{
+        NavigationStack {
             VStack {
-                Form {
-                    if editMode?.wrappedValue == .active {
-                        List {
-                            ForEach(candidates.list) { candidate in
+                if editMode?.wrappedValue == .active {
+                    List {
+                        ForEach(candidates.list) { candidate in
+                            CandidateListRow(candidate: candidate)
+                        }
+                    }
+                    .navigationTitle("Candidates")
+                } else {
+                    List {
+                        ForEach(candidates.list) { candidate in
+                            NavigationLink(destination: CandidateDetails(candidate: candidate)) {
                                 CandidateListRow(candidate: candidate)
                             }
                         }
-                        .navigationTitle("Candidats")
-                    } else {
-                        List {
-                            ForEach(candidates.list) { candidate in
-                                NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                                    CandidateListRow(candidate: candidate)
-                                }
-                            }
-                        }
-                        .navigationTitle("Candidats")
                     }
+                    .navigationTitle("Candidates")
                 }
             }
-        }
-        .toolbar {
-            if editMode?.wrappedValue == .active {
-                CandidateListToolbarDelete()
-            } else {
+            .toolbar {
                 CandidateListToolbar()
             }
         }

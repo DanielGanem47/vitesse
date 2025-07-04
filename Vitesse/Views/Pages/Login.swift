@@ -9,62 +9,12 @@ import SwiftUI
 
 struct Login: View {
     @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
-    @State private var register: Bool = false
-    @State private var showLoginFailedAlert: Bool = false
-
+    
     var body: some View {
-        NavigationStack() {
-            VStack {
-                Image("Vitesse")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                Text("Login")
-                    .font(.largeTitle)
-                    .fontDesign(.default)
-                    .fontWeight(.bold)
-                
-                Spacer()
-                    .frame(height: 40)
-                
-                VStack(alignment: .leading) {
-                    UserLoginForm(loginViewModel: loginViewModel)
-                    
-                    Spacer()
-                    
-                    CustomButton(text: "Sign in",
-                                 symbol: "",
-                                 color: .blue) {
-                        Task {
-                            await loginViewModel.login(email: loginViewModel.authenticatedUser.email,
-                                                       password: loginViewModel.authenticatedUser.password)
-                            if !loginViewModel.isLogged {
-                                showLoginFailedAlert = true
-                            }
-                        }
-                    }
-                    
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    CustomButton(text: "Register",
-                                 symbol: "",
-                                 color: .blue) {
-                        register = true
-                    }
-                }
-                .padding(40)
-                .navigationDestination(isPresented: $loginViewModel.isLogged, destination: {
-                    CandidatesList()
-                })
-                .navigationDestination(isPresented: $register, destination: {
-                    Register()
-                })
-                .alert("Login failed", isPresented: $showLoginFailedAlert) {
-                } message: {
-                    Text("Please check your credentials.")
-                }
-            }
-            .padding()
+        if !loginViewModel.isLogged {
+            LoginView(loginViewModel: loginViewModel)
+        } else {
+            CandidatesList()
         }
     }
 }

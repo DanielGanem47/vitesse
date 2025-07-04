@@ -10,20 +10,17 @@ import SwiftUI
 struct CandidateDetails: View {
     var candidate: CandidateDTO
     
-    @Environment(\.editMode)
-    private var editMode
-
     init(candidate: CandidateDTO) {
         self.candidate = candidate
     }
     
     var body: some View {
-            HStack {
-                CandidateDetailsForm(candidate: candidate)
-            }
-            .toolbar {
-                EditButton()
-            }
+        HStack {
+            CandidateDetailsForm(candidate: candidate)
+        }
+        .toolbar {
+            EditButton()
+        }
     }
 }
 
