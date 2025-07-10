@@ -11,8 +11,7 @@ struct CandidateDetailsForm: View {
     @ObservedObject var candidate: CandidateDTO
     @State var isFavorite: Bool
     
-    @Environment(\.editMode)
-    private var editMode
+    @Environment(\.editMode) private var editMode
 
     init(candidate: CandidateDTO) {
         self.candidate = candidate
@@ -21,7 +20,7 @@ struct CandidateDetailsForm: View {
     
     var body: some View {
         NavigationView {
-            if editMode?.wrappedValue == .active {
+            if editMode?.wrappedValue.isEditing == true {
                 CandidateDetailsEditable(candidate: candidate)
             } else {
                 CandidateDetailsStatic(candidate: candidate)

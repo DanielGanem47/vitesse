@@ -7,14 +7,15 @@
 
 import Foundation
 
-class CandidateDTO: ObservableObject, Codable, Identifiable {
+class CandidateDTO: ObservableObject, Identifiable {
     var id: UUID
     var name: String
     var phoneNumber: String
     var email: String
     var linkedInUrl: String
     var note: String
-    var isFavorite: Bool
+    @Published var isFavorite: Bool
+    @Published var isSelected: Bool
     
     init(id: UUID, name: String, phoneNumber: String, email: String, linkedInUrl: String, note: String, isFavorite: Bool) {
         self.id = id
@@ -24,6 +25,7 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         self.linkedInUrl = linkedInUrl
         self.note = note
         self.isFavorite = isFavorite
+        self.isSelected = false
     }
 }
 

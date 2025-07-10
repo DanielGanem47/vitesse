@@ -70,6 +70,7 @@ struct CandidateDetailsStatic: View {
                 Section(header: Text("Note")) {
                     Text(candidate.note)
                         .frame(alignment: .top)
+                        .foregroundStyle(.secondary)
                 }
             }
         }

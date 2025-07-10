@@ -8,25 +8,22 @@
 import SwiftUI
 
 struct CandidateListToolbar: View {
-    @Environment(\.editMode)
-    private var editMode
+    @Environment(\.editMode) private var editMode
 
-   var body: some View {
+    var body: some View {
         HStack {
-            if editMode?.wrappedValue == .active {
-                EditButton()
-                
+            EditButton()
+            
+            if editMode?.wrappedValue.isEditing == true {
                 Button("",
                        systemImage: "trash") {
+                    // Faire qqc
                 }
-                       .frame(alignment: .trailing)
             } else {
-                EditButton()
-                
                 Button("",
                        systemImage: "star") {
+                    // Faire qqc
                 }
-                       .frame(alignment: .trailing)
             }
         }
     }

@@ -8,45 +8,72 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    var candidates: Candidates = Candidates(list: [CandidateDTO(
-        id: UUID(),
-        name: "Daniel G.",
-        phoneNumber: "06 37 93 62 65",
-        email: "daniel.ganem@icloud.com",
-        linkedInUrl: "www.linkedin.com",
-        note: "tres bon eleve",
-        isFavorite: true
-    )])
+    @ObservedObject var candidates: Candidates = Candidates(list: [
+        CandidateDTO(id: UUID(),
+                     name: "Daniel G.",
+                     phoneNumber: "06 37 93 62 65",
+                     email: "daniel.ganem@icloud.com",
+                     linkedInUrl: "www.linkedin.com",
+                     note: "tres bon eleve",
+                     isFavorite: true),
+        CandidateDTO(id: UUID(),
+                     name: "Daniel G.",
+                     phoneNumber: "06 37 93 62 65",
+                     email: "daniel.ganem@icloud.com",
+                     linkedInUrl: "www.linkedin.com",
+                     note: "tres bon eleve",
+                     isFavorite: true),
+        CandidateDTO(id: UUID(),
+                     name: "Daniel G.",
+                     phoneNumber: "06 37 93 62 65",
+                     email: "daniel.ganem@icloud.com",
+                     linkedInUrl: "www.linkedin.com",
+                     note: "tres bon eleve",
+                     isFavorite: false),
+        CandidateDTO(id: UUID(),
+                     name: "Daniel G.",
+                     phoneNumber: "06 37 93 62 65",
+                     email: "daniel.ganem@icloud.com",
+                     linkedInUrl: "www.linkedin.com",
+                     note: "tres bon eleve",
+                     isFavorite: false),
+        CandidateDTO(id: UUID(),
+                     name: "Daniel G.",
+                     phoneNumber: "06 37 93 62 65",
+                     email: "daniel.ganem@icloud.com",
+                     linkedInUrl: "www.linkedin.com",
+                     note: "tres bon eleve",
+                     isFavorite: false),
+        CandidateDTO(id: UUID(),
+                     name: "Daniel G.",
+                     phoneNumber: "06 37 93 62 65",
+                     email: "daniel.ganem@icloud.com",
+                     linkedInUrl: "www.linkedin.com",
+                     note: "tres bon eleve",
+                     isFavorite: true)
+    ])
 
-    @Environment(\.editMode)
-    private var editMode
+    @Environment(\.editMode) var editMode: Binding<EditMode>?
 
     @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                if editMode?.wrappedValue == .active {
-                    List {
-                        ForEach(candidates.list) { candidate in
+            List {
+                ForEach(candidates.list) { candidate in
+                    if editMode?.wrappedValue.isEditing == true {
+                        CandidateListRow(candidate: candidate)
+                    } else {
+                        NavigationLink(destination: CandidateDetails(candidate: candidate)) {
                             CandidateListRow(candidate: candidate)
                         }
                     }
-                    .navigationTitle("Candidates")
-                } else {
-                    List {
-                        ForEach(candidates.list) { candidate in
-                            NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                                CandidateListRow(candidate: candidate)
-                            }
-                        }
-                    }
-                    .navigationTitle("Candidates")
                 }
             }
             .toolbar {
                 CandidateListToolbar()
             }
+            .navigationTitle("Candidates")
         }
     }
 }

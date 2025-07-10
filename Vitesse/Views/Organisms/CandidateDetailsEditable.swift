@@ -19,35 +19,40 @@ struct CandidateDetailsEditable: View {
     var body: some View {
         VStack(alignment: .leading) {
             Form {
-                Text(candidate.name)
-                    .font(.title)
-                    .frame(height: 70, alignment: .top)
+                Section(header: Text("Name")) {
+                    Text(candidate.name)
+                        .font(.title)
+                }
 
-                TextFieldWithTitle(title: "Phone",
-                                   placeholder: "Phone",
-                                   isPassword: false,
-                                   storedValue: $candidate.phoneNumber)
+                Section(header: Text("Details")) {
+                    TextFieldWithTitle(title: "Phone",
+                                       placeholder: "Phone",
+                                       isPassword: false,
+                                       storedValue: $candidate.phoneNumber)
+                    
+                    TextFieldWithTitle(title: "Email",
+                                       placeholder: "Email",
+                                       isPassword: false,
+                                       storedValue: $candidate.email)
+                    
+                    TextFieldWithTitle(title: "LinkedIn",
+                                       placeholder: "LinkedIn",
+                                       isPassword: false,
+                                       storedValue: $candidate.linkedInUrl)
+                }
                 
-                TextFieldWithTitle(title: "Email",
-                                   placeholder: "Email",
-                                   isPassword: false,
-                                   storedValue: $candidate.email)
-                
-                TextFieldWithTitle(title: "LinkedIn",
-                                   placeholder: "LinkedIn",
-                                   isPassword: false,
-                                   storedValue: $candidate.linkedInUrl)
-                
-                Text("Note")
-                    .font(.title2)
-                
-                TextEditor(text: $candidate.note)
-                    .padding(4)
-                    .frame(height: 300, alignment: .top)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.black)
-                    )
+                Section(header: Text("Notes")) {
+                    Text("Note")
+                        .font(.title2)
+                    
+                    TextEditor(text: $candidate.note)
+                        .padding(4)
+                        .frame(height: 300, alignment: .top)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black)
+                        )
+                }
             }
         }
     }

@@ -8,24 +8,20 @@
 import SwiftUI
 
 struct CandidateListRow: View {
-    let candidate: CandidateDTO
-    @State var selected: Bool
+    @ObservedObject var candidate: CandidateDTO
+
+    @Environment(\.editMode) var editMode: Binding<EditMode>?
 
     init(candidate: CandidateDTO) {
         self.candidate = candidate
-        self.selected = false
     }
     
-    @Environment(\.editMode)
-    private var editMode
-
     var body: some View {
         HStack {
-            if editMode?.wrappedValue == .active {
+            if editMode?.wrappedValue.isEditing == true {
                 Button("",
-                       systemImage: selected ? "circle.fill" : "circle") {
-                    // Faire qqc
-                    selected.toggle()
+                       systemImage: candidate.isSelected ? "checkmark.circle" : "circle") {
+                    candidate.isSelected.toggle()
                 }
             }
             
@@ -34,8 +30,11 @@ struct CandidateListRow: View {
             
             Spacer()
             
-            Image(systemName: candidate.isFavorite ? "star.fill" : "star")
-                .frame(alignment: .trailing)
+            Button("",
+                   systemImage: candidate.isFavorite ? "star.fill" : "star") {
+                candidate.isFavorite.toggle()
+            }
+                   .frame(alignment: .trailing)
         }
         .padding()
     }
@@ -54,3 +53,4 @@ struct CandidateListRow: View {
         )
     )
 }
+

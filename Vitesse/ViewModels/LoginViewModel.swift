@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 class LoginViewModel: ObservableObject {
     @Published var login = LoginDTO(email: "", password: "")
     @Published var tokenAdmin = TokenAdminDTO(token: "", isAdmin: false)
@@ -25,12 +26,12 @@ class LoginViewModel: ObservableObject {
     // MARK: Login
     private func getTokenAndAdmin() async throws -> TokenAdminDTO {
         print("getTokenAndAdmin")
-        guard let url = URL(string: "https://randomuser.me/api/") else {
+        guard let url = URL(string: "http://localhost:8080/user/auth") else {
             throw URLError(.badURL)
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = "POST"
         let body: String = """
         {
             "email": \(authenticatedUser.email)

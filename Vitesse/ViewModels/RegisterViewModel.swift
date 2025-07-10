@@ -10,23 +10,38 @@ import Foundation
 class RegisterViewModel: ObservableObject {
     @Published var loginViewModel: LoginViewModel = LoginViewModel()
 
-    func sendUserToServer() async {
-        guard let url = URL(string: "http://localhost:8080/users") else { return }
-        
+    private let executeDataRequestRegisterUser: (URLRequest) async throws -> (Data, URLResponse)
+
+    init(
+        executeDataRequestRegisterUser: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)
+    ) {
+        self.executeDataRequestRegisterUser = executeDataRequestRegisterUser
+    }
+
+    // MARK: Register
+    func sendUserToServer() async throws -> Bool {
+        print("sendUserToServer")
+        guard let url = URL(string: "http://localhost:8080/user/register") else {
+            throw URLError(.badURL)
+        }
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        do {
-            let jsonData = try JSONEncoder().encode(loginViewModel.authenticatedUser)
-            request.httpBody = jsonData
-            
-            let (_, response) = try await URLSession.shared.data(for: request)
-            if let httpResponse = response as? HTTPURLResponse {
-                print("Serveur a répondu avec code : \(httpResponse.statusCode)")
-            }
-        } catch {
-            print("Erreur d’envoi : \(error)")
+        let body: String = """
+        {
+            "email": \(loginViewModel.authenticatedUser.email)
+            "password": \(loginViewModel.authenticatedUser.password)
+            "firstName": \(loginViewModel.authenticatedUser.firstName)
+            "lastName": \(loginViewModel.authenticatedUser.lastName)
         }
+        """
+        request.httpBody = body.data(using: .utf8)
+
+        let (_, response) = try await executeDataRequestRegisterUser(request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return false
+        }
+        return httpResponse.statusCode == 201
     }
 }
