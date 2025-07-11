@@ -36,18 +36,17 @@ struct CandidateDetailsStatic: View {
                 
                 HStack {
                     Text("Phone")
-                        .font(.title2)
-                    
+
                     Spacer()
                     
                     Text(candidate.phoneNumber)
+                        .monospacedDigit()
                         .foregroundStyle(.secondary)
                 }
                 
                 HStack {
                     Text("Email")
-                        .font(.title2)
-                    
+
                     Spacer()
                     
                     Text(candidate.email)
@@ -56,8 +55,7 @@ struct CandidateDetailsStatic: View {
                 
                 HStack {
                     Text("LinkedIn")
-                        .font(.title2)
-                    
+
                     Spacer()
                     
                     CustomButton(text: "Go on LinkedIn",
@@ -67,13 +65,17 @@ struct CandidateDetailsStatic: View {
                     }
                                  .frame(width: 200)
                 }
-                
-                Text("Note")
-                    .font(.title2)
-                Text(candidate.note)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .frame(alignment: .top)
+
+                Section {
+                    Text(candidate.note)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(alignment: .top)
+                } header: {
+                    Text("Note")
+                        .foregroundStyle(.red)
+                        .fontWeight(.bold)
+                }
             }
         }
     }

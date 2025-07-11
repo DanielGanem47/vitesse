@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @ObservedObject var candidates: Candidates = Candidates(list: [CandidateDTO(
+
+    let candidates: [CandidateDTO] = [CandidateDTO(
         id: UUID(),
         name: "Daniel G.",
         phoneNumber: "06 37 93 62 65",
@@ -16,43 +17,27 @@ struct CandidatesList: View {
         linkedInUrl: "www.linkedin.com",
         note: "tres bon eleve",
         isFavorite: true
-    )])
+    )]
 
     @Environment(\.editMode)
     private var editMode
 
     var body: some View {
-        @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-        
-        NavigationView{
-            VStack {
-                Form {
-                    if editMode?.wrappedValue == .active {
-                        List {
-                            ForEach(candidates.list) { candidate in
-                                CandidateListRow(candidate: candidate)
-                            }
-                        }
-                        .navigationTitle("Candidats")
-                    } else {
-                        List {
-                            ForEach(candidates.list) { candidate in
-                                NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                                    CandidateListRow(candidate: candidate)
-                                }
-                            }
-                        }
-                        .navigationTitle("Candidats")
+        List {
+            ForEach(candidates) { candidate in
+                if editMode?.wrappedValue == .active {
+                    CandidateListRow(candidate: candidate)
+                } else {
+                    NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                        CandidateListRow(candidate: candidate)
                     }
                 }
+
             }
         }
+        .navigationTitle("Candidats")
         .toolbar {
-            if editMode?.wrappedValue == .active {
-                CandidateListToolbarDelete()
-            } else {
-                CandidateListToolbar()
-            }
+            CandidateListToolbar()
         }
     }
 }

@@ -12,6 +12,13 @@ struct Login: View {
     @State private var register: Bool = false
     @State private var showLoginFailedAlert: Bool = false
 
+    @Binding
+    private var isLoggedIn: Bool
+
+    init(isLoggedIn: Binding<Bool>) {
+        self._isLoggedIn = isLoggedIn
+    }
+
     var body: some View {
         NavigationStack() {
             VStack {
@@ -39,6 +46,8 @@ struct Login: View {
                                                        password: loginViewModel.authenticatedUser.password)
                             if !loginViewModel.isLogged {
                                 showLoginFailedAlert = true
+                            } else {
+                                isLoggedIn = true
                             }
                         }
                     }
@@ -53,9 +62,6 @@ struct Login: View {
                     }
                 }
                 .padding(40)
-                .navigationDestination(isPresented: $loginViewModel.isLogged, destination: {
-                    CandidatesList()
-                })
                 .navigationDestination(isPresented: $register, destination: {
                     Register()
                 })
@@ -69,6 +75,6 @@ struct Login: View {
     }
 }
 
-#Preview {
-    Login()
-}
+//#Preview {
+//    Login()
+//}

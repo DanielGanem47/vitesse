@@ -54,3 +54,18 @@ struct CandidateListRow: View {
         )
     )
 }
+
+#Preview("Edit mode") {
+    CandidateListRow(
+        candidate: CandidateDTO(
+            id: UUID(),
+            name: "Daniel G.",
+            phoneNumber: "06 37 93 62 65",
+            email: "daniel.ganem@icloud.com",
+            linkedInUrl: "www.linkedin.com",
+            note: "tres bon eleve",
+            isFavorite: true
+        )
+    )
+    .environment(\.editMode, .constant(.active))
+}

@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct VitesseApp: App {
+
+    @State
+    private var isLoggedIn = false
+
     var body: some Scene {
         WindowGroup {
-            Login()
+            if !isLoggedIn {
+                Login(isLoggedIn: $isLoggedIn)
+            } else {
+                NavigationStack {
+                    CandidatesList()
+                }
+            }
         }
     }
 }
