@@ -8,13 +8,28 @@
 import SwiftUI
 
 struct CandidateListToolbar: View {
-    @Environment(\.editMode) private var editMode
+    @Binding
+    var isEditing: Bool
+
+    init(isEditing: Binding<Bool>) {
+        self._isEditing = isEditing
+    }
 
     var body: some View {
         HStack {
-            EditButton()
-            
-            if editMode?.wrappedValue.isEditing == true {
+            Button {
+                
+            } label: {
+                Text("Logout")
+            }
+
+            Button {
+                isEditing.toggle()
+            } label: {
+                Text(isEditing ? "Done" : "Edit")
+            }
+
+            if isEditing == true {
                 Button("",
                        systemImage: "trash") {
                     // Faire qqc
@@ -29,6 +44,6 @@ struct CandidateListToolbar: View {
     }
 }
 
-#Preview {
-    CandidateListToolbar()
-}
+//#Preview {
+//    CandidateListToolbar()
+//}

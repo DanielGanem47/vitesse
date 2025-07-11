@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @ObservedObject var candidates: Candidates = Candidates(list: [
+    let candidates: [CandidateDTO] = [
         CandidateDTO(id: UUID(),
                      name: "Daniel G.",
                      phoneNumber: "06 37 93 62 65",
@@ -51,27 +51,28 @@ struct CandidatesList: View {
                      linkedInUrl: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: true)
-    ])
-
-    @Environment(\.editMode) var editMode: Binding<EditMode>?
+    ]
 
     @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-    
+
+    @State
+    private var isEditing = false
+
     var body: some View {
         NavigationStack {
             List {
-                ForEach(candidates.list) { candidate in
-                    if editMode?.wrappedValue.isEditing == true {
-                        CandidateListRow(candidate: candidate)
+                ForEach(candidates) { candidate in
+                    if isEditing {
+                        CandidateListRow(candidate: candidate, isEditing: true)
                     } else {
                         NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                            CandidateListRow(candidate: candidate)
+                            CandidateListRow(candidate: candidate, isEditing: false)
                         }
                     }
                 }
             }
             .toolbar {
-                CandidateListToolbar()
+                CandidateListToolbar(isEditing: $isEditing)
             }
             .navigationTitle("Candidates")
         }
@@ -80,4 +81,5 @@ struct CandidatesList: View {
 
 #Preview("Default mode") {
     CandidatesList()
+        .environment(\.editMode, .constant(.active))
 }

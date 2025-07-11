@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Login: View {
-    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
+    @ObservedObject var loginViewModel = LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
     
     var body: some View {
         if !loginViewModel.isLogged {
