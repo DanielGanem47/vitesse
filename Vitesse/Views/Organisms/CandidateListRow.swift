@@ -10,15 +10,16 @@ import SwiftUI
 struct CandidateListRow: View {
     @ObservedObject var candidate: CandidateDTO
 
-    @Environment(\.editMode) var editMode: Binding<EditMode>?
+    private let isEditing: Bool
 
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, isEditing: Bool) {
         self.candidate = candidate
+        self.isEditing = isEditing
     }
     
     var body: some View {
         HStack {
-            if editMode?.wrappedValue.isEditing == true {
+            if isEditing == true {
                 Button("",
                        systemImage: candidate.isSelected ? "checkmark.circle" : "circle") {
                     candidate.isSelected.toggle()
@@ -50,7 +51,8 @@ struct CandidateListRow: View {
             linkedInUrl: "www.linkedin.com",
             note: "tres bon eleve",
             isFavorite: true
-        )
+        ),
+        isEditing: false
     )
 }
 

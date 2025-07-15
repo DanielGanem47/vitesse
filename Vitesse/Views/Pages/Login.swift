@@ -8,17 +8,23 @@
 import SwiftUI
 
 struct Login: View {
-    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
+    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel()
     
+    @Binding var isLoggedIn: Bool
+
+    init(isLoggedIn: Binding<Bool>) {
+        self._isLoggedIn = isLoggedIn
+    }
+
     var body: some View {
         if !loginViewModel.isLogged {
             LoginView(loginViewModel: loginViewModel)
         } else {
-            CandidatesList()
+            CandidatesList(isLoggedIn: $isLoggedIn)
         }
     }
 }
 
 #Preview {
-    Login()
+    Login(isLoggedIn: .constant(false))
 }

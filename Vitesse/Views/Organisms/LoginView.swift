@@ -68,6 +68,6 @@ struct LoginView: View {
 }
 
 #Preview {
-    var loginViewModel: LoginViewModel = LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
+    var loginViewModel: LoginViewModel = LoginViewModel()
     LoginView(loginViewModel: loginViewModel)
 }

@@ -53,25 +53,61 @@ struct CandidatesList: View {
                      isFavorite: true)
     ])
 
-    @Environment(\.editMode) var editMode: Binding<EditMode>?
-
     @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
     
+    @State private var isEditing = false
+    @Binding var isLoggedIn: Bool
+    
+    init(isLoggedIn: Binding<Bool>) {
+        self._isLoggedIn = isLoggedIn
+    }
+
     var body: some View {
         NavigationStack {
             List {
                 ForEach(candidates.list) { candidate in
-                    if editMode?.wrappedValue.isEditing == true {
-                        CandidateListRow(candidate: candidate)
+                    if isEditing {
+                        CandidateListRow(candidate: candidate, isEditing: isEditing)
                     } else {
                         NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                            CandidateListRow(candidate: candidate)
+                            CandidateListRow(candidate: candidate, isEditing: isEditing)
                         }
                     }
                 }
             }
             .toolbar {
-                CandidateListToolbar()
+                ToolbarItem(placement: .topBarLeading, content: {
+                    Button {
+                        isLoggedIn.toggle()
+                    } label: {
+                        Text(" Logout")
+                    }
+                    .background(.blue)
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .circular))
+                })
+                
+                ToolbarItem(placement: .topBarTrailing, content: {
+                    Button {
+                        isEditing.toggle()
+                    } label: {
+                        Text(isEditing ? "Done" : "Edit")
+                    }
+                })
+                    
+                ToolbarItem(placement: .topBarTrailing, content: {
+                    if isEditing == true {
+                        Button("",
+                               systemImage: "trash") {
+                            // Faire qqc
+                        }
+                    } else {
+                        Button("",
+                               systemImage: "star") {
+                            // Faire qqc
+                        }
+                    }
+                })
             }
             .navigationTitle("Candidates")
         }
@@ -79,5 +115,5 @@ struct CandidatesList: View {
 }
 
 #Preview("Default mode") {
-    CandidatesList()
+    CandidatesList(isLoggedIn: .constant(true))
 }

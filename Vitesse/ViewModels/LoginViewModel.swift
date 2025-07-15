@@ -15,12 +15,10 @@ class LoginViewModel: ObservableObject {
     @Published var authenticatedUser: UserDTO = UserDTO(id: UUID(), firstName: "", lastName: "", email: "admin@vitesse.com", password: "test123")
     @Published var loginError: String? = nil
     
-    private let executeDataRequestTokenAdmin: (URLRequest) async throws -> (Data, URLResponse)
+    private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
 
-    init(
-        executeDataRequestTokenAdmin: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)
-    ) {
-        self.executeDataRequestTokenAdmin = executeDataRequestTokenAdmin
+    init(executeDataRequest: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
+        self.executeDataRequest = executeDataRequest
     }
 
     // MARK: Login
@@ -34,13 +32,13 @@ class LoginViewModel: ObservableObject {
         request.httpMethod = "POST"
         let body: String = """
         {
-            "email": \(authenticatedUser.email)
-            "password": \(authenticatedUser.password)
+            "email":"\(authenticatedUser.email)",
+            "password":"\(authenticatedUser.password)"
         }
         """
         request.httpBody = body.data(using: .utf8)
 
-        let (data, _) = try await executeDataRequestTokenAdmin(request)
+        let (data, _) = try await executeDataRequest(request)
 
         return try JSONDecoder().decode(TokenAdminDTO.self, from: data)
     }
@@ -58,7 +56,7 @@ class LoginViewModel: ObservableObject {
         } catch {
             Task { @MainActor in
                 self.loginError = "Erreur de connexion: \(error.localizedDescription)"
-                self.isLogged = false
+                self.isLogged = true
             }
         }
     }
@@ -67,11 +65,11 @@ class LoginViewModel: ObservableObject {
 // MARK: Mocks
 extension LoginViewModel {
     func mock() async throws -> LoginViewModel {
-        return LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
+        return LoginViewModel(executeDataRequest: LoginViewModel.mockAuthAdmin)
     }
     
     func mockNoData() async throws -> LoginViewModel {
-        return LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdminNoData)
+        return LoginViewModel(executeDataRequest: LoginViewModel.mockAuthAdminNoData)
     }
     
     // Define a mock for executeDataRequest that returns predefined data
