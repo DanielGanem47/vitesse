@@ -27,17 +27,14 @@ struct CandidateDetailsEditable: View {
                 Section(header: Text("Details")) {
                     TextFieldWithTitle(title: "Phone",
                                        placeholder: "Phone",
-                                       isPassword: false,
                                        storedValue: $candidate.phoneNumber)
                     
-                    TextFieldWithTitle(title: "Email",
-                                       placeholder: "Email",
-                                       isPassword: false,
-                                       storedValue: $candidate.email)
+                    EmailFieldWithTitle(title: "Email",
+                                        placeholder: "Email",
+                                        storedValue: $candidate.email)
                     
                     TextFieldWithTitle(title: "LinkedIn",
                                        placeholder: "LinkedIn",
-                                       isPassword: false,
                                        storedValue: $candidate.linkedInUrl)
                 }
                 

@@ -67,27 +67,28 @@ struct CandidatesList: View {
             List {
                 ForEach(candidates.list) { candidate in
                     if isEditing {
-                        CandidateListRow(candidate: candidate, isEditing: isEditing)
+                        CandidateListRow(candidate: candidate,
+                                         isEditing: isEditing)
                     } else {
                         NavigationLink(destination: CandidateDetails(candidate: candidate)) {
-                            CandidateListRow(candidate: candidate, isEditing: isEditing)
+                            CandidateListRow(candidate: candidate,
+                                             isEditing: isEditing)
                         }
                     }
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading, content: {
+                ToolbarItem(placement: .topBarLeading,
+                            content: {
                     Button {
                         isLoggedIn.toggle()
                     } label: {
                         Text(" Logout")
                     }
-                    .background(.blue)
-                    .foregroundStyle(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .circular))
                 })
                 
-                ToolbarItem(placement: .topBarTrailing, content: {
+                ToolbarItem(placement: .topBarTrailing,
+                            content: {
                     Button {
                         isEditing.toggle()
                     } label: {
@@ -95,7 +96,8 @@ struct CandidatesList: View {
                     }
                 })
                     
-                ToolbarItem(placement: .topBarTrailing, content: {
+                ToolbarItem(placement: .topBarTrailing,
+                            content: {
                     if isEditing == true {
                         Button("",
                                systemImage: "trash") {

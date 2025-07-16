@@ -58,7 +58,8 @@ struct LoginView: View {
                     Register()
                 })
                 .alert("Login failed", isPresented: $showLoginFailedAlert) {
-                } message: {
+                }
+                message: {
                     Text("Please check your credentials.")
                 }
             }

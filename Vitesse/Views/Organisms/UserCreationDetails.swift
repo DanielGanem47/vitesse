@@ -8,25 +8,43 @@
 import SwiftUI
 
 struct UserCreationDetails: View {
-    @ObservedObject var loginViewModel: LoginViewModel
+    @ObservedObject var user: UserDTO
     
     var body: some View {
         VStack() {
-            TextFieldWithTitle(title: "First Name", placeholder: "First Name", isPassword: false, storedValue: $loginViewModel.authenticatedUser.firstName)
+            TextFieldWithTitle(title: "First Name",
+                               placeholder: "First Name",
+                               storedValue: $user.firstName)
             
-            TextFieldWithTitle(title: "Last Name", placeholder: "Last Name", isPassword: false, storedValue: $loginViewModel.authenticatedUser.lastName)
+            TextFieldWithTitle(title: "Last Name",
+                               placeholder: "Last Name",
+                               storedValue: $user.lastName)
             
-            TextFieldWithTitle(title: "Email", placeholder: "Email", isPassword: false, storedValue: $loginViewModel.authenticatedUser.email)
+            EmailFieldWithTitle(title: "Email",
+                                placeholder: "Email",
+                                storedValue: $user.email)
             
-            TextFieldWithTitle(title: "Password", placeholder: "Password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
+            PasswordFieldWithTitle(title: "Password",
+                                   placeholder: "Password",
+                                   storedValue: $user.password)
             
-            TextFieldWithTitle(title: "Confirm password", placeholder: "Confirm password", isPassword: true, storedValue: $loginViewModel.authenticatedUser.password)
+            PasswordFieldWithTitle(title: "Confirm password",
+                                   placeholder: "Confirm password",
+                                   storedValue: $user.confirmedPassword)
         }
         .padding(50)
+    }
+    
+    func resetUser() {
+        user.reset()
     }
 }
 
 #Preview {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    UserCreationDetails(loginViewModel: loginViewModel)
+    var user: UserDTO = UserDTO(id: UUID(),
+                                firstName: "",
+                                lastName: "",
+                                email: "",
+                                password: "")
+    UserCreationDetails(user: user)
 }

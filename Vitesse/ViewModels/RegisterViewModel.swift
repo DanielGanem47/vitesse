@@ -8,8 +8,6 @@
 import Foundation
 
 class RegisterViewModel: ObservableObject {
-    @Published var loginViewModel: LoginViewModel = LoginViewModel()
-
     private let executeDataRequestRegisterUser: (URLRequest) async throws -> (Data, URLResponse)
 
     init(
@@ -19,23 +17,21 @@ class RegisterViewModel: ObservableObject {
     }
 
     // MARK: Register
-    func sendUserToServer() async throws -> Bool {
-        print("sendUserToServer")
+    func createUser(user: UserDTO) async throws -> Bool {
         guard let url = URL(string: "http://localhost:8080/user/register") else {
             throw URLError(.badURL)
         }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let body: String = """
-        {
-            "email": \(loginViewModel.authenticatedUser.email)
-            "password": \(loginViewModel.authenticatedUser.password)
-            "firstName": \(loginViewModel.authenticatedUser.firstName)
-            "lastName": \(loginViewModel.authenticatedUser.lastName)
-        }
-        """
-        request.httpBody = body.data(using: .utf8)
+        let request = try URLRequest(
+            url: url,
+            method: .POST,
+            parameters: [
+                "email": user.email,
+                "password": user.password,
+                "firstName": user.firstName,
+                "lastName": user.lastName,
+            ]
+        )
 
         let (_, response) = try await executeDataRequestRegisterUser(request)
 

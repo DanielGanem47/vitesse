@@ -7,12 +7,17 @@
 
 import Foundation
 
-
 class LoginViewModel: ObservableObject {
-    @Published var login = LoginDTO(email: "", password: "")
-    @Published var tokenAdmin = TokenAdminDTO(token: "", isAdmin: false)
+    @Published var login = LoginDTO(email: "",
+                                    password: "")
+    @Published var tokenAdmin = TokenAdminDTO(token: "",
+                                              isAdmin: false)
     @Published var isLogged = false
-    @Published var authenticatedUser: UserDTO = UserDTO(id: UUID(), firstName: "", lastName: "", email: "admin@vitesse.com", password: "test123")
+    @Published var authenticatedUser: UserDTO = UserDTO(id: UUID(),
+                                                        firstName: "",
+                                                        lastName: "",
+                                                        email: "admin@vitesse.com",
+                                                        password: "test123")
     @Published var loginError: String? = nil
     
     private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
@@ -23,40 +28,39 @@ class LoginViewModel: ObservableObject {
 
     // MARK: Login
     private func getTokenAndAdmin() async throws -> TokenAdminDTO {
-        print("getTokenAndAdmin")
         guard let url = URL(string: "http://localhost:8080/user/auth") else {
             throw URLError(.badURL)
         }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let body: String = """
-        {
-            "email":"\(authenticatedUser.email)",
-            "password":"\(authenticatedUser.password)"
-        }
-        """
-        request.httpBody = body.data(using: .utf8)
+        let request = try URLRequest(
+            url: url,
+            method: .POST,
+            parameters: [
+                "email": authenticatedUser.email,
+                "password": authenticatedUser.password
+            ]
+        )
 
         let (data, _) = try await executeDataRequest(request)
 
-        return try JSONDecoder().decode(TokenAdminDTO.self, from: data)
+        return try JSONDecoder().decode(TokenAdminDTO.self,
+                                        from: data)
     }
     
     func login(email:String, password: String) async  {
-        print("login")
         do {
             let tokenAdmin: TokenAdminDTO = try await getTokenAndAdmin()
             Task { @MainActor in
                 print("Token: \(tokenAdmin.token)")
                 print("isAdmin: \(tokenAdmin.isAdmin)")
-                self.isLogged = true
-                self.loginError = nil
+                
+                isLogged = true
+                loginError = nil
             }
         } catch {
             Task { @MainActor in
-                self.loginError = "Erreur de connexion: \(error.localizedDescription)"
-                self.isLogged = true
+                loginError = "Erreur de connexion: \(error.localizedDescription)"
+                isLogged = false
             }
         }
     }

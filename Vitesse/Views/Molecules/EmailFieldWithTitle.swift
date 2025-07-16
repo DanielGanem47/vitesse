@@ -1,5 +1,5 @@
 //
-//  TextFieldWithTitle.swift
+//  EmailFieldWithTitle.swift
 //  Vitesse
 //
 //  Created by daniel ganem on 24/06/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TextFieldWithTitle: View {
+struct EmailFieldWithTitle: View {
     var title: String
     var placeholder: String
     @Binding var storedValue: String
@@ -28,6 +28,7 @@ struct TextFieldWithTitle: View {
             
             TextField(placeholder,
                       text: $storedValue)
+                .keyboardType(.emailAddress)
                 .padding(4)
                 .frame(height: 30)
                 .overlay(
@@ -39,7 +40,7 @@ struct TextFieldWithTitle: View {
 }
 
 #Preview {
-    TextFieldWithTitle(title: "Username",
-                       placeholder: "Username",
-                       storedValue: .constant(""))
+    EmailFieldWithTitle(title: "Email",
+                        placeholder: "Email",
+                        storedValue: .constant(""))
 }

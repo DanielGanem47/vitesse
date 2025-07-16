@@ -1,5 +1,5 @@
 //
-//  TextFieldWithTitle.swift
+//  PasswordFieldWithTitle.swift
 //  Vitesse
 //
 //  Created by daniel ganem on 24/06/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TextFieldWithTitle: View {
+struct PasswordFieldWithTitle: View {
     var title: String
     var placeholder: String
     @Binding var storedValue: String
@@ -26,8 +26,8 @@ struct TextFieldWithTitle: View {
             Spacer()
                 .frame(height:1)
             
-            TextField(placeholder,
-                      text: $storedValue)
+            SecureField(placeholder,
+                        text: $storedValue)
                 .padding(4)
                 .frame(height: 30)
                 .overlay(
@@ -39,7 +39,7 @@ struct TextFieldWithTitle: View {
 }
 
 #Preview {
-    TextFieldWithTitle(title: "Username",
-                       placeholder: "Username",
-                       storedValue: .constant(""))
+    PasswordFieldWithTitle(title: "Password",
+                           placeholder: "Password",
+                           storedValue: .constant(""))
 }
