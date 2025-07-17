@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct Login: View {
-    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel()
+    @ObservedObject var loginViewModel: LoginViewModel
     
-    @Binding var isLoggedIn: Bool
-
-    init(isLoggedIn: Binding<Bool>) {
-        self._isLoggedIn = isLoggedIn
+    init(loginViewModel: LoginViewModel) {
+        self.loginViewModel = loginViewModel
     }
 
     var body: some View {
         if !loginViewModel.isLogged {
             LoginView(loginViewModel: loginViewModel)
         } else {
-            CandidatesList(isLoggedIn: $isLoggedIn)
+            CandidatesList(loginViewModel: loginViewModel)
         }
     }
 }
 
 #Preview {
-    Login(isLoggedIn: .constant(false))
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    Login(loginViewModel: loginViewModel)
 }

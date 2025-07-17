@@ -10,9 +10,7 @@ import Foundation
 class RegisterViewModel: ObservableObject {
     private let executeDataRequestRegisterUser: (URLRequest) async throws -> (Data, URLResponse)
 
-    init(
-        executeDataRequestRegisterUser: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)
-    ) {
+    init(executeDataRequestRegisterUser: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
         self.executeDataRequestRegisterUser = executeDataRequestRegisterUser
     }
 

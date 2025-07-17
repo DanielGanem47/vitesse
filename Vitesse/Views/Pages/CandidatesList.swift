@@ -8,71 +8,44 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @ObservedObject var candidates: Candidates = Candidates(list: [
-        CandidateDTO(id: UUID(),
-                     name: "Daniel G.",
-                     phoneNumber: "06 37 93 62 65",
-                     email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
-                     note: "tres bon eleve",
-                     isFavorite: true),
-        CandidateDTO(id: UUID(),
-                     name: "Daniel G.",
-                     phoneNumber: "06 37 93 62 65",
-                     email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
-                     note: "tres bon eleve",
-                     isFavorite: true),
-        CandidateDTO(id: UUID(),
-                     name: "Daniel G.",
-                     phoneNumber: "06 37 93 62 65",
-                     email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
-                     note: "tres bon eleve",
-                     isFavorite: false),
-        CandidateDTO(id: UUID(),
-                     name: "Daniel G.",
-                     phoneNumber: "06 37 93 62 65",
-                     email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
-                     note: "tres bon eleve",
-                     isFavorite: false),
-        CandidateDTO(id: UUID(),
-                     name: "Daniel G.",
-                     phoneNumber: "06 37 93 62 65",
-                     email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
-                     note: "tres bon eleve",
-                     isFavorite: false),
-        CandidateDTO(id: UUID(),
-                     name: "Daniel G.",
-                     phoneNumber: "06 37 93 62 65",
-                     email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
-                     note: "tres bon eleve",
-                     isFavorite: true)
-    ])
-
     @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
     
     @State private var isEditing = false
-    @Binding var isLoggedIn: Bool
+    @State private var showFavorites = false
+    @State private var deleteCandidates = false
     
-    init(isLoggedIn: Binding<Bool>) {
-        self._isLoggedIn = isLoggedIn
+    var loginViewModel: LoginViewModel
+    
+    init(loginViewModel: LoginViewModel) {
+        self.loginViewModel = loginViewModel
+        candidatesViewModel.tokenAdmin = loginViewModel.tokenAdmin
     }
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(candidates.list) { candidate in
-                    if isEditing {
-                        CandidateListRow(candidate: candidate,
-                                         isEditing: isEditing)
-                    } else {
-                        NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                if deleteCandidates {
+                    ForEach(showFavorites ? candidatesViewModel.filteredCandidates.list : candidatesViewModel.candidates.list) { candidate in
+                        if isEditing {
                             CandidateListRow(candidate: candidate,
                                              isEditing: isEditing)
+                        } else {
+                            NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                                CandidateListRow(candidate: candidate,
+                                                 isEditing: isEditing)
+                            }
+                        }
+                    }
+                } else {
+                    ForEach(showFavorites ? candidatesViewModel.filteredCandidates.list : candidatesViewModel.candidates.list) { candidate in
+                        if isEditing {
+                            CandidateListRow(candidate: candidate,
+                                             isEditing: isEditing)
+                        } else {
+                            NavigationLink(destination: CandidateDetails(candidate: candidate)) {
+                                CandidateListRow(candidate: candidate,
+                                                 isEditing: isEditing)
+                            }
                         }
                     }
                 }
@@ -81,7 +54,7 @@ struct CandidatesList: View {
                 ToolbarItem(placement: .topBarLeading,
                             content: {
                     Button {
-                        isLoggedIn.toggle()
+                        loginViewModel.isLogged = false
                     } label: {
                         Text(" Logout")
                     }
@@ -91,6 +64,9 @@ struct CandidatesList: View {
                             content: {
                     Button {
                         isEditing.toggle()
+                        if !isEditing {
+                            deleteCandidates = false
+                        }
                     } label: {
                         Text(isEditing ? "Done" : "Edit")
                     }
@@ -101,12 +77,18 @@ struct CandidatesList: View {
                     if isEditing == true {
                         Button("",
                                systemImage: "trash") {
-                            // Faire qqc
+                            deleteCandidates = true
+                            candidatesViewModel.deleteSelectedCandidates()
                         }
                     } else {
                         Button("",
-                               systemImage: "star") {
-                            // Faire qqc
+                               systemImage: showFavorites ? "star.fill" : "star") {
+                            showFavorites.toggle()
+                            if showFavorites {
+                                candidatesViewModel.filterByFavorites()
+                            } else {
+                                candidatesViewModel.resetFilteredCandidates()
+                            }
                         }
                     }
                 })
@@ -117,5 +99,6 @@ struct CandidatesList: View {
 }
 
 #Preview("Default mode") {
-    CandidatesList(isLoggedIn: .constant(true))
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    CandidatesList(loginViewModel: loginViewModel)
 }
