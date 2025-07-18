@@ -78,7 +78,9 @@ struct CandidatesList: View {
                         Button("",
                                systemImage: "trash") {
                             deleteCandidates = true
-                            candidatesViewModel.deleteSelectedCandidates()
+                            Task {
+                                try await candidatesViewModel.deleteSelectedCandidates()
+                            }
                         }
                     } else {
                         Button("",
@@ -94,6 +96,14 @@ struct CandidatesList: View {
                 })
             }
             .navigationTitle("Candidates")
+        }
+        .task {
+            do {
+                try await candidatesViewModel.initTable()
+            } catch {
+                // Handle error if needed
+                print("Failed to initialize candidates table: \(error)")
+            }
         }
     }
 }

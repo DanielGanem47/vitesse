@@ -13,13 +13,16 @@ extension URLRequest {
 
         self.init(url: url)
 
-        httpMethod = method.rawValue
-
         if let parameters = parameters {
             switch method {
             case .GET:
+                httpMethod = "GET"
                 encodeParametersInURL(parameters, components: components)
             case .POST:
+                httpMethod = "POST"
+                try encodeParametersInBody(parameters)
+            case .DELETE:
+                httpMethod = "DELETE"
                 try encodeParametersInBody(parameters)
             }
         }

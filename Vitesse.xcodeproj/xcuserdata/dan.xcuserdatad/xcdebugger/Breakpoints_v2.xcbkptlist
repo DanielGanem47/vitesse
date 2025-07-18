@@ -34,34 +34,50 @@
             endingLineNumber = "36"
             landmarkName = "body"
             landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8C1472E7-BBC9-49D1-83FA-42DA33C7E58A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Vitesse/ViewModels/CandidatesViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "initTable()"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "60DFCB8E-83ED-4D26-A4AA-B61F34D6AA95 - 8b269eefbcfa632"
+                  uuid = "8C1472E7-BBC9-49D1-83FA-42DA33C7E58A - 9b8fa1b5c4844de2"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.background&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ShapeStyle&gt;(_: &#x3c4;_1_0, ignoresSafeAreaEdges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0&gt;, &lt;&lt;opaque return type of SwiftUI.View.frame(width: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, height: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0, SwiftUI.Spacer, &lt;&lt;opaque return type of SwiftUI.View.frame(width: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, height: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0)&gt; in Vitesse.CandidateListRow.body.getter : some"
+                  symbolName = "(1) suspend resume partial function for Vitesse.CandidatesViewModel.initTable() async throws -&gt; ()"
                   moduleName = "Vitesse.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dan/DEVS/OC/vitesse/Vitesse/Views/Organisms/CandidateListRow.swift"
+                  urlString = "file:///Users/dan/DEVS/OC/vitesse/Vitesse/ViewModels/CandidatesViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36">
+                  startingLineNumber = "80"
+                  endingLineNumber = "80">
                </Location>
                <Location
-                  uuid = "60DFCB8E-83ED-4D26-A4AA-B61F34D6AA95 - 96a2f37ec7539d69"
+                  uuid = "8C1472E7-BBC9-49D1-83FA-42DA33C7E58A - 4238cefa824619d8"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #2 @Swift.MainActor () -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.background&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ShapeStyle&gt;(_: &#x3c4;_1_0, ignoresSafeAreaEdges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0&gt;, &lt;&lt;opaque return type of SwiftUI.View.frame(width: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, height: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0, SwiftUI.Spacer, &lt;&lt;opaque return type of SwiftUI.View.frame(width: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, height: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0)&gt; in Vitesse.CandidateListRow.body.getter : some"
+                  symbolName = "(3) suspend resume partial function for Vitesse.CandidatesViewModel.initTable() async throws -&gt; ()"
                   moduleName = "Vitesse.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dan/DEVS/OC/vitesse/Vitesse/Views/Organisms/CandidateListRow.swift"
+                  urlString = "file:///Users/dan/DEVS/OC/vitesse/Vitesse/ViewModels/CandidatesViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36">
+                  startingLineNumber = "80"
+                  endingLineNumber = "80">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -69,16 +85,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "40E14F8D-85D2-4253-8BF2-C695AB7CCAB7"
+            uuid = "5F2820E3-443E-4868-AA7D-72BF7BF2CB3E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Vitesse/ViewModels/CandidatesViewModel.swift"
+            filePath = "Vitesse/ViewModels/LoginViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "deleteCandidate(candidate:)"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "getTokenAndAdmin()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

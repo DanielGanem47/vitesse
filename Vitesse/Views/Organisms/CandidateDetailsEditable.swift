@@ -20,14 +20,14 @@ struct CandidateDetailsEditable: View {
         VStack(alignment: .leading) {
             Form {
                 Section(header: Text("Name")) {
-                    Text(candidate.name)
+                    Text(candidate.displayedName)
                         .font(.title)
                 }
 
                 Section(header: Text("Details")) {
                     TextFieldWithTitle(title: "Phone",
                                        placeholder: "Phone",
-                                       storedValue: $candidate.phoneNumber)
+                                       storedValue: $candidate.phone)
                     
                     EmailFieldWithTitle(title: "Email",
                                         placeholder: "Email",
@@ -35,7 +35,7 @@ struct CandidateDetailsEditable: View {
                     
                     TextFieldWithTitle(title: "LinkedIn",
                                        placeholder: "LinkedIn",
-                                       storedValue: $candidate.linkedInUrl)
+                                       storedValue: $candidate.linkedin_url)
                 }
                 
                 Section(header: Text("Notes")) {
@@ -57,10 +57,11 @@ struct CandidateDetailsEditable: View {
 
 #Preview {
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
-                                               name: "Daniel G.",
-                                               phoneNumber: "06 37 93 62 65",
+                                               firstName: "Daniel 1",
+                                               lastName: "Ganem",
+                                               phone: "06 37 93 62 65",
                                                email: "daniel.ganem@icloud.com",
-                                               linkedInUrl: "www.linkedin.com",
+                                               linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
     CandidateDetailsEditable(candidate: candidate)

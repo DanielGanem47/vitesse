@@ -49,11 +49,12 @@ class LoginViewModel: ObservableObject {
     
     func login(email:String, password: String) async  {
         do {
-            let tokenAdmin: TokenAdminDTO = try await getTokenAndAdmin()
+            let token: TokenAdminDTO = try await getTokenAndAdmin()
             Task { @MainActor in
-                print("Token: \(tokenAdmin.token)")
-                print("isAdmin: \(tokenAdmin.isAdmin)")
-                
+                print("Token: \(token.token)")
+                print("isAdmin: \(token.isAdmin)")
+                tokenAdmin.token = token.token
+                tokenAdmin.isAdmin = token.isAdmin
                 isLogged = true
                 loginError = nil
             }

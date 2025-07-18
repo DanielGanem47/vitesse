@@ -26,10 +26,11 @@ struct CandidateDetails: View {
 
 #Preview {
     CandidateDetails(candidate: CandidateDTO(id: UUID(),
-                                             name: "Daniel G.",
-                                             phoneNumber: "06 37 93 62 65",
+                                             firstName: "Daniel 1",
+                                             lastName: "Ganem",
+                                             phone: "06 37 93 62 65",
                                              email: "daniel.ganem@icloud.com",
-                                             linkedInUrl: "www.linkedin.com",
+                                             linkedin_url: "www.linkedin.com",
                                              note: "tres bon eleve",
                                              isFavorite: true))
 }

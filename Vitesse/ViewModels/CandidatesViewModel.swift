@@ -13,45 +13,51 @@ class CandidatesViewModel: ObservableObject {
 
     @Published var candidates: Candidates = Candidates(list: [
         CandidateDTO(id: UUID(),
-                     name: "Daniel G. 1",
-                     phoneNumber: "06 37 93 62 65",
+                     firstName: "Daniel 1",
+                     lastName: "Ganem",
+                     phone: "06 37 93 62 65",
                      email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
+                     linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: true),
         CandidateDTO(id: UUID(),
-                     name: "Daniel G. 2",
-                     phoneNumber: "06 37 93 62 65",
+                     firstName: "Daniel 2",
+                     lastName: "Ganem",
+                     phone: "06 37 93 62 65",
                      email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
+                     linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: true),
         CandidateDTO(id: UUID(),
-                     name: "Daniel G. 3",
-                     phoneNumber: "06 37 93 62 65",
+                     firstName: "Daniel 3",
+                     lastName: "Ganem",
+                     phone: "06 37 93 62 65",
                      email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
+                     linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: false),
         CandidateDTO(id: UUID(),
-                     name: "Daniel G. 4",
-                     phoneNumber: "06 37 93 62 65",
+                     firstName: "Daniel 4",
+                     lastName: "Ganem",
+                     phone: "06 37 93 62 65",
                      email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
+                     linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: false),
         CandidateDTO(id: UUID(),
-                     name: "Daniel G. 5",
-                     phoneNumber: "06 37 93 62 65",
+                     firstName: "Daniel 5",
+                     lastName: "Ganem",
+                     phone: "06 37 93 62 65",
                      email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
+                     linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: false),
         CandidateDTO(id: UUID(),
-                     name: "Daniel G. 6",
-                     phoneNumber: "06 37 93 62 65",
+                     firstName: "Daniel 6",
+                     lastName: "Ganem",
+                     phone: "06 37 93 62 65",
                      email: "daniel.ganem@icloud.com",
-                     linkedInUrl: "www.linkedin.com",
+                     linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: true)
     ])
@@ -65,7 +71,7 @@ class CandidatesViewModel: ObservableObject {
     }
     
     // MARK: Init table
-    private func initTable() async throws {
+    func initTable() async throws {
         for candidate in candidates.list {
             guard let url = URL(string: "http://localhost:8080/candidate") else {
                 throw URLError(.badURL)
@@ -77,17 +83,21 @@ class CandidatesViewModel: ObservableObject {
                 parameters: [
                     "email": candidate.email,
                     "note": candidate.note,
-                    "linkedinURL": candidate.linkedInUrl,
-                    "firstName": candidate.name,
-                    "lastName": candidate.name,
-                    "phone": candidate.phoneNumber
-                ]
+                    "linkedinURL": candidate.linkedin_url,
+                    "firstName": candidate.firstName,
+                    "lastName": candidate.lastName,
+                    "phone": candidate.phone
+                ],
+                headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
             )
 
             let (data, _) = try await executeDataRequestCandidate(request)
 
-            let JSON = try JSONDecoder().decode(TokenAdminDTO.self,
+            let JSON = try JSONDecoder().decode(CandidateDTO.self,
                                      from: data)
+            
+            candidate.id = JSON.id
+            candidate.isFavorite = JSON.isFavorite
         }
     }
     
@@ -119,9 +129,9 @@ class CandidatesViewModel: ObservableObject {
             url: url,
             method: .DELETE,
             parameters: [
-                "Bearer": "Bearer \(tokenAdmin.token)",
                 "CandidateId": candidate.id
-            ]
+            ],
+            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
         )
 
         let (_, response) = try await executeDataRequestCandidate(request)

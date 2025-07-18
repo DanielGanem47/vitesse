@@ -21,7 +21,7 @@ struct CandidateDetailsStatic: View {
             Form {
                 Section(header: Text("Name")) {
                     HStack {
-                        Text(candidate.name)
+                        Text(candidate.displayedName)
                             .font(.title)
                         
                         Spacer()
@@ -39,7 +39,7 @@ struct CandidateDetailsStatic: View {
                         
                         Spacer()
                         
-                        Text(candidate.phoneNumber)
+                        Text(candidate.phone)
                             .monospacedDigit()
                             .foregroundStyle(.secondary)
                     }
@@ -79,10 +79,11 @@ struct CandidateDetailsStatic: View {
 
 #Preview {
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
-                                               name: "Daniel G.",
-                                               phoneNumber: "06 37 93 62 65",
+                                               firstName: "Daniel 1",
+                                               lastName: "Ganem",
+                                               phone: "06 37 93 62 65",
                                                email: "daniel.ganem@icloud.com",
-                                               linkedInUrl: "www.linkedin.com",
+                                               linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
     CandidateDetailsStatic(candidate: candidate)
