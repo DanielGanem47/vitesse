@@ -32,8 +32,8 @@ struct CandidateListRow: View {
             Spacer()
             
             Button("",
-                   systemImage: candidate.isFavorite ? "star.fill" : "star") {
-                candidate.isFavorite.toggle()
+                   systemImage: candidate.is_favorite ? "star.fill" : "star") {
+                candidate.is_favorite.toggle()
             }
                    .frame(alignment: .trailing)
         }
@@ -56,4 +56,3 @@ struct CandidateListRow: View {
         isEditing: false
     )
 }
-

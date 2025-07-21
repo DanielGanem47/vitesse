@@ -13,18 +13,18 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
     var lastName: String
     var phone: String
     var email: String
-    var linkedin_url: String
-    var note: String
+    var linkedinURL: String?
+    var note: String?
     
     var displayedName: String {
         return "\(firstName) \(lastName.first?.uppercased() ?? "")."
     }
     
-    @Published var isFavorite: Bool
+    @Published var is_favorite: Bool
     @Published var isSelected: Bool
     
     enum CodingKeys: String, CodingKey {
-        case id, firstName, lastName, phone, email, linkedin_url, note, isFavorite
+        case id, firstName, lastName, phone, email, linkedinURL, note, isFavorite
     }
     
     init(id: UUID, firstName: String, lastName: String, phone: String, email: String, linkedin_url: String, note: String, isFavorite: Bool) {
@@ -33,9 +33,9 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         self.lastName = lastName
         self.phone = phone
         self.email = email
-        self.linkedin_url = linkedin_url
+        self.linkedinURL = linkedin_url
         self.note = note
-        self.isFavorite = isFavorite
+        self.is_favorite = isFavorite
         self.isSelected = false
     }
     
@@ -46,9 +46,9 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         lastName = try container.decode(String.self, forKey: .lastName)
         phone = try container.decode(String.self, forKey: .phone)
         email = try container.decode(String.self, forKey: .email)
-        linkedin_url = try container.decode(String.self, forKey: .linkedin_url)
-        note = try container.decode(String.self, forKey: .note)
-        isFavorite = try container.decode(Bool.self, forKey: .isFavorite)
+        linkedinURL = try container.decodeIfPresent(String.self, forKey: .linkedinURL)
+        note = try container.decodeIfPresent(String.self, forKey: .note)
+        is_favorite = try container.decode(Bool.self, forKey: .isFavorite)
         isSelected = false
     }
 
@@ -59,9 +59,9 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         try container.encode(lastName, forKey: .lastName)
         try container.encode(phone, forKey: .phone)
         try container.encode(email, forKey: .email)
-        try container.encode(linkedin_url, forKey: .linkedin_url)
+        try container.encode(linkedinURL, forKey: .linkedinURL)
         try container.encode(note, forKey: .note)
-        try container.encode(isFavorite, forKey: .isFavorite)
+        try container.encode(is_favorite, forKey: .isFavorite)
     }
 }
 

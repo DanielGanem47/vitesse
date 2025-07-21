@@ -10,10 +10,11 @@ import SwiftUI
 struct CandidateDetailsStatic: View {
     @ObservedObject var candidate: CandidateDTO
     @State var isFavorite: Bool
+    @Environment(\.openURL) private var openURL
 
     init(candidate: CandidateDTO) {
         self.candidate = candidate
-        self.isFavorite = candidate.isFavorite
+        self.isFavorite = candidate.is_favorite
     }
 
     var body: some View {
@@ -58,17 +59,23 @@ struct CandidateDetailsStatic: View {
                         
                         Spacer()
                         
-                        CustomButton(text: "Go on LinkedIn",
-                                     symbol: "",
-                                     color: .blue) {
-                            // Faire qqc
+                        if let urlString = candidate.linkedinURL, let url = URL(string: urlString) {
+                            CustomButton(text: "Go on LinkedIn",
+                                         symbol: "",
+                                         color: .blue) {
+                              openURL(url)
+                            }
+                            .frame(width: 200)
+                        } else {
+                            Text("No LinkedIn available")
+                                .foregroundStyle(.secondary)
+                                .frame(width: 200)
                         }
-                                     .frame(width: 200)
                     }
                 }
                 
                 Section(header: Text("Note")) {
-                    Text(candidate.note)
+                    Text(candidate.note ?? "")
                         .frame(alignment: .top)
                         .foregroundStyle(.secondary)
                 }

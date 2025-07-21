@@ -10,10 +10,13 @@ import SwiftUI
 struct CandidateDetailsEditable: View {
     @ObservedObject var candidate: CandidateDTO
     @State var isFavorite: Bool
+    
+    var candidatesViewModel: CandidatesViewModel
 
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
-        self.isFavorite = candidate.isFavorite
+        self.isFavorite = candidate.is_favorite
+        self.candidatesViewModel = candidatesViewModel
     }
 
     var body: some View {
@@ -35,14 +38,20 @@ struct CandidateDetailsEditable: View {
                     
                     TextFieldWithTitle(title: "LinkedIn",
                                        placeholder: "LinkedIn",
-                                       storedValue: $candidate.linkedin_url)
+                                       storedValue: Binding(
+                                        get: { candidate.linkedinURL ?? "" },
+                                        set: { candidate.linkedinURL = $0.isEmpty ? nil : $0 }
+                                       ))
                 }
                 
                 Section(header: Text("Notes")) {
                     Text("Note")
                         .font(.title2)
                     
-                    TextEditor(text: $candidate.note)
+                    TextEditor(text: Binding(
+                        get: { candidate.note ?? "" },
+                        set: { candidate.note = $0.isEmpty ? nil : $0 }
+                    ))
                         .padding(4)
                         .frame(height: 300, alignment: .top)
                         .overlay(
@@ -50,12 +59,21 @@ struct CandidateDetailsEditable: View {
                                 .stroke(Color.black)
                         )
                 }
+                
+                CustomButton(text: "Validate",
+                             symbol: "",
+                             color: .blue) {
+                    Task {
+                        try await candidatesViewModel.updateCandidate(candidate: candidate)
+                    }
+                }
             }
         }
     }
 }
 
 #Preview {
+    var viewModel: CandidatesViewModel = CandidatesViewModel()
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                firstName: "Daniel 1",
                                                lastName: "Ganem",
@@ -64,5 +82,6 @@ struct CandidateDetailsEditable: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsEditable(candidate: candidate)
+    CandidateDetailsEditable(candidate: candidate,
+                             candidatesViewModel:viewModel)
 }

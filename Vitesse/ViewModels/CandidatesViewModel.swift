@@ -71,7 +71,7 @@ class CandidatesViewModel: ObservableObject {
     }
     
     // MARK: Init table
-    func initTable() async throws {
+    @MainActor func initTable() async throws {
         for candidate in candidates.list {
             guard let url = URL(string: "http://localhost:8080/candidate") else {
                 throw URLError(.badURL)
@@ -82,8 +82,8 @@ class CandidatesViewModel: ObservableObject {
                 method: .POST,
                 parameters: [
                     "email": candidate.email,
-                    "note": candidate.note,
-                    "linkedinURL": candidate.linkedin_url,
+                    "note": candidate.note ?? "",
+                    "linkedinURL": candidate.linkedinURL ?? "",
                     "firstName": candidate.firstName,
                     "lastName": candidate.lastName,
                     "phone": candidate.phone
@@ -97,18 +97,69 @@ class CandidatesViewModel: ObservableObject {
                                      from: data)
             
             candidate.id = JSON.id
-            candidate.isFavorite = JSON.isFavorite
+            candidate.is_favorite = JSON.is_favorite
         }
+    }
+    
+    // MARK: Load table
+    @MainActor func loadTable() async throws {
+        guard let url = URL(string: "http://localhost:8080/candidate") else {
+            throw URLError(.badURL)
+        }
+        
+        let request = try URLRequest(
+            url: url,
+            method: .GET,
+            parameters: nil,
+            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
+        )
+        
+        let (data, _) = try await executeDataRequestCandidate(request)
+        
+        let JSON = try JSONDecoder().decode([CandidateDTO].self,
+                                            from: data)
+        
+        candidates.list = JSON
     }
     
     // MARK: Favorites
     func filterByFavorites() {
         filteredCandidates.list.removeAll()
-        filteredCandidates.list = candidates.list.filter { $0.isFavorite }
+        filteredCandidates.list = candidates.list.filter { $0.is_favorite }
     }
     
     func resetFilteredCandidates() {
         filteredCandidates.list = candidates.list
+    }
+    
+    // MARK: Update
+    func updateCandidate(candidate: CandidateDTO) async throws {
+        guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)") else {
+            throw URLError(.badURL)
+        }
+
+        let request = try URLRequest(
+            url: url,
+            method: .PUT,
+            parameters: [
+                "email": candidate.email,
+                "note": candidate.note ?? "",
+                "linkedinURL": candidate.linkedinURL ?? "",
+                "firstName": candidate.firstName,
+                "lastName": candidate.lastName,
+                "phone": candidate.phone
+            ],
+            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
+        )
+
+        let (data, _) = try await executeDataRequestCandidate(request)
+
+        let JSON = try JSONDecoder().decode(CandidateDTO.self,
+                                            from: data)
+        
+        if let index = candidates.list.firstIndex(where: { $0.id == candidate.id }) {
+            candidates.list[index] = JSON
+        }
     }
     
     // MARK: Delete

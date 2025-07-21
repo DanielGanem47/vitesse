@@ -24,6 +24,9 @@ extension URLRequest {
             case .DELETE:
                 httpMethod = "DELETE"
                 try encodeParametersInBody(parameters)
+            case .PUT:
+                httpMethod = "PUT"
+                try encodeParametersInBody(parameters)
             }
         }
 

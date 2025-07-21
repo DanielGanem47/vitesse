@@ -12,16 +12,20 @@ struct CandidateDetailsForm: View {
     @State var isFavorite: Bool
     
     @Environment(\.editMode) private var editMode
+    
+    var candidatesViewModel: CandidatesViewModel
 
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
-        self.isFavorite = candidate.isFavorite
+        self.isFavorite = candidate.is_favorite
+        self.candidatesViewModel = candidatesViewModel
     }
     
     var body: some View {
         NavigationView {
             if editMode?.wrappedValue.isEditing == true {
-                CandidateDetailsEditable(candidate: candidate)
+                CandidateDetailsEditable(candidate: candidate,
+                                         candidatesViewModel: candidatesViewModel)
             } else {
                 CandidateDetailsStatic(candidate: candidate)
             }
@@ -30,6 +34,7 @@ struct CandidateDetailsForm: View {
 }
 
 #Preview {
+    var viewModel: CandidatesViewModel = CandidatesViewModel()
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                firstName: "Daniel 1",
                                                lastName: "Ganem",
@@ -38,5 +43,6 @@ struct CandidateDetailsForm: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsForm(candidate: candidate)
+    CandidateDetailsForm(candidate: candidate,
+                         candidatesViewModel: viewModel)
 }

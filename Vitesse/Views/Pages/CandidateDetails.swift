@@ -9,14 +9,17 @@ import SwiftUI
 
 struct CandidateDetails: View {
     var candidate: CandidateDTO
+    var candidatesViewModel: CandidatesViewModel
     
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
+        self.candidatesViewModel = candidatesViewModel
     }
     
     var body: some View {
         HStack {
-            CandidateDetailsForm(candidate: candidate)
+            CandidateDetailsForm(candidate: candidate,
+                                 candidatesViewModel: candidatesViewModel)
         }
         .toolbar {
             EditButton()
@@ -25,6 +28,7 @@ struct CandidateDetails: View {
 }
 
 #Preview {
+    var viewModel: CandidatesViewModel = CandidatesViewModel()
     CandidateDetails(candidate: CandidateDTO(id: UUID(),
                                              firstName: "Daniel 1",
                                              lastName: "Ganem",
@@ -32,5 +36,6 @@ struct CandidateDetails: View {
                                              email: "daniel.ganem@icloud.com",
                                              linkedin_url: "www.linkedin.com",
                                              note: "tres bon eleve",
-                                             isFavorite: true))
+                                             isFavorite: true),
+                     candidatesViewModel: viewModel)
 }
