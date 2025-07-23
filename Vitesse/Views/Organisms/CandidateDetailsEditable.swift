@@ -11,12 +11,9 @@ struct CandidateDetailsEditable: View {
     @ObservedObject var candidate: CandidateDTO
     @State var isFavorite: Bool
     
-    var candidatesViewModel: CandidatesViewModel
-
-    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
+    init(candidate: CandidateDTO) {
         self.candidate = candidate
-        self.isFavorite = candidate.is_favorite
-        self.candidatesViewModel = candidatesViewModel
+        self.isFavorite = candidate.isFavorite
     }
 
     var body: some View {
@@ -59,21 +56,12 @@ struct CandidateDetailsEditable: View {
                                 .stroke(Color.black)
                         )
                 }
-                
-                CustomButton(text: "Validate",
-                             symbol: "",
-                             color: .blue) {
-                    Task {
-                        try await candidatesViewModel.updateCandidate(candidate: candidate)
-                    }
-                }
             }
         }
     }
 }
 
 #Preview {
-    var viewModel: CandidatesViewModel = CandidatesViewModel()
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                firstName: "Daniel 1",
                                                lastName: "Ganem",
@@ -82,6 +70,5 @@ struct CandidateDetailsEditable: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsEditable(candidate: candidate,
-                             candidatesViewModel:viewModel)
+    CandidateDetailsEditable(candidate: candidate)
 }

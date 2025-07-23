@@ -12,6 +12,7 @@ struct LoginView: View {
     
     @State private var showLoginFailedAlert: Bool = false
     @State private var register: Bool = false
+    @State private var imageOffset: CGFloat = -UIScreen.main.bounds.width / 2
 
     var body: some View {
         NavigationStack {
@@ -19,6 +20,13 @@ struct LoginView: View {
                 Image("Vitesse")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .offset(x: imageOffset)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.0)) {
+                            imageOffset = 0
+                        }
+                    }
+                
                 Text("Login")
                     .font(.largeTitle)
                     .fontDesign(.default)

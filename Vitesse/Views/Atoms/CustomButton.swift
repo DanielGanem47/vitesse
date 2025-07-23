@@ -16,8 +16,13 @@ struct CustomButton: View {
     var body: some View {
         HStack(spacing: 10) {
             Spacer()
-            Image(systemName: symbol)
+            
+            if !symbol.isEmpty {
+                Image(systemName: symbol)
+            }
+            
             Text(text)
+            
             Spacer()
         }
         .padding()

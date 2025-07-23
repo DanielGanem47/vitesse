@@ -97,7 +97,7 @@ class CandidatesViewModel: ObservableObject {
                                      from: data)
             
             candidate.id = JSON.id
-            candidate.is_favorite = JSON.is_favorite
+            candidate.isFavorite = JSON.isFavorite
         }
     }
     
@@ -125,7 +125,7 @@ class CandidatesViewModel: ObservableObject {
     // MARK: Favorites
     func filterByFavorites() {
         filteredCandidates.list.removeAll()
-        filteredCandidates.list = candidates.list.filter { $0.is_favorite }
+        filteredCandidates.list = candidates.list.filter { $0.isFavorite }
     }
     
     func resetFilteredCandidates() {
@@ -165,7 +165,9 @@ class CandidatesViewModel: ObservableObject {
     // MARK: Delete
     func deleteSelectedCandidates() async throws {
         for candidate in candidates.list where candidate.isSelected {
-            try await deleteCandidate(candidate: candidate)
+            if try await !deleteCandidate(candidate: candidate) {
+                print("Cannot delete candidate \(candidate.displayedName)")
+            }
         }
         candidates.list.removeAll(where: { $0.isSelected })
         filterByFavorites()

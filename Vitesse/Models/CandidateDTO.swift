@@ -20,7 +20,7 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         return "\(firstName) \(lastName.first?.uppercased() ?? "")."
     }
     
-    @Published var is_favorite: Bool
+    @Published var isFavorite: Bool
     @Published var isSelected: Bool
     
     enum CodingKeys: String, CodingKey {
@@ -35,7 +35,7 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         self.email = email
         self.linkedinURL = linkedin_url
         self.note = note
-        self.is_favorite = isFavorite
+        self.isFavorite = isFavorite
         self.isSelected = false
     }
     
@@ -48,7 +48,7 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         email = try container.decode(String.self, forKey: .email)
         linkedinURL = try container.decodeIfPresent(String.self, forKey: .linkedinURL)
         note = try container.decodeIfPresent(String.self, forKey: .note)
-        is_favorite = try container.decode(Bool.self, forKey: .isFavorite)
+        isFavorite = try container.decode(Bool.self, forKey: .isFavorite)
         isSelected = false
     }
 
@@ -61,7 +61,7 @@ class CandidateDTO: ObservableObject, Codable, Identifiable {
         try container.encode(email, forKey: .email)
         try container.encode(linkedinURL, forKey: .linkedinURL)
         try container.encode(note, forKey: .note)
-        try container.encode(is_favorite, forKey: .isFavorite)
+        try container.encode(isFavorite, forKey: .isFavorite)
     }
 }
 

@@ -17,17 +17,22 @@ struct CandidateDetailsForm: View {
 
     init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
-        self.isFavorite = candidate.is_favorite
+        self.isFavorite = candidate.isFavorite
         self.candidatesViewModel = candidatesViewModel
     }
     
     var body: some View {
         NavigationView {
             if editMode?.wrappedValue.isEditing == true {
-                CandidateDetailsEditable(candidate: candidate,
-                                         candidatesViewModel: candidatesViewModel)
+                CandidateDetailsEditable(candidate: candidate)
+                    .onDisappear {
+                        Task {
+                            try await candidatesViewModel.updateCandidate(candidate: candidate)
+                        }
+                    }
             } else {
-                CandidateDetailsStatic(candidate: candidate)
+                CandidateDetailsStatic(candidate: candidate,
+                                       candidatesViewModel: candidatesViewModel)
             }
         }
     }

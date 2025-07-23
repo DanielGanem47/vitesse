@@ -32,8 +32,8 @@ struct CandidateListRow: View {
             Spacer()
             
             Button("",
-                   systemImage: candidate.is_favorite ? "star.fill" : "star") {
-                candidate.is_favorite.toggle()
+                   systemImage: candidate.isFavorite ? "star.fill" : "star") {
+                candidate.isFavorite.toggle()
             }
                    .frame(alignment: .trailing)
         }

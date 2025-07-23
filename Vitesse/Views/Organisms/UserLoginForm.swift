@@ -14,9 +14,9 @@ struct UserLoginForm: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            TextFieldWithTitle(title: "Email",
-                               placeholder: "Email",
-                               storedValue: $loginViewModel.authenticatedUser.email)
+            EmailFieldWithTitle(title: "Email",
+                                placeholder: "Email",
+                                storedValue: $loginViewModel.authenticatedUser.email)
             
             PasswordFieldWithTitle(title: "Password",
                                    placeholder: "Password",

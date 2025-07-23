@@ -12,9 +12,12 @@ struct CandidateDetailsStatic: View {
     @State var isFavorite: Bool
     @Environment(\.openURL) private var openURL
 
-    init(candidate: CandidateDTO) {
+    var candidatesViewModel: CandidatesViewModel
+
+    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
-        self.isFavorite = candidate.is_favorite
+        self.isFavorite = candidate.isFavorite
+        self.candidatesViewModel = candidatesViewModel
     }
 
     var body: some View {
@@ -27,9 +30,17 @@ struct CandidateDetailsStatic: View {
                         
                         Spacer()
                         
-                        Button("",
-                               systemImage: isFavorite ? "star.fill" : "star") {
-                            isFavorite.toggle()
+                        if candidatesViewModel.tokenAdmin.isAdmin {
+                            Button("",
+                                   systemImage: isFavorite ? "star.fill" : "star") {
+                                isFavorite.toggle()
+                                Task {
+                                    candidate.isFavorite = isFavorite
+                                    try await candidatesViewModel.updateCandidate(candidate: candidate)
+                                }
+                            }
+                        } else {
+                            Image(systemName: isFavorite ? "star.fill" : "star")
                         }
                     }
                 }
@@ -85,6 +96,7 @@ struct CandidateDetailsStatic: View {
 }
 
 #Preview {
+    var candidatesViewModel = CandidatesViewModel()
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                firstName: "Daniel 1",
                                                lastName: "Ganem",
@@ -93,5 +105,6 @@ struct CandidateDetailsStatic: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsStatic(candidate: candidate)
+    CandidateDetailsStatic(candidate: candidate,
+                           candidatesViewModel: candidatesViewModel)
 }

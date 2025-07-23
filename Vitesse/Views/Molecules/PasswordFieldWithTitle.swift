@@ -27,7 +27,8 @@ struct PasswordFieldWithTitle: View {
                 .frame(height:1)
             
             SecureField(placeholder,
-                        text: $storedValue)
+                        text: $storedValue,
+                        prompt: Text("Required"))
                 .padding(4)
                 .frame(height: 30)
                 .overlay(
