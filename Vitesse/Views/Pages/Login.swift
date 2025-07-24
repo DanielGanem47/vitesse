@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct Login: View {
+
+    
+
     @ObservedObject var loginViewModel: LoginViewModel
     
-    init(loginViewModel: LoginViewModel) {
+    init(dependenciesContainer: DependenciesContainer, loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
     }
 

@@ -7,18 +7,38 @@
 
 import SwiftUI
 
+final class CandidateDetailsFormViewModel {
+
+    private var dependenciesContainer: DependenciesContainer?
+
+    func initWith(dependenciesContainer: DependenciesContainer) {
+        self.dependenciesContainer = dependenciesContainer
+    }
+
+    func update(candidate: CandidateDTO) async throws {
+        guard let dependenciesContainer else {
+            fatalError("Missing dependenciesContainer")
+        }
+
+        try await dependenciesContainer.candidateRepository.update(candidate: candidate)
+    }
+}
+
 struct CandidateDetailsForm: View {
+
+    private let viewModel: CandidateDetailsFormViewModel
+
     @ObservedObject var candidate: CandidateDTO
     @State var isFavorite: Bool
     
     @Environment(\.editMode) private var editMode
-    
-    var candidatesViewModel: CandidatesViewModel
 
-    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer: DependenciesContainer
+
+    init(candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
-        self.candidatesViewModel = candidatesViewModel
     }
     
     var body: some View {
@@ -27,12 +47,11 @@ struct CandidateDetailsForm: View {
                 CandidateDetailsEditable(candidate: candidate)
                     .onDisappear {
                         Task {
-                            try await candidatesViewModel.updateCandidate(candidate: candidate)
+                            try await viewModel.update(candidate: candidate)
                         }
                     }
             } else {
-                CandidateDetailsStatic(candidate: candidate,
-                                       candidatesViewModel: candidatesViewModel)
+                CandidateDetailsStatic(candidate: candidate)
             }
         }
     }
@@ -48,6 +67,5 @@ struct CandidateDetailsForm: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsForm(candidate: candidate,
-                         candidatesViewModel: viewModel)
+    CandidateDetailsForm(candidate: candidate)
 }

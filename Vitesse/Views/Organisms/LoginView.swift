@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
+
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer
+
     @ObservedObject var loginViewModel: LoginViewModel
     
     @State private var showLoginFailedAlert: Bool = false
@@ -72,6 +76,9 @@ struct LoginView: View {
                 }
             }
             .padding()
+            .task {
+                loginViewModel.initWith(dependenciesContainer: dependenciesContainer)
+            }
         }
     }
 }

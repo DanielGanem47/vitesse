@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @ObservedObject var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-    
+
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer: DependenciesContainer
+
+    @ObservedObject
+    var candidatesViewModel = CandidatesViewModel()
+
     @State private var isEditing = false
     @State private var showFavorites = false
     @State private var deleteCandidates = false
@@ -19,6 +24,7 @@ struct CandidatesList: View {
     
     init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
+
         candidatesViewModel.tokenAdmin = loginViewModel.tokenAdmin
     }
 
@@ -29,10 +35,15 @@ struct CandidatesList: View {
                     ProgressView()
                     Text("Loading...")
                 }
+                .task {
+                    candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
+
+                    await loadTable()
+                }
             } else {
                 List {
                     if deleteCandidates {
-                        ForEach(showFavorites ? candidatesViewModel.filteredCandidates.list : candidatesViewModel.candidates.list) { candidate in
+                        ForEach(candidatesViewModel.candidatesToDisplay) { candidate in
                             if isEditing {
                                 CandidateListRow(candidate: candidate,
                                                  isEditing: isEditing)
@@ -45,7 +56,7 @@ struct CandidatesList: View {
                             }
                         }
                     } else {
-                        ForEach(showFavorites ? candidatesViewModel.filteredCandidates.list : candidatesViewModel.candidates.list) { candidate in
+                        ForEach(candidatesViewModel.candidatesToDisplay) { candidate in
                             if isEditing {
                                 CandidateListRow(candidate: candidate,
                                                  isEditing: isEditing)
@@ -57,6 +68,11 @@ struct CandidatesList: View {
                                 }
                             }
                         }
+                    }
+                }
+                .refreshable {
+                    Task {
+                        await loadTable()
                     }
                 }
                 .toolbar {
@@ -92,9 +108,9 @@ struct CandidatesList: View {
                                 }
                             }
                         } else {
-                            Button("",
-                                   systemImage: showFavorites ? "star.fill" : "star") {
+                            Button("", systemImage: showFavorites ? "star.fill" : "star") {
                                 showFavorites.toggle()
+
                                 if showFavorites {
                                     candidatesViewModel.filterByFavorites()
                                 } else {
@@ -107,14 +123,15 @@ struct CandidatesList: View {
                 .navigationTitle("Candidates")
             }
         }
-        .task {
-            do {
-                try await candidatesViewModel.loadTable()
-                isLoading = false
-            } catch {
-                // Handle error if needed
-                print("Failed to load candidates table: \(error)")
-            }
+    }
+
+    private func loadTable() async {
+        do {
+            try await candidatesViewModel.loadTable()
+            isLoading = false
+        } catch {
+            // Handle error if needed
+            print("Failed to load candidates table: \(error)")
         }
     }
 }

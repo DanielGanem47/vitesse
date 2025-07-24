@@ -9,9 +9,29 @@ import Foundation
 import SwiftUI
 
 class CandidatesViewModel: ObservableObject {
+
+    private var dependenciesContainer: DependenciesContainer?
+
     private let executeDataRequestCandidate: (URLRequest) async throws -> (Data, URLResponse)
 
-    @Published var candidates: Candidates = Candidates(list: [
+    private var candidates: [CandidateDTO] = []
+
+    @Published
+    var candidatesToDisplay: [CandidateDTO] = []
+
+    var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "", isAdmin: false)
+    
+    init(executeDataRequestCandidate: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
+        self.executeDataRequestCandidate = executeDataRequestCandidate
+    }
+
+    func initWith(dependenciesContainer: DependenciesContainer) {
+        self.dependenciesContainer = dependenciesContainer
+    }
+
+    #if DEBUG
+
+    private static let defaultCandidates = [
         CandidateDTO(id: UUID(),
                      firstName: "Daniel 1",
                      lastName: "Ganem",
@@ -60,19 +80,11 @@ class CandidatesViewModel: ObservableObject {
                      linkedin_url: "www.linkedin.com",
                      note: "tres bon eleve",
                      isFavorite: true)
-    ])
-    @Published var filteredCandidates: Candidates = Candidates(list: [])
+    ]
 
-    var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "", isAdmin: false)
-    
-    init (executeDataRequestCandidate: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
-        self.executeDataRequestCandidate = executeDataRequestCandidate
-        filteredCandidates.list = candidates.list
-    }
-    
     // MARK: Init table
     @MainActor func initTable() async throws {
-        for candidate in candidates.list {
+        for candidate in Self.defaultCandidates {
             guard let url = URL(string: "http://localhost:8080/candidate") else {
                 throw URLError(.badURL)
             }
@@ -100,36 +112,30 @@ class CandidatesViewModel: ObservableObject {
             candidate.isFavorite = JSON.isFavorite
         }
     }
-    
+
+    #endif
+
     // MARK: Load table
     @MainActor func loadTable() async throws {
-        guard let url = URL(string: "http://localhost:8080/candidate") else {
-            throw URLError(.badURL)
+        guard let dependenciesContainer else {
+            fatalError("Failed to inject dependencies container")
         }
+
+        try await dependenciesContainer.candidateRepository.fetchCandidates()
+
+        candidates = dependenciesContainer.candidateRepository.candidates
         
-        let request = try URLRequest(
-            url: url,
-            method: .GET,
-            parameters: nil,
-            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
-        )
-        
-        let (data, _) = try await executeDataRequestCandidate(request)
-        
-        let JSON = try JSONDecoder().decode([CandidateDTO].self,
-                                            from: data)
-        
-        candidates.list = JSON
+        candidatesToDisplay = candidates
     }
     
     // MARK: Favorites
     func filterByFavorites() {
-        filteredCandidates.list.removeAll()
-        filteredCandidates.list = candidates.list.filter { $0.isFavorite }
+        candidatesToDisplay.removeAll()
+        candidatesToDisplay = candidates.filter { $0.isFavorite }
     }
     
     func resetFilteredCandidates() {
-        filteredCandidates.list = candidates.list
+        candidatesToDisplay = candidates
     }
     
     // MARK: Update
@@ -157,19 +163,19 @@ class CandidatesViewModel: ObservableObject {
         let JSON = try JSONDecoder().decode(CandidateDTO.self,
                                             from: data)
         
-        if let index = candidates.list.firstIndex(where: { $0.id == candidate.id }) {
-            candidates.list[index] = JSON
+        if let index = candidates.firstIndex(where: { $0.id == candidate.id }) {
+            candidates[index] = JSON
         }
     }
     
     // MARK: Delete
     func deleteSelectedCandidates() async throws {
-        for candidate in candidates.list where candidate.isSelected {
-            if try await !deleteCandidate(candidate: candidate) {
-                print("Cannot delete candidate \(candidate.displayedName)")
-            }
+        for candidate in candidates where candidate.isSelected {
+            try await dependenciesContainer?.candidateRepository.delete(candidate: candidate)
         }
-        candidates.list.removeAll(where: { $0.isSelected })
+
+        candidates.removeAll(where: { $0.isSelected })
+
         filterByFavorites()
     }
     
