@@ -85,10 +85,50 @@ struct CandidateDetailsStatic: View {
                     }
                 }
                 
-                Section(header: Text("Note")) {
-                    Text(candidate.note ?? "")
-                        .frame(alignment: .top)
+                Spacer()
+                    .frame(height: 40)
+                
+                HStack {
+                    Text("Phone")
+
+                    Spacer()
+                    
+                    Text(candidate.phoneNumber)
+                        .monospacedDigit()
                         .foregroundStyle(.secondary)
+                }
+                
+                HStack {
+                    Text("Email")
+
+                    Spacer()
+                    
+                    Text(candidate.email)
+                        .foregroundStyle(.secondary)
+                }
+                
+                HStack {
+                    Text("LinkedIn")
+
+                    Spacer()
+                    
+                    CustomButton(text: "Go on LinkedIn",
+                                 symbol: "",
+                                 color: .blue) {
+                        // Faire qqc
+                    }
+                                 .frame(width: 200)
+                }
+
+                Section {
+                    Text(candidate.note)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(alignment: .top)
+                } header: {
+                    Text("Note")
+                        .foregroundStyle(.red)
+                        .fontWeight(.bold)
                 }
             }
         }

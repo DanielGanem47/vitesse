@@ -9,15 +9,17 @@ import SwiftUI
 
 @main
 struct VitesseApp: App {
-    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel()
+
+    @State
+    private var isLoggedIn = false
 
     var body: some Scene {
         WindowGroup {
-            if !loginViewModel.isLogged {
-                Login(loginViewModel: loginViewModel)
+            if !isLoggedIn {
+                Login(isLoggedIn: $isLoggedIn)
             } else {
                 NavigationStack {
-                    CandidatesList(loginViewModel: loginViewModel)
+                    CandidatesList()
                 }
             }
         }
