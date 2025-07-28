@@ -29,6 +29,15 @@ struct CandidatesList: View {
                     ProgressView()
                     Text("Loading...")
                 }
+                .task {
+                    do {
+                        try await candidatesViewModel.loadTable()
+                        isLoading = false
+                    } catch {
+                        // Handle error if needed
+                        print("Failed to load candidates table: \(error)")
+                    }
+                }
             } else {
                 List {
                     if deleteCandidates {
@@ -105,15 +114,6 @@ struct CandidatesList: View {
                     })
                 }
                 .navigationTitle("Candidates")
-            }
-        }
-        .task {
-            do {
-                try await candidatesViewModel.loadTable()
-                isLoading = false
-            } catch {
-                // Handle error if needed
-                print("Failed to load candidates table: \(error)")
             }
         }
     }

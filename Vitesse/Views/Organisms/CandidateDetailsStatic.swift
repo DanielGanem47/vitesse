@@ -33,10 +33,10 @@ struct CandidateDetailsStatic: View {
                         if candidatesViewModel.tokenAdmin.isAdmin {
                             Button("",
                                    systemImage: isFavorite ? "star.fill" : "star") {
-                                isFavorite.toggle()
                                 Task {
+                                    try await candidatesViewModel.updateFavorite(candidate: candidate)
+                                    isFavorite.toggle()
                                     candidate.isFavorite = isFavorite
-                                    try await candidatesViewModel.updateCandidate(candidate: candidate)
                                 }
                             }
                         } else {

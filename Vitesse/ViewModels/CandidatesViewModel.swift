@@ -132,6 +132,23 @@ class CandidatesViewModel: ObservableObject {
         filteredCandidates.list = candidates.list
     }
     
+    func updateFavorite(candidate: CandidateDTO) async throws {
+        guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)/favorite") else {
+            throw URLError(.badURL)
+        }
+        
+        let request = try URLRequest(
+            url: url,
+            method: .PUT,
+            parameters: nil,
+            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"])
+        
+        let (data, _) = try await executeDataRequestCandidate(request)
+
+        let _ = try JSONDecoder().decode(CandidateDTO.self,
+                                         from: data)
+    }
+    
     // MARK: Update
     func updateCandidate(candidate: CandidateDTO) async throws {
         guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)") else {
