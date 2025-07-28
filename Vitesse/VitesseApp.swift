@@ -9,16 +9,13 @@ import SwiftUI
 
 @main
 struct VitesseApp: App {
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
-
-    @ObservedObject
-    var loginViewModel = LoginViewModel()
+    @ObservedObject var loginViewModel = LoginViewModel()
 
     var body: some Scene {
         WindowGroup {
-            if !loginViewModel.isLogged {
+            if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
                 LoginView(dependenciesContainer: dependenciesContainer, loginViewModel: loginViewModel)
             } else {
                 NavigationStack {

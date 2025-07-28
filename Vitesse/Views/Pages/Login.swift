@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct Login: View {
-
-    
-
     @ObservedObject var loginViewModel: LoginViewModel
+    let dependenciesContainer: DependenciesContainer
     
     init(dependenciesContainer: DependenciesContainer, loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
+        self.dependenciesContainer = dependenciesContainer
     }
 
     var body: some View {
-        if !loginViewModel.isLogged {
+        if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
             LoginView(loginViewModel: loginViewModel)
         } else {
             CandidatesList(loginViewModel: loginViewModel)
@@ -28,5 +27,6 @@ struct Login: View {
 
 #Preview {
     var loginViewModel: LoginViewModel = LoginViewModel()
-    Login(loginViewModel: loginViewModel)
+    var dependenciesContainer: DependenciesContainer = DependenciesContainer()
+    Login(dependenciesContainer: dependenciesContainer, loginViewModel: loginViewModel)
 }

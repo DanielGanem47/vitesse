@@ -9,15 +9,13 @@ import Foundation
 import SwiftUI
 
 class CandidatesViewModel: ObservableObject {
-
     private var dependenciesContainer: DependenciesContainer?
 
     private let executeDataRequestCandidate: (URLRequest) async throws -> (Data, URLResponse)
 
     private var candidates: [CandidateDTO] = []
 
-    @Published
-    var candidatesToDisplay: [CandidateDTO] = []
+    @Published var candidatesToDisplay: [CandidateDTO] = []
 
     var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "", isAdmin: false)
     
@@ -30,7 +28,6 @@ class CandidatesViewModel: ObservableObject {
     }
 
     #if DEBUG
-
     private static let defaultCandidates = [
         CandidateDTO(id: UUID(),
                      firstName: "Daniel 1",
@@ -83,36 +80,13 @@ class CandidatesViewModel: ObservableObject {
     ]
 
     // MARK: Init table
-    @MainActor func initTable() async throws {
-        for candidate in Self.defaultCandidates {
-            guard let url = URL(string: "http://localhost:8080/candidate") else {
-                throw URLError(.badURL)
-            }
-
-            let request = try URLRequest(
-                url: url,
-                method: .POST,
-                parameters: [
-                    "email": candidate.email,
-                    "note": candidate.note ?? "",
-                    "linkedinURL": candidate.linkedinURL ?? "",
-                    "firstName": candidate.firstName,
-                    "lastName": candidate.lastName,
-                    "phone": candidate.phone
-                ],
-                headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
-            )
-
-            let (data, _) = try await executeDataRequestCandidate(request)
-
-            let JSON = try JSONDecoder().decode(CandidateDTO.self,
-                                     from: data)
-            
-            candidate.id = JSON.id
-            candidate.isFavorite = JSON.isFavorite
+    func initTable() async throws {
+        guard let dependenciesContainer else {
+            fatalError("Failed to inject dependencies container")
         }
-    }
 
+        try await dependenciesContainer.candidateRepository.initTable(candidates: Self.defaultCandidates)
+    }
     #endif
 
     // MARK: Load table
@@ -138,53 +112,6 @@ class CandidatesViewModel: ObservableObject {
         candidatesToDisplay = candidates
     }
     
-    func updateFavorite(candidate: CandidateDTO) async throws {
-        guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)/favorite") else {
-            throw URLError(.badURL)
-        }
-        
-        let request = try URLRequest(
-            url: url,
-            method: .PUT,
-            parameters: nil,
-            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"])
-        
-        let (data, _) = try await executeDataRequestCandidate(request)
-
-        let _ = try JSONDecoder().decode(CandidateDTO.self,
-                                         from: data)
-    }
-    
-    // MARK: Update
-    func updateCandidate(candidate: CandidateDTO) async throws {
-        guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)") else {
-            throw URLError(.badURL)
-        }
-
-        let request = try URLRequest(
-            url: url,
-            method: .PUT,
-            parameters: [
-                "email": candidate.email,
-                "note": candidate.note ?? "",
-                "linkedinURL": candidate.linkedinURL ?? "",
-                "firstName": candidate.firstName,
-                "lastName": candidate.lastName,
-                "phone": candidate.phone
-            ],
-            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
-        )
-
-        let (data, _) = try await executeDataRequestCandidate(request)
-
-        let JSON = try JSONDecoder().decode(CandidateDTO.self,
-                                            from: data)
-        
-        if let index = candidates.firstIndex(where: { $0.id == candidate.id }) {
-            candidates[index] = JSON
-        }
-    }
-    
     // MARK: Delete
     func deleteSelectedCandidates() async throws {
         for candidate in candidates where candidate.isSelected {
@@ -194,28 +121,6 @@ class CandidatesViewModel: ObservableObject {
         candidates.removeAll(where: { $0.isSelected })
 
         filterByFavorites()
-    }
-    
-    func deleteCandidate(candidate: CandidateDTO) async throws -> Bool {
-        guard let url = URL(string: "http://localhost:8080/candidate") else {
-            throw URLError(.badURL)
-        }
-
-        let request = try URLRequest(
-            url: url,
-            method: .DELETE,
-            parameters: [
-                "CandidateId": candidate.id
-            ],
-            headers: ["Authorization" : "Bearer \(tokenAdmin.token)"]
-        )
-
-        let (_, response) = try await executeDataRequestCandidate(request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            return false
-        }
-        return httpResponse.statusCode == 200
     }
 }
 

@@ -1,12 +1,13 @@
 import Foundation
 
 protocol AuthenticationService {
+    var authenticationManager: AuthenticationManager { get }
+
     func authenticate(email: String, password: String) async throws
 }
 
 struct NetworkAuthenticationService: AuthenticationService {
-
-    private let authenticationManager: AuthenticationManager
+    var authenticationManager: AuthenticationManager
 
     init(authenticationManager: AuthenticationManager = .shared) {
         self.authenticationManager = authenticationManager
@@ -30,6 +31,6 @@ struct NetworkAuthenticationService: AuthenticationService {
 
         let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self, from: data)
 
-        authenticationManager.updateAuthenticationToken(tokenResponse.token)
+        authenticationManager.updateAuthenticatedToken(tokenResponse)
     }
 }

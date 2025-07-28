@@ -11,18 +11,6 @@ class LoginViewModel: ObservableObject {
 
     private var dependenciesContainer: DependenciesContainer?
 
-    @Published var login = LoginDTO(email: "",
-                                    password: "")
-    @Published var tokenAdmin = TokenAdminDTO(token: "",
-                                              isAdmin: false)
-    @Published var isLogged = false
-    @Published var authenticatedUser: UserDTO = UserDTO(id: UUID(),
-                                                        firstName: "",
-                                                        lastName: "",
-                                                        email: "admin@vitesse.com",
-                                                        password: "test123")
-    @Published var loginError: String? = nil
-    
     private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
 
     init(executeDataRequest: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
@@ -37,15 +25,9 @@ class LoginViewModel: ObservableObject {
     
     func login(email:String, password: String) async  {
         do {
-            try await dependenciesContainer?.authenticationService.authenticate(email: authenticatedUser.email, password: authenticatedUser.password)
+            try await dependenciesContainer?.authenticationService.authenticate(email: dependenciesContainer?.authenticationService.authenticatedUser.email, password: authenticatedUser.password)
 
             Task { @MainActor in
-                print(AuthenticationManager.shared.authenticationToken)
-
-//                print("Token: \(token.token)")
-//                print("isAdmin: \(token.isAdmin)")
-//                tokenAdmin.token = token.token
-//                tokenAdmin.isAdmin = token.isAdmin
                 isLogged = true
                 loginError = nil
             }

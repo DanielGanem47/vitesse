@@ -13,6 +13,6 @@ struct LoginDTO: Codable {
 }
 
 struct TokenAdminDTO: Codable {
-    var token: String
+    var token: String?
     var isAdmin: Bool
 }
