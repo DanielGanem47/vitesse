@@ -7,17 +7,52 @@
 
 import SwiftUI
 
+final class CandidateDetailsStaticViewModel: ObservableObject {
+
+    @Published
+    private var candidate: CandidateDTO
+
+    private var dependenciesContainer: DependenciesContainer?
+
+    init(candidate: CandidateDTO) {
+        self.candidate = candidate
+    }
+
+    var isAdmin: Bool {
+        dependenciesContainer?.isAdmin ?? false
+    }
+
+    var displayName: String {
+        candidate.displayedName
+    }
+
+    func initWith(dependenciesContainer: DependenciesContainer) {
+        self.dependenciesContainer = dependenciesContainer
+    }
+
+    func toggleFavorite() async throws {
+        guard let dependenciesContainer else {
+            fatalError("missing dependenciesContainer")
+        }
+
+        try await dependenciesContainer.candidateRepository.update(candidate: candidate)
+    }
+}
+
 struct CandidateDetailsStatic: View {
+
+    private let dependenciesContainer: DependenciesContainer
+
+    @ObservedObject
+    private var viewModel: CandidateDetailsStaticViewModel
+
     @ObservedObject var candidate: CandidateDTO
     @State var isFavorite: Bool
     @Environment(\.openURL) private var openURL
 
-    var candidatesViewModel: CandidatesViewModel
-
-    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
+    init(dependenciesContainer: any CustomDependenciesContainer, candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
-        self.candidatesViewModel = candidatesViewModel
     }
 
     var body: some View {
@@ -25,18 +60,17 @@ struct CandidateDetailsStatic: View {
             Form {
                 Section(header: Text("Name")) {
                     HStack {
-                        Text(candidate.displayedName)
+                        Text(viewModel.displayName)
                             .font(.title)
                         
                         Spacer()
                         
-                        if candidatesViewModel.tokenAdmin.isAdmin {
-                            Button("",
-                                   systemImage: isFavorite ? "star.fill" : "star") {
+                        if viewModel.isAdmin {
+                            Button("", systemImage: isFavorite ? "star.fill" : "star") {
+                                isFavorite.toggle()
+
                                 Task {
-                                    try await candidatesViewModel.updateFavorite(candidate: candidate)
-                                    isFavorite.toggle()
-                                    candidate.isFavorite = isFavorite
+                                    try await viewModel.toggleFavorite()
                                 }
                             }
                         } else {
@@ -85,58 +119,22 @@ struct CandidateDetailsStatic: View {
                     }
                 }
                 
-                Spacer()
-                    .frame(height: 40)
-                
-                HStack {
-                    Text("Phone")
-
-                    Spacer()
-                    
-                    Text(candidate.phoneNumber)
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
-                }
-                
-                HStack {
-                    Text("Email")
-
-                    Spacer()
-                    
-                    Text(candidate.email)
-                        .foregroundStyle(.secondary)
-                }
-                
-                HStack {
-                    Text("LinkedIn")
-
-                    Spacer()
-                    
-                    CustomButton(text: "Go on LinkedIn",
-                                 symbol: "",
-                                 color: .blue) {
-                        // Faire qqc
-                    }
-                                 .frame(width: 200)
-                }
-
-                Section {
-                    Text(candidate.note)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                Section(header: Text("Note")) {
+                    Text(candidate.note ?? "")
                         .frame(alignment: .top)
-                } header: {
-                    Text("Note")
-                        .foregroundStyle(.red)
-                        .fontWeight(.bold)
+                        .foregroundStyle(.secondary)
                 }
             }
+        }
+        .task {
+            viewModel.initWith(dependenciesContainer: dependenciesContainer)
         }
     }
 }
 
+#if DEBUG
+
 #Preview {
-    var candidatesViewModel = CandidatesViewModel()
     var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                firstName: "Daniel 1",
                                                lastName: "Ganem",
@@ -145,6 +143,7 @@ struct CandidateDetailsStatic: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsStatic(candidate: candidate,
-                           candidatesViewModel: candidatesViewModel)
+    CandidateDetailsStatic(dependenciesContainer: PreviewsDependenciesContainer(), candidate: candidate)
 }
+
+#endif

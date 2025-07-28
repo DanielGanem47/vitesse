@@ -10,18 +10,30 @@ import SwiftUI
 @main
 struct VitesseApp: App {
 
-    @State
-    private var isLoggedIn = false
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer
+
+    @ObservedObject
+    var loginViewModel = LoginViewModel()
 
     var body: some Scene {
         WindowGroup {
-            if !isLoggedIn {
-                Login(isLoggedIn: $isLoggedIn)
+            if !loginViewModel.isLogged {
+                LoginView(dependenciesContainer: dependenciesContainer, loginViewModel: loginViewModel)
             } else {
                 NavigationStack {
-                    CandidatesList()
+                    CandidatesList(loginViewModel: loginViewModel)
                 }
             }
         }
     }
+}
+
+extension EnvironmentValues {
+
+    // Fake singleton
+    private static let staticDependenciesContainer = DependenciesContainer()
+
+    @Entry
+    var dependenciesContainer = staticDependenciesContainer
 }

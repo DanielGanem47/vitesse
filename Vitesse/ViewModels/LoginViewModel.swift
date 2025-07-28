@@ -8,6 +8,9 @@
 import Foundation
 
 class LoginViewModel: ObservableObject {
+
+    private var dependenciesContainer: DependenciesContainer?
+
     @Published var login = LoginDTO(email: "",
                                     password: "")
     @Published var tokenAdmin = TokenAdminDTO(token: "",
@@ -26,35 +29,23 @@ class LoginViewModel: ObservableObject {
         self.executeDataRequest = executeDataRequest
     }
 
-    // MARK: Login
-    private func getTokenAndAdmin() async throws -> TokenAdminDTO {
-        guard let url = URL(string: "http://localhost:8080/user/auth") else {
-            throw URLError(.badURL)
-        }
-
-        let request = try URLRequest(
-            url: url,
-            method: .POST,
-            parameters: [
-                "email": authenticatedUser.email,
-                "password": authenticatedUser.password
-            ]
-        )
-
-        let (data, _) = try await executeDataRequest(request)
-
-        return try JSONDecoder().decode(TokenAdminDTO.self,
-                                        from: data)
+    func initWith(dependenciesContainer: DependenciesContainer) {
+        self.dependenciesContainer = dependenciesContainer
     }
+
+    // MARK: Login
     
     func login(email:String, password: String) async  {
         do {
-            let token: TokenAdminDTO = try await getTokenAndAdmin()
+            try await dependenciesContainer?.authenticationService.authenticate(email: authenticatedUser.email, password: authenticatedUser.password)
+
             Task { @MainActor in
-                print("Token: \(token.token)")
-                print("isAdmin: \(token.isAdmin)")
-                tokenAdmin.token = token.token
-                tokenAdmin.isAdmin = token.isAdmin
+                print(AuthenticationManager.shared.authenticationToken)
+
+//                print("Token: \(token.token)")
+//                print("isAdmin: \(token.isAdmin)")
+//                tokenAdmin.token = token.token
+//                tokenAdmin.isAdmin = token.isAdmin
                 isLogged = true
                 loginError = nil
             }

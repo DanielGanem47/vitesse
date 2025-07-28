@@ -19,7 +19,7 @@ struct CandidateListRow: View {
     
     var body: some View {
         HStack {
-            if isEditing == true {
+            if isEditing {
                 Button("",
                        systemImage: candidate.isSelected ? "checkmark.circle" : "circle") {
                     candidate.isSelected.toggle()
@@ -30,8 +30,8 @@ struct CandidateListRow: View {
                 .frame(alignment: .leading)
             
             Spacer()
-            
-            if isEditing == false {
+
+            if !isEditing {
                 Image(systemName: candidate.isFavorite ? "star.fill" : "star")
             }
         }
@@ -59,13 +59,14 @@ struct CandidateListRow: View {
     CandidateListRow(
         candidate: CandidateDTO(
             id: UUID(),
-            name: "Daniel G.",
-            phoneNumber: "06 37 93 62 65",
+            firstName: "Daniel 1",
+            lastName: "Ganem",
+            phone: "06 37 93 62 65",
             email: "daniel.ganem@icloud.com",
-            linkedInUrl: "www.linkedin.com",
+            linkedin_url: "www.linkedin.com",
             note: "tres bon eleve",
             isFavorite: true
-        )
+        ),
+        isEditing: true
     )
-    .environment(\.editMode, .constant(.active))
 }

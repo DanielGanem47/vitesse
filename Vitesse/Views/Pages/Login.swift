@@ -8,73 +8,25 @@
 import SwiftUI
 
 struct Login: View {
-    @ObservedObject var loginViewModel: LoginViewModel = LoginViewModel(executeDataRequestTokenAdmin: LoginViewModel.mockAuthAdmin)
-    @State private var register: Bool = false
-    @State private var showLoginFailedAlert: Bool = false
 
-    @Binding
-    private var isLoggedIn: Bool
+    
 
-    init(isLoggedIn: Binding<Bool>) {
-        self._isLoggedIn = isLoggedIn
+    @ObservedObject var loginViewModel: LoginViewModel
+    
+    init(dependenciesContainer: DependenciesContainer, loginViewModel: LoginViewModel) {
+        self.loginViewModel = loginViewModel
     }
 
     var body: some View {
-        NavigationStack() {
-            VStack {
-                Image("Vitesse")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                Text("Login")
-                    .font(.largeTitle)
-                    .fontDesign(.default)
-                    .fontWeight(.bold)
-                
-                Spacer()
-                    .frame(height: 40)
-                
-                VStack(alignment: .leading) {
-                    UserLoginForm(loginViewModel: loginViewModel)
-                    
-                    Spacer()
-                    
-                    CustomButton(text: "Sign in",
-                                 symbol: "",
-                                 color: .blue) {
-                        Task {
-                            await loginViewModel.login(email: loginViewModel.authenticatedUser.email,
-                                                       password: loginViewModel.authenticatedUser.password)
-                            if !loginViewModel.isLogged {
-                                showLoginFailedAlert = true
-                            } else {
-                                isLoggedIn = true
-                            }
-                        }
-                    }
-                    
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    CustomButton(text: "Register",
-                                 symbol: "",
-                                 color: .blue) {
-                        register = true
-                    }
-                }
-                .padding(40)
-                .navigationDestination(isPresented: $register, destination: {
-                    Register()
-                })
-                .alert("Login failed", isPresented: $showLoginFailedAlert) {
-                } message: {
-                    Text("Please check your credentials.")
-                }
-            }
-            .padding()
+        if !loginViewModel.isLogged {
+            LoginView(loginViewModel: loginViewModel)
+        } else {
+            CandidatesList(loginViewModel: loginViewModel)
         }
     }
 }
 
-//#Preview {
-//    Login()
-//}
+#Preview {
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    Login(loginViewModel: loginViewModel)
+}
