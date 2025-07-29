@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LoginView: View {
-
     @Environment(\.dependenciesContainer)
     private var dependenciesContainer
 
@@ -48,9 +47,9 @@ struct LoginView: View {
                                  symbol: "",
                                  color: .blue) {
                         Task {
-                            await loginViewModel.login(email: loginViewModel.authenticatedUser.email,
-                                                       password: loginViewModel.authenticatedUser.password)
-                            if !loginViewModel.isLogged {
+                            await loginViewModel.login(email: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email,
+                                                       password: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password)
+                            if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
                                 showLoginFailedAlert = true
                             }
                         }

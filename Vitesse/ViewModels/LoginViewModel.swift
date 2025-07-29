@@ -8,7 +8,6 @@
 import Foundation
 
 class LoginViewModel: ObservableObject {
-
     private var dependenciesContainer: DependenciesContainer?
 
     private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
@@ -24,17 +23,22 @@ class LoginViewModel: ObservableObject {
     // MARK: Login
     
     func login(email:String, password: String) async  {
+        guard let authenticatedUser = await dependenciesContainer?.authenticationService.authenticationManager.authenticatedUser,
+        let authenticationService = dependenciesContainer?.authenticationService else {
+            return
+        }
+                                                                                               
         do {
-            try await dependenciesContainer?.authenticationService.authenticate(email: dependenciesContainer?.authenticationService.authenticatedUser.email, password: authenticatedUser.password)
+            try await authenticationService.authenticate(email: authenticatedUser.email, password: authenticatedUser.password)
 
             Task { @MainActor in
-                isLogged = true
-                loginError = nil
+                dependenciesContainer?.authenticationService.authenticationManager.isLogged = true
+                dependenciesContainer?.authenticationService.authenticationManager.loginError = nil
             }
         } catch {
             Task { @MainActor in
-                loginError = "Erreur de connexion: \(error.localizedDescription)"
-                isLogged = false
+                dependenciesContainer?.authenticationService.authenticationManager.loginError = "Erreur de connexion: \(error.localizedDescription)"
+                dependenciesContainer?.authenticationService.authenticationManager.isLogged = false
             }
         }
     }

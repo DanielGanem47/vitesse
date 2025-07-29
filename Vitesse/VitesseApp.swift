@@ -16,7 +16,7 @@ struct VitesseApp: App {
     var body: some Scene {
         WindowGroup {
             if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
-                LoginView(dependenciesContainer: dependenciesContainer, loginViewModel: loginViewModel)
+                LoginView(loginViewModel: loginViewModel)
             } else {
                 NavigationStack {
                     CandidatesList(loginViewModel: loginViewModel)
@@ -27,7 +27,6 @@ struct VitesseApp: App {
 }
 
 extension EnvironmentValues {
-
     // Fake singleton
     private static let staticDependenciesContainer = DependenciesContainer()
 

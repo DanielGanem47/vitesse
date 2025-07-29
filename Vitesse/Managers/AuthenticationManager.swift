@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 final class AuthenticationManager {
     static let shared = AuthenticationManager()
@@ -7,12 +8,12 @@ final class AuthenticationManager {
                          password: "")
     var tokenAdmin = TokenAdminDTO(token: "",
                                    isAdmin: false)
-    var isLogged = false
-    var authenticatedUser: UserDTO = UserDTO(id: UUID(),
-                                             firstName: "",
-                                             lastName: "",
-                                             email: "admin@vitesse.com",
-                                             password: "test123")
+    @State var isLogged = false
+    @ObservedObject var authenticatedUser: UserDTO = UserDTO(id: UUID(),
+                                                             firstName: "",
+                                                             lastName: "",
+                                                             email: "admin@vitesse.com",
+                                                             password: "test123")
     var loginError: String? = nil
     
     func updateAuthenticatedToken(_ token: TokenAdminDTO) {

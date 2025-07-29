@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct CandidatesList: View {
-
     @Environment(\.dependenciesContainer)
-    private var dependenciesContainer: DependenciesContainer
+    private var dependenciesContainer
 
     @ObservedObject
     var candidatesViewModel = CandidatesViewModel()
@@ -25,7 +24,7 @@ struct CandidatesList: View {
     init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
 
-        candidatesViewModel.tokenAdmin = loginViewModel.tokenAdmin
+        candidatesViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
     }
 
     var body: some View {
@@ -79,7 +78,7 @@ struct CandidatesList: View {
                     ToolbarItem(placement: .topBarLeading,
                                 content: {
                         Button {
-                            loginViewModel.isLogged = false
+                            dependenciesContainer.authenticationService.authenticationManager.isLogged = false
                         } label: {
                             Text(" Logout")
                         }

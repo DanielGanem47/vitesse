@@ -8,37 +8,29 @@
 import SwiftUI
 
 final class CandidateDetailsFormViewModel {
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer
 
-    private var dependenciesContainer: DependenciesContainer?
-
-    func initWith(dependenciesContainer: DependenciesContainer) {
-        self.dependenciesContainer = dependenciesContainer
-    }
-
-    func update(candidate: CandidateDTO) async throws {
-        guard let dependenciesContainer else {
-            fatalError("Missing dependenciesContainer")
-        }
-
+   func update(candidate: CandidateDTO) async throws {
         try await dependenciesContainer.candidateRepository.update(candidate: candidate)
     }
 }
 
 struct CandidateDetailsForm: View {
-
     private let viewModel: CandidateDetailsFormViewModel
 
     @ObservedObject var candidate: CandidateDTO
+
     @State var isFavorite: Bool
     
     @Environment(\.editMode) private var editMode
-
     @Environment(\.dependenciesContainer)
-    private var dependenciesContainer: DependenciesContainer
+    private var dependenciesContainer
 
     init(candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
+        self.viewModel = CandidateDetailsFormViewModel()
     }
     
     var body: some View {
@@ -51,7 +43,7 @@ struct CandidateDetailsForm: View {
                         }
                     }
             } else {
-                CandidateDetailsStatic(candidate: candidate)
+                CandidateDetailsStatic(dependenciesContainer: dependenciesContainer, candidate: candidate)
             }
         }
     }

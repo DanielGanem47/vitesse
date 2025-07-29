@@ -8,7 +8,6 @@
 import SwiftUI
 
 final class CandidateDetailsStaticViewModel: ObservableObject {
-
     @Published
     private var candidate: CandidateDTO
 
@@ -19,7 +18,7 @@ final class CandidateDetailsStaticViewModel: ObservableObject {
     }
 
     var isAdmin: Bool {
-        dependenciesContainer?.isAdmin ?? false
+        dependenciesContainer?.authenticationService.authenticationManager.tokenAdmin.isAdmin ?? false
     }
 
     var displayName: String {
@@ -40,19 +39,20 @@ final class CandidateDetailsStaticViewModel: ObservableObject {
 }
 
 struct CandidateDetailsStatic: View {
-
     private let dependenciesContainer: DependenciesContainer
 
-    @ObservedObject
-    private var viewModel: CandidateDetailsStaticViewModel
-
+    @ObservedObject private var viewModel: CandidateDetailsStaticViewModel
     @ObservedObject var candidate: CandidateDTO
+    
     @State var isFavorite: Bool
+    
     @Environment(\.openURL) private var openURL
 
     init(dependenciesContainer: any CustomDependenciesContainer, candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
+        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate)
+        self.dependenciesContainer = dependenciesContainer as! DependenciesContainer
     }
 
     var body: some View {

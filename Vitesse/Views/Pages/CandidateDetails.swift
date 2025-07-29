@@ -18,8 +18,7 @@ struct CandidateDetails: View {
     
     var body: some View {
         HStack {
-            CandidateDetailsForm(candidate: candidate,
-                                 candidatesViewModel: candidatesViewModel)
+            CandidateDetailsForm(candidate: candidate)
         }
         .toolbar {
             EditButton()
