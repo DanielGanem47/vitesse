@@ -8,25 +8,27 @@
 import SwiftUI
 
 struct Login: View {
-    @ObservedObject var loginViewModel: LoginViewModel
-    let dependenciesContainer: DependenciesContainer
-    
-    init(dependenciesContainer: DependenciesContainer, loginViewModel: LoginViewModel) {
-        self.loginViewModel = loginViewModel
-        self.dependenciesContainer = dependenciesContainer
-    }
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     var body: some View {
-        if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
-            LoginView(loginViewModel: loginViewModel)
-        } else {
-            CandidatesList(loginViewModel: loginViewModel)
+        let authenticationManager = dependenciesContainer.authenticationService.authenticationManager
+
+        Content(authenticationManager: authenticationManager)
+    }
+
+    struct Content: View {
+        @ObservedObject var authenticationManager: AuthenticationManager
+
+        var body: some View {
+            if !authenticationManager.isLogged {
+                LoginView()
+            } else {
+                CandidatesList()
+            }
         }
     }
 }
 
 #Preview {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    var dependenciesContainer: DependenciesContainer = DependenciesContainer()
-    Login(dependenciesContainer: dependenciesContainer, loginViewModel: loginViewModel)
+    Login().environment(\.dependenciesContainer, dependenciesContainer)
 }

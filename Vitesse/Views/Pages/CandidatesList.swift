@@ -18,12 +18,8 @@ struct CandidatesList: View {
     @State private var showFavorites = false
     @State private var deleteCandidates = false
     @State private var isLoading = true
-    
-    var loginViewModel: LoginViewModel
-    
-    init(loginViewModel: LoginViewModel) {
-        self.loginViewModel = loginViewModel
-
+        
+    init() {
         candidatesViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
     }
 
@@ -136,6 +132,5 @@ struct CandidatesList: View {
 }
 
 #Preview("Default mode") {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    CandidatesList(loginViewModel: loginViewModel)
+    CandidatesList()
 }

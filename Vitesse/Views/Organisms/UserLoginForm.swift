@@ -11,8 +11,6 @@ struct UserLoginForm: View {
     @Environment(\.dependenciesContainer)
     private var dependenciesContainer
 
-    @ObservedObject var loginViewModel: LoginViewModel
-    
     @State private var showChangePasswordMessageAlert: Bool = false
     @State var resetPasswordEmail: String = ""
     @State var email: String = ""
@@ -55,6 +53,5 @@ struct UserLoginForm: View {
 }
 
 #Preview {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    UserLoginForm(loginViewModel: loginViewModel)
+    UserLoginForm()
 }

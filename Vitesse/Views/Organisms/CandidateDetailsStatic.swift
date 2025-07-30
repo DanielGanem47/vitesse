@@ -8,13 +8,13 @@
 import SwiftUI
 
 final class CandidateDetailsStaticViewModel: ObservableObject {
-    @Published
-    private var candidate: CandidateDTO
+    @Published private var candidate: CandidateDTO
 
     private var dependenciesContainer: DependenciesContainer?
 
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, dependenciesContainer: DependenciesContainer?) {
         self.candidate = candidate
+        self.dependenciesContainer = dependenciesContainer
     }
 
     var isAdmin: Bool {
@@ -25,16 +25,12 @@ final class CandidateDetailsStaticViewModel: ObservableObject {
         candidate.displayedName
     }
 
-    func initWith(dependenciesContainer: DependenciesContainer) {
-        self.dependenciesContainer = dependenciesContainer
-    }
-
     func toggleFavorite() async throws {
         guard let dependenciesContainer else {
             fatalError("missing dependenciesContainer")
         }
 
-        try await dependenciesContainer.candidateRepository.update(candidate: candidate)
+        try await dependenciesContainer.candidateRepository.updateFavorite(candidate: candidate)
     }
 }
 
@@ -51,8 +47,8 @@ struct CandidateDetailsStatic: View {
     init(dependenciesContainer: any CustomDependenciesContainer, candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
-        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate)
         self.dependenciesContainer = dependenciesContainer as! DependenciesContainer
+        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate, dependenciesContainer: self.dependenciesContainer)
     }
 
     var body: some View {
@@ -125,9 +121,6 @@ struct CandidateDetailsStatic: View {
                         .foregroundStyle(.secondary)
                 }
             }
-        }
-        .task {
-            viewModel.initWith(dependenciesContainer: dependenciesContainer)
         }
     }
 }

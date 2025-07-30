@@ -18,12 +18,12 @@ struct NetworkUserService: UserService {
             throw URLError(.badURL)
         }
 
-        let request = try URLRequest(
+        let request = try await URLRequest(
             url: url,
             method: .POST,
             parameters: [
                 "email": authenticationManager.login.email,
-                "password": authenticationManager.login
+                "password": authenticationManager.login.password
             ]
         )
 
@@ -32,7 +32,7 @@ struct NetworkUserService: UserService {
             
             let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self, from: data)
             
-            authenticationManager.updateAuthenticatedToken(tokenResponse)
+            await authenticationManager.updateAuthenticatedToken(tokenResponse)
             
             return true
         } catch {

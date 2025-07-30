@@ -19,29 +19,6 @@ class LoginViewModel: ObservableObject {
     func initWith(dependenciesContainer: DependenciesContainer) {
         self.dependenciesContainer = dependenciesContainer
     }
-
-    // MARK: Login
-    
-    func login(email:String, password: String) async  {
-        guard let authenticatedUser = await dependenciesContainer?.authenticationService.authenticationManager.authenticatedUser,
-        let authenticationService = dependenciesContainer?.authenticationService else {
-            return
-        }
-                                                                                               
-        do {
-            try await authenticationService.authenticate(email: authenticatedUser.email, password: authenticatedUser.password)
-
-            Task { @MainActor in
-                dependenciesContainer?.authenticationService.authenticationManager.isLogged = true
-                dependenciesContainer?.authenticationService.authenticationManager.loginError = nil
-            }
-        } catch {
-            Task { @MainActor in
-                dependenciesContainer?.authenticationService.authenticationManager.loginError = "Erreur de connexion: \(error.localizedDescription)"
-                dependenciesContainer?.authenticationService.authenticationManager.isLogged = false
-            }
-        }
-    }
 }
 
 // MARK: Mocks

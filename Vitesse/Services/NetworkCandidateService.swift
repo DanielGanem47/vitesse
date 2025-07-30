@@ -5,10 +5,11 @@ enum CandidateServiceError: Error {
     case notAuthenticated
 }
 
-struct NetworkCandidateService {
+@MainActor
+class NetworkCandidateService {
     private let authenticationManager: AuthenticationManager
     
-    init(authenticationManager: AuthenticationManager = .shared) {
+    init(authenticationManager: AuthenticationManager) {
         self.authenticationManager = authenticationManager
     }
     

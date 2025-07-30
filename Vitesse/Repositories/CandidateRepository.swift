@@ -2,13 +2,14 @@ enum CandidateRepositoryError {
     case unknown
 }
 
+@MainActor
 final class CandidateRepository {
-    private let candidateService: NetworkCandidateService
+    var candidateService: NetworkCandidateService
     
     private(set) var candidates: [CandidateDTO] = []
     
     // MARK: - Initializers
-    init(candidateService: NetworkCandidateService = NetworkCandidateService()) {
+    init(candidateService: NetworkCandidateService) {
         self.candidateService = candidateService
     }
     

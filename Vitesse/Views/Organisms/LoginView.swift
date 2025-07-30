@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
-
-    @ObservedObject var loginViewModel: LoginViewModel
+    @Environment(\.dependenciesContainer) private var dependenciesContainer: DependenciesContainer
     
     @State private var showLoginFailedAlert: Bool = false
     @State private var register: Bool = false
@@ -39,7 +36,7 @@ struct LoginView: View {
                     .frame(height: 40)
                 
                 VStack(alignment: .leading) {
-                    UserLoginForm(loginViewModel: loginViewModel)
+                    UserLoginForm()
                     
                     Spacer()
                     
@@ -47,7 +44,7 @@ struct LoginView: View {
                                  symbol: "",
                                  color: .blue) {
                         Task {
-                            await loginViewModel.login(email: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email,
+                            await dependenciesContainer.authenticationService.login(email: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email,
                                                        password: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password)
                             if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
                                 showLoginFailedAlert = true
@@ -75,14 +72,10 @@ struct LoginView: View {
                 }
             }
             .padding()
-            .task {
-                loginViewModel.initWith(dependenciesContainer: dependenciesContainer)
-            }
         }
     }
 }
 
 #Preview {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    LoginView(loginViewModel: loginViewModel)
+    LoginView()
 }
