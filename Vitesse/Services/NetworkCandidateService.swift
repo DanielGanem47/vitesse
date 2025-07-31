@@ -126,16 +126,14 @@ class NetworkCandidateService {
             throw CandidateServiceError.notAuthenticated
         }
         
-        guard let url = URL(string: "http://localhost:8080/candidate") else {
+        guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)") else {
             throw URLError(.badURL)
         }
         
         let request = try URLRequest(
             url: url,
             method: .DELETE,
-            parameters: [
-                "CandidateId": candidate.id
-            ],
+            parameters: nil,
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
