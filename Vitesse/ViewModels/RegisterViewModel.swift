@@ -13,29 +13,4 @@ class RegisterViewModel: ObservableObject {
     init(executeDataRequestRegisterUser: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
         self.executeDataRequestRegisterUser = executeDataRequestRegisterUser
     }
-
-    // MARK: Register
-    func createUser(user: UserDTO) async throws -> Bool {
-        guard let url = URL(string: "http://localhost:8080/user/register") else {
-            throw URLError(.badURL)
-        }
-
-        let request = try URLRequest(
-            url: url,
-            method: .POST,
-            parameters: [
-                "email": user.email,
-                "password": user.password,
-                "firstName": user.firstName,
-                "lastName": user.lastName,
-            ]
-        )
-
-        let (_, response) = try await executeDataRequestRegisterUser(request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            return false
-        }
-        return httpResponse.statusCode == 201
-    }
 }

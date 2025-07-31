@@ -14,29 +14,26 @@ struct NetworkUserService: UserService {
     }
 
     func createUser(user: UserDTO) async throws -> Bool {
-        guard let url = URL(string: "http://localhost:8080/user/auth") else {
+        guard let url = URL(string: "http://localhost:8080/user/register") else {
             throw URLError(.badURL)
         }
 
-        let request = try await URLRequest(
+        let request = try URLRequest(
             url: url,
             method: .POST,
             parameters: [
-                "email": authenticationManager.login.email,
-                "password": authenticationManager.login.password
+                "email": user.email,
+                "password": user.password,
+                "firstName": user.firstName,
+                "lastName": user.lastName,
             ]
         )
 
-        do {
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self, from: data)
-            
-            await authenticationManager.updateAuthenticatedToken(tokenResponse)
-            
-            return true
-        } catch {
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
             return false
         }
+        return httpResponse.statusCode == 201
     }
 }

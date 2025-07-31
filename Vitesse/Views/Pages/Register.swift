@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Register: View {
-    let register: RegisterViewModel = RegisterViewModel()
+    let register: UserRepository = UserRepository()
 
     @ObservedObject var user: UserDTO = UserDTO(id: UUID(),
                                                 firstName: "",
