@@ -119,8 +119,6 @@ class CandidatesViewModel: ObservableObject {
         }
 
         candidates.removeAll(where: { $0.isSelected })
-
-        filterByFavorites()
     }
 }
 
