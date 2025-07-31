@@ -5,17 +5,16 @@ enum CandidateServiceError: Error {
     case notAuthenticated
 }
 
-@MainActor
 class NetworkCandidateService {
     private let authenticationManager: AuthenticationManager
     
-    init(authenticationManager: AuthenticationManager) {
+    init(authenticationManager: AuthenticationManager = .shared) {
         self.authenticationManager = authenticationManager
     }
     
     #if DEBUG
     func initTable(candidates: [CandidateDTO]) async throws {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -50,7 +49,7 @@ class NetworkCandidateService {
     #endif
     
     func getAll() async throws -> [CandidateDTO] {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -71,7 +70,7 @@ class NetworkCandidateService {
     }
     
     func get(candidateId: String) async throws -> CandidateDTO {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -92,7 +91,7 @@ class NetworkCandidateService {
     }
     
     func update(candidate: CandidateDTO) async throws -> CandidateDTO {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -123,7 +122,7 @@ class NetworkCandidateService {
     }
     
     func delete(candidate: CandidateDTO) async throws -> Bool {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -149,7 +148,7 @@ class NetworkCandidateService {
     }
     
     func updateFavorite(candidate: CandidateDTO) async throws {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         

@@ -30,5 +30,5 @@ struct Login: View {
 }
 
 #Preview {
-    Login().environment(\.dependenciesContainer, dependenciesContainer)
+    Login()
 }
