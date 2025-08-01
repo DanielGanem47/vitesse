@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-final class CandidateDetailsFormViewModel {
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
-
-   func update(candidate: CandidateDTO) async throws {
-        try await dependenciesContainer.candidateRepository.update(candidate: candidate)
-    }
-}
-
 struct CandidateDetailsForm: View {
     private let viewModel: CandidateDetailsFormViewModel
 

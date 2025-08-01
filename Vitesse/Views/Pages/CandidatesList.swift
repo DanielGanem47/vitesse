@@ -11,18 +11,13 @@ struct CandidatesList: View {
     @Environment(\.dependenciesContainer)
     private var dependenciesContainer
 
-    @ObservedObject
-    var candidatesViewModel = CandidatesViewModel()
+    @ObservedObject var candidatesViewModel = CandidatesViewModel()
 
     @State private var isEditing = false
     @State private var showFavorites = false
     @State private var deleteCandidates = false
     @State private var isLoading = true
         
-    init() {
-        candidatesViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
-    }
-
     var body: some View {
         NavigationStack {
             if isLoading {
@@ -32,35 +27,23 @@ struct CandidatesList: View {
                 }
                 .task {
                     candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
+                    candidatesViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
 
                     await loadTable()
                 }
             } else {
                 List {
-                    if deleteCandidates {
-                        ForEach(candidatesViewModel.candidatesToDisplay) { candidate in
-                            if isEditing {
+                    ForEach(candidatesViewModel.candidatesToDisplay) { candidate in
+                        if isEditing {
+                            CandidateListRow(candidate: candidate,
+                                             isEditing: isEditing,
+                                             candidatesViewModel: candidatesViewModel)
+                        } else {
+                            NavigationLink(destination: CandidateDetails(candidate: candidate,
+                                                                         candidatesViewModel: candidatesViewModel)) {
                                 CandidateListRow(candidate: candidate,
-                                                 isEditing: isEditing)
-                            } else {
-                                NavigationLink(destination: CandidateDetails(candidate: candidate,
-                                                                             candidatesViewModel: candidatesViewModel)) {
-                                    CandidateListRow(candidate: candidate,
-                                                     isEditing: isEditing)
-                                }
-                            }
-                        }
-                    } else {
-                        ForEach(candidatesViewModel.candidatesToDisplay) { candidate in
-                            if isEditing {
-                                CandidateListRow(candidate: candidate,
-                                                 isEditing: isEditing)
-                            } else {
-                                NavigationLink(destination: CandidateDetails(candidate: candidate,
-                                                                             candidatesViewModel: candidatesViewModel)) {
-                                    CandidateListRow(candidate: candidate,
-                                                     isEditing: isEditing)
-                                }
+                                                 isEditing: isEditing,
+                                                 candidatesViewModel: candidatesViewModel)
                             }
                         }
                     }

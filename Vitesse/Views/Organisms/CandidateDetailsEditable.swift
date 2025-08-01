@@ -25,9 +25,9 @@ struct CandidateDetailsEditable: View {
                 }
 
                 Section(header: Text("Details")) {
-                    TextFieldWithTitle(title: "Phone",
-                                       placeholder: "Phone",
-                                       storedValue: $candidate.phone)
+                    PhoneFieldWithTitle(title: "Phone",
+                                        placeholder: "Phone",
+                                        storedValue: $candidate.phone)
                     
                     EmailFieldWithTitle(title: "Email",
                                         placeholder: "Email",

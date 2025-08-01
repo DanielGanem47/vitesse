@@ -8,13 +8,18 @@
 import SwiftUI
 
 struct CandidateListRow: View {
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer
+
     @ObservedObject var candidate: CandidateDTO
 
     private let isEditing: Bool
+    private var candidatesViewModel: CandidatesViewModel
 
-    init(candidate: CandidateDTO, isEditing: Bool) {
+    init(candidate: CandidateDTO, isEditing: Bool, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
         self.isEditing = isEditing
+        self.candidatesViewModel = candidatesViewModel
     }
     
     var body: some View {
@@ -23,6 +28,7 @@ struct CandidateListRow: View {
                 Button("",
                        systemImage: candidate.isSelected ? "checkmark.circle" : "circle") {
                     candidate.isSelected.toggle()
+                    candidatesViewModel.selectCandidate(candidateId: candidate.id, isSelected: candidate.isSelected)
                 }
             }
             
@@ -40,33 +46,29 @@ struct CandidateListRow: View {
 }
 
 #Preview("Default mode") {
-    CandidateListRow(
-        candidate: CandidateDTO(
-            id: UUID(),
-            firstName: "Daniel 1",
-            lastName: "Ganem",
-            phone: "06 37 93 62 65",
-            email: "daniel.ganem@icloud.com",
-            linkedin_url: "www.linkedin.com",
-            note: "tres bon eleve",
-            isFavorite: true
-        ),
-        isEditing: false
-    )
+    var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
+    CandidateListRow(candidate: CandidateDTO(id: UUID(),
+                                             firstName: "Daniel 1",
+                                             lastName: "Ganem",
+                                             phone: "06 37 93 62 65",
+                                             email: "daniel.ganem@icloud.com",
+                                             linkedin_url: "www.linkedin.com",
+                                             note: "tres bon eleve",
+                                             isFavorite: true),
+                     isEditing: false,
+                     candidatesViewModel: candidatesViewModel)
 }
 
 #Preview("Edit mode") {
-    CandidateListRow(
-        candidate: CandidateDTO(
-            id: UUID(),
-            firstName: "Daniel 1",
-            lastName: "Ganem",
-            phone: "06 37 93 62 65",
-            email: "daniel.ganem@icloud.com",
-            linkedin_url: "www.linkedin.com",
-            note: "tres bon eleve",
-            isFavorite: true
-        ),
-        isEditing: true
-    )
+    var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
+    CandidateListRow(candidate: CandidateDTO(id: UUID(),
+                                             firstName: "Daniel 1",
+                                             lastName: "Ganem",
+                                             phone: "06 37 93 62 65",
+                                             email: "daniel.ganem@icloud.com",
+                                             linkedin_url: "www.linkedin.com",
+                                             note: "tres bon eleve",
+                                             isFavorite: true),
+                     isEditing: true,
+                     candidatesViewModel: candidatesViewModel)
 }

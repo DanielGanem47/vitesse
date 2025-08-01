@@ -3,6 +3,7 @@ import Foundation
 enum CandidateServiceError: Error {
     case notImplemented
     case notAuthenticated
+    case candidateNotDeleted
 }
 
 class NetworkCandidateService {
@@ -60,7 +61,6 @@ class NetworkCandidateService {
         let request = try URLRequest(
             url: url,
             method: .GET,
-            parameters: nil,
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
@@ -81,7 +81,6 @@ class NetworkCandidateService {
         let request = try URLRequest(
             url: url,
             method: .GET,
-            parameters: nil,
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
@@ -121,28 +120,31 @@ class NetworkCandidateService {
         return candidate
     }
     
-    func delete(candidate: CandidateDTO) async throws -> Bool {
+    func delete(candidateId: UUID) async throws {
         guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
-        guard let url = URL(string: "http://localhost:8080/candidate/\(candidate.id)") else {
+        guard let url = URL(string: "http://localhost:8080/candidate/\(candidateId)") else {
             throw URLError(.badURL)
         }
         
         let request = try URLRequest(
             url: url,
             method: .DELETE,
-            parameters: nil,
+            parameters: [:],
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
         let (_, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            return false
+            return
         }
-        return httpResponse.statusCode == 200
+        
+        if httpResponse.statusCode != 200 {
+            throw CandidateServiceError.candidateNotDeleted
+        }
     }
     
     func updateFavorite(candidate: CandidateDTO) async throws {
@@ -157,7 +159,6 @@ class NetworkCandidateService {
         let request = try URLRequest(
             url: url,
             method: .PUT,
-            parameters: nil,
             headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (data, _) = try await URLSession.shared.data(for: request)

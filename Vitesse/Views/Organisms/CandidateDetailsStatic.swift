@@ -42,8 +42,6 @@ struct CandidateDetailsStatic: View {
     
     @State var isFavorite: Bool
     
-    @Environment(\.openURL) private var openURL
-
     init(dependenciesContainer: any CustomDependenciesContainer, candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
@@ -81,6 +79,8 @@ struct CandidateDetailsStatic: View {
                         
                         Spacer()
                         
+//                        Link("\(candidate.phone)",
+//                             destination: URL(string: "tel://\(candidate.phone)")!)
                         Text(candidate.phone)
                             .monospacedDigit()
                             .foregroundStyle(.secondary)
@@ -91,6 +91,8 @@ struct CandidateDetailsStatic: View {
                         
                         Spacer()
                         
+//                        Link("\(candidate.email)",
+//                             destination: URL(string: "mailto://\(candidate.email)")!)
                         Text(candidate.email)
                             .foregroundStyle(.secondary)
                     }
@@ -104,7 +106,9 @@ struct CandidateDetailsStatic: View {
                             CustomButton(text: "Go on LinkedIn",
                                          symbol: "",
                                          color: .blue) {
-                              openURL(url)
+                                if UIApplication.shared.canOpenURL(url) {
+                                    UIApplication.shared.open(url)
+                                }
                             }
                             .frame(width: 200)
                         } else {

@@ -11,18 +11,14 @@ import SwiftUI
 class CandidatesViewModel: ObservableObject {
     private var dependenciesContainer: DependenciesContainer?
 
-    private let executeDataRequestCandidate: (URLRequest) async throws -> (Data, URLResponse)
-
     private var candidates: [CandidateDTO] = []
 
     @Published var candidatesToDisplay: [CandidateDTO] = []
 
     var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "", isAdmin: false)
     
-    init(executeDataRequestCandidate: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
-        self.executeDataRequestCandidate = executeDataRequestCandidate
-    }
-
+    var selectedCandidates = Set<UUID>()
+    
     func initWith(dependenciesContainer: DependenciesContainer) {
         self.dependenciesContainer = dependenciesContainer
     }
@@ -114,11 +110,19 @@ class CandidatesViewModel: ObservableObject {
     
     // MARK: Delete
     func deleteSelectedCandidates() async throws {
-        for candidate in candidates where candidate.isSelected {
-            try await dependenciesContainer?.candidateRepository.delete(candidate: candidate)
+        for candidateId in selectedCandidates {
+            try await dependenciesContainer?.candidateRepository.delete(candidateId: candidateId)
         }
 
-        candidates.removeAll(where: { $0.isSelected })
+        try await loadTable()
+    }
+    
+    func selectCandidate(candidateId: UUID, isSelected: Bool) {
+        if isSelected {
+            selectedCandidates.insert(candidateId)
+        } else {
+            selectedCandidates.remove(candidateId)
+        }
     }
 }
 

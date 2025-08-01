@@ -1,3 +1,5 @@
+import Foundation
+
 enum CandidateRepositoryError {
     case unknown
 }
@@ -35,10 +37,8 @@ final class CandidateRepository {
         try await fetchCandidates()
     }
     
-    func delete(candidate: CandidateDTO) async throws {
-        if try await candidateService.delete(candidate: candidate) {
-            try await fetchCandidates()
-        }
+    func delete(candidateId: UUID) async throws {
+        try await candidateService.delete(candidateId: candidateId)
     }
     
     func updateFavorite(candidate: CandidateDTO) async throws {
