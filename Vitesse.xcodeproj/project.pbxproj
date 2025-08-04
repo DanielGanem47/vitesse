@@ -42,9 +42,32 @@
 		370A233F2E09A56A00DFF13E /* VitesseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		374810792E410243002B6C2C /* Exceptions for "Vitesse" folder in "VitesseTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Managers/AuthenticationManager.swift,
+				Models/CandidateDTO.swift,
+				Models/LoginDTO.swift,
+				Models/UserDTO.swift,
+				Services/Protocols/AuthenticationService.swift,
+				Services/Protocols/CandidateServiceError.swift,
+				Services/Protocols/CustomDependenciesContainer.swift,
+				Services/Protocols/UserService.swift,
+				Services/Test/TestAuthenticationService.swift,
+				Services/Test/TestCandidateService.swift,
+				Services/Test/TestUserService.swift,
+			);
+			target = 370A23342E09A56A00DFF13E /* VitesseTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		370A232A2E09A56800DFF13E /* Vitesse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				374810792E410243002B6C2C /* Exceptions for "Vitesse" folder in "VitesseTests" target */,
+			);
 			path = Vitesse;
 			sourceTree = "<group>";
 		};

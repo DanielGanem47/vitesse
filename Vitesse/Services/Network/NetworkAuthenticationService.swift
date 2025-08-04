@@ -1,13 +1,6 @@
 import Foundation
 import SwiftUI
 
-protocol AuthenticationService {
-    var authenticationManager: AuthenticationManager { get }
-
-    func authenticate(email: String, password: String) async throws
-    func login(email: String, password: String) async
-}
-
 class NetworkAuthenticationService: AuthenticationService, ObservableObject {
     var authenticationManager: AuthenticationManager
 
@@ -16,7 +9,7 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
     }
 
     // MARK: Login
-    func authenticate(email: String, password: String) async throws {
+    func authenticate(email: String, password: String) async throws -> Bool {
         guard let url = URL(string: "http://localhost:8080/user/auth") else {
             throw URLError(.badURL)
         }
@@ -35,18 +28,22 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
         let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self, from: data)
 
         await authenticationManager.updateAuthenticatedToken(tokenResponse)
+        
+        return true
     }
 
-    func login(email: String, password: String) async {
+    func login(email: String, password: String) async -> Bool{
         do {
-            try await authenticate(email: email,
-                                   password: password)
+            let _ = try await authenticate(email: email,
+                                           password: password)
 
             await authenticationManager.updateIsLoggedAndError(true,
                                                                nil)
+            return true
         } catch {
             await authenticationManager.updateIsLoggedAndError(false,
                                                                "Erreur de connexion: \(error.localizedDescription)")
+            return false
         }
     }
 }

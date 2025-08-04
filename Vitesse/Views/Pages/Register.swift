@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Register: View {
-    let register: UserRepository = UserRepository()
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     @ObservedObject var user: UserDTO = UserDTO(id: UUID(),
                                                 firstName: "",
@@ -33,7 +33,7 @@ struct Register: View {
                              color: .blue) {
                     if user.password == user.confirmedPassword {
                         Task {
-                            let created = try await register.createUser(user: user)
+                            let created = try await dependenciesContainer.userService.createUser(user: user)
                             if !created {
                                 showAlertCreationMessageAlert = true
                             } else {

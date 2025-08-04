@@ -16,10 +16,14 @@ struct VitesseApp: App {
     }
 }
 
-
 extension EnvironmentValues {
     // Fake singleton
-    private static let staticDependenciesContainer = DependenciesContainer()
-
+    private static let staticDependenciesContainer = NetworkDependenciesContainer()
+    
     @Entry var dependenciesContainer = staticDependenciesContainer
+    
+    // Fake singleton
+    private static let testDependenciesContainer = TestDependenciesContainer()
+
+    @Entry var testDependenciesContainer = testDependenciesContainer
 }

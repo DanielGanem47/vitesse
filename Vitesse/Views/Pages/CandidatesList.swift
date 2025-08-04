@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     @ObservedObject var candidatesViewModel = CandidatesViewModel()
 
@@ -62,8 +61,23 @@ struct CandidatesList: View {
                             Text(" Logout")
                         }
                     })
+       
+#if DEBUG
+                    if !isEditing {
+                        ToolbarItem(placement: .topBarTrailing,
+                                    content: {
+                            Button("",
+                                   systemImage: "person.fill.badge.plus") {
+                                Task {
+                                    try await candidatesViewModel.initTable()
+                                    isLoading = true
+                                }
+                            }
+                        })
+                    }
+#endif
                     
-                    ToolbarItem(placement: .topBarTrailing,
+                   ToolbarItem(placement: .topBarTrailing,
                                 content: {
                         Button {
                             isEditing.toggle()

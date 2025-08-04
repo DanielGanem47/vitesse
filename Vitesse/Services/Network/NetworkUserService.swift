@@ -1,11 +1,5 @@
 import Foundation
 
-protocol UserService {
-    var authenticationManager: AuthenticationManager { get }
-    
-    func createUser(user: UserDTO) async throws -> Bool
-}
-
 struct NetworkUserService: UserService {
     var authenticationManager: AuthenticationManager
 

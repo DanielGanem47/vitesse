@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Environment(\.dependenciesContainer) private var dependenciesContainer: DependenciesContainer
+    @Environment(\.dependenciesContainer) private var dependenciesContainer: NetworkDependenciesContainer
     
     @State private var showLoginFailedAlert: Bool = false
     @State private var register: Bool = false

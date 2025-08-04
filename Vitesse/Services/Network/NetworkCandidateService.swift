@@ -1,12 +1,6 @@
 import Foundation
 
-enum CandidateServiceError: Error {
-    case notImplemented
-    case notAuthenticated
-    case candidateNotDeleted
-}
-
-class NetworkCandidateService {
+class NetworkCandidateService: CandidateService {
     private let authenticationManager: AuthenticationManager
     
     init(authenticationManager: AuthenticationManager = .shared) {

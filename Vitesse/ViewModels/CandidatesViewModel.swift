@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class CandidatesViewModel: ObservableObject {
-    private var dependenciesContainer: DependenciesContainer?
+    private var dependenciesContainer: NetworkDependenciesContainer?
 
     private var candidates: [CandidateDTO] = []
 
@@ -19,11 +19,11 @@ class CandidatesViewModel: ObservableObject {
     
     var selectedCandidates = Set<UUID>()
     
-    func initWith(dependenciesContainer: DependenciesContainer) {
+    func initWith(dependenciesContainer: NetworkDependenciesContainer) {
         self.dependenciesContainer = dependenciesContainer
     }
 
-    #if DEBUG
+#if DEBUG
     private static let defaultCandidates = [
         CandidateDTO(id: UUID(),
                      firstName: "Daniel 1",
@@ -81,9 +81,9 @@ class CandidatesViewModel: ObservableObject {
             fatalError("Failed to inject dependencies container")
         }
 
-        try await dependenciesContainer.candidateRepository.initTable(candidates: Self.defaultCandidates)
+        try await dependenciesContainer.candidateService.initTable(candidates: Self.defaultCandidates)
     }
-    #endif
+#endif
 
     // MARK: Load table
     @MainActor func loadTable() async throws {
@@ -91,10 +91,8 @@ class CandidatesViewModel: ObservableObject {
             fatalError("Failed to inject dependencies container")
         }
 
-        try await dependenciesContainer.candidateRepository.fetchCandidates()
+        candidates = try await dependenciesContainer.candidateService.getAll()
 
-        candidates = dependenciesContainer.candidateRepository.candidates
-        
         candidatesToDisplay = candidates
     }
     
@@ -111,7 +109,7 @@ class CandidatesViewModel: ObservableObject {
     // MARK: Delete
     func deleteSelectedCandidates() async throws {
         for candidateId in selectedCandidates {
-            try await dependenciesContainer?.candidateRepository.delete(candidateId: candidateId)
+            try await dependenciesContainer?.candidateService.delete(candidateId: candidateId)
         }
 
         try await loadTable()

@@ -8,10 +8,9 @@
 import SwiftUI
 
 final class CandidateDetailsFormViewModel {
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
    func update(candidate: CandidateDTO) async throws {
-        try await dependenciesContainer.candidateRepository.update(candidate: candidate)
+       try await dependenciesContainer.candidateService.update(candidate: candidate)
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 class LoginViewModel: ObservableObject {
-    private var dependenciesContainer: DependenciesContainer?
+    private var dependenciesContainer: NetworkDependenciesContainer?
 
     private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
 
@@ -16,7 +16,7 @@ class LoginViewModel: ObservableObject {
         self.executeDataRequest = executeDataRequest
     }
 
-    func initWith(dependenciesContainer: DependenciesContainer) {
+    func initWith(dependenciesContainer: NetworkDependenciesContainer) {
         self.dependenciesContainer = dependenciesContainer
     }
 }

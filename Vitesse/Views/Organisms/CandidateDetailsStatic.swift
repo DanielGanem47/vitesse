@@ -7,46 +7,18 @@
 
 import SwiftUI
 
-final class CandidateDetailsStaticViewModel: ObservableObject {
-    @Published private var candidate: CandidateDTO
-
-    private var dependenciesContainer: DependenciesContainer?
-
-    init(candidate: CandidateDTO, dependenciesContainer: DependenciesContainer?) {
-        self.candidate = candidate
-        self.dependenciesContainer = dependenciesContainer
-    }
-
-    var isAdmin: Bool {
-        dependenciesContainer?.authenticationService.authenticationManager.tokenAdmin.isAdmin ?? false
-    }
-
-    var displayName: String {
-        candidate.displayedName
-    }
-
-    func toggleFavorite() async throws {
-        guard let dependenciesContainer else {
-            fatalError("missing dependenciesContainer")
-        }
-
-        try await dependenciesContainer.candidateRepository.updateFavorite(candidate: candidate)
-    }
-}
-
 struct CandidateDetailsStatic: View {
-    private let dependenciesContainer: DependenciesContainer
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     @ObservedObject private var viewModel: CandidateDetailsStaticViewModel
     @ObservedObject var candidate: CandidateDTO
     
     @State var isFavorite: Bool
     
-    init(dependenciesContainer: any CustomDependenciesContainer, candidate: CandidateDTO) {
+    init(candidate: CandidateDTO) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
-        self.dependenciesContainer = dependenciesContainer as! DependenciesContainer
-        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate, dependenciesContainer: self.dependenciesContainer)
+        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate)
     }
 
     var body: some View {
@@ -140,7 +112,7 @@ struct CandidateDetailsStatic: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsStatic(dependenciesContainer: PreviewsDependenciesContainer(), candidate: candidate)
+    CandidateDetailsStatic(candidate: candidate)
 }
 
 #endif

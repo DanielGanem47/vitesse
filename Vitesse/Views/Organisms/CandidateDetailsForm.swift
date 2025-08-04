@@ -34,7 +34,7 @@ struct CandidateDetailsForm: View {
                         }
                     }
             } else {
-                CandidateDetailsStatic(dependenciesContainer: dependenciesContainer, candidate: candidate)
+                CandidateDetailsStatic(candidate: candidate)
             }
         }
     }
