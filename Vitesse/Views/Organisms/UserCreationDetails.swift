@@ -34,10 +34,6 @@ struct UserCreationDetails: View {
         }
         .padding(50)
     }
-    
-    func resetUser() {
-        user.reset()
-    }
 }
 
 #Preview {
