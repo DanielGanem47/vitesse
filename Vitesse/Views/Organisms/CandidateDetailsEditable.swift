@@ -41,10 +41,7 @@ struct CandidateDetailsEditable: View {
                                        ))
                 }
                 
-                Section(header: Text("Notes")) {
-                    Text("Note")
-                        .font(.title2)
-                    
+                Section(header: Text("Note")) {
                     TextEditor(text: Binding(
                         get: { candidate.note ?? "" },
                         set: { candidate.note = $0.isEmpty ? nil : $0 }
