@@ -16,6 +16,7 @@ struct CandidatesList: View {
     @State private var showFavorites = false
     @State private var deleteCandidates = false
     @State private var isLoading = true
+    @State private var searchValue: String = ""
         
     var body: some View {
         NavigationStack {
@@ -32,7 +33,7 @@ struct CandidatesList: View {
                 }
             } else {
                 List {
-                    ForEach(candidatesViewModel.candidatesToDisplay) { candidate in
+                    ForEach(candidatesViewModel.candidatesToDisplay.filter {searchValue.isEmpty || $0.displayedName.localizedCaseInsensitiveContains(searchValue)}) { candidate in
                         if isEditing {
                             CandidateListRow(candidate: candidate,
                                              isEditing: isEditing,
@@ -47,11 +48,8 @@ struct CandidatesList: View {
                         }
                     }
                 }
-                .refreshable {
-                    Task {
-                        await loadTable()
-                    }
-                }
+                .searchable(text: $searchValue,
+                            prompt: "Search candidates")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading,
                                 content: {

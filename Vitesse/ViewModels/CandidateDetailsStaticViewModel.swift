@@ -9,14 +9,15 @@ import SwiftUI
 final class CandidateDetailsStaticViewModel: ObservableObject {
     @Published private var candidate: CandidateDTO
 
-    @Environment(\.dependenciesContainer) private var dependenciesContainer
+    private var dependenciesContainer: NetworkDependenciesContainer?
 
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, dependenciesContainer: NetworkDependenciesContainer?) {
         self.candidate = candidate
+        self.dependenciesContainer = dependenciesContainer
     }
 
     var isAdmin: Bool {
-        dependenciesContainer.authenticationService.authenticationManager.tokenAdmin.isAdmin
+        dependenciesContainer?.authenticationService.authenticationManager.tokenAdmin.isAdmin != nil
     }
 
     var displayName: String {
@@ -24,6 +25,6 @@ final class CandidateDetailsStaticViewModel: ObservableObject {
     }
 
     func toggleFavorite() async throws {
-        try await dependenciesContainer.candidateService.updateFavorite(candidate: candidate)
+        try await dependenciesContainer?.candidateService.updateFavorite(candidate: candidate)
     }
 }

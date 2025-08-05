@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct CandidateDetailsStatic: View {
-    @Environment(\.dependenciesContainer) private var dependenciesContainer
+    private var dependenciesContainer: NetworkDependenciesContainer?
 
     @ObservedObject private var viewModel: CandidateDetailsStaticViewModel
     @ObservedObject var candidate: CandidateDTO
     
     @State var isFavorite: Bool
     
-    init(candidate: CandidateDTO) {
+    init(candidate: CandidateDTO, dependenciesContainer: NetworkDependenciesContainer) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
-        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate)
+        self.dependenciesContainer = dependenciesContainer
+        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate,
+                                                         dependenciesContainer: dependenciesContainer)
     }
 
     var body: some View {
@@ -34,9 +36,9 @@ struct CandidateDetailsStatic: View {
                         if viewModel.isAdmin {
                             Button("", systemImage: isFavorite ? "star.fill" : "star") {
                                 Task {
-                                    try await viewModel.toggleFavorite()
                                     isFavorite.toggle()
                                     candidate.isFavorite = isFavorite
+                                    try await viewModel.toggleFavorite()
                                 }
                             }
                         } else {
@@ -112,7 +114,9 @@ struct CandidateDetailsStatic: View {
                                                linkedin_url: "www.linkedin.com",
                                                note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                isFavorite: true)
-    CandidateDetailsStatic(candidate: candidate)
+    var dependenciesContainer = NetworkDependenciesContainer()
+    CandidateDetailsStatic(candidate: candidate,
+                           dependenciesContainer: dependenciesContainer)
 }
 
 #endif

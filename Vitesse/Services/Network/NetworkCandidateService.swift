@@ -153,6 +153,7 @@ class NetworkCandidateService: CandidateService {
         let request = try URLRequest(
             url: url,
             method: .PUT,
+            parameters: [:],
             headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (data, _) = try await URLSession.shared.data(for: request)
