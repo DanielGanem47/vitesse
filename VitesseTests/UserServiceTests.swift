@@ -13,11 +13,11 @@ struct UserServiceTests {
     @Environment(\.testDependenciesContainer) private var testDependenciesContainer
 
     @Test func createUser() async throws {
-        let result = testDependenciesContainer.userService.createUser(user: UserDTO(id: UUID(),
-                                                                                    firstName: "",
-                                                                                    lastName: "",
-                                                                                    email: "",
-                                                                                    password: ""))
+        let result = try await testDependenciesContainer.userService.createUser(user: Vitesse.UserDTO(id: UUID(),
+                                                                                                      firstName: "",
+                                                                                                      lastName: "",
+                                                                                                      email: "",
+                                                                                                      password: ""))
         #expect (result == true)
     }
 

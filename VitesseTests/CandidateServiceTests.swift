@@ -19,6 +19,6 @@ struct CandidateServiceTests {
 
     @Test(arguments: ["1"]) func get(id: String) async throws {
         let candidate = try await testDependenciesContainer.candidateService.get(candidateId: id)
-        #expect(candidate.firstName == "Daniel")
+        #expect(candidate.firstName == "Daniel 1")
     }
 }
