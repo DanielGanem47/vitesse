@@ -54,11 +54,17 @@
 				Services/Protocols/CandidateServiceError.swift,
 				Services/Protocols/CustomDependenciesContainer.swift,
 				Services/Protocols/UserService.swift,
-				Services/Test/TestAuthenticationService.swift,
-				Services/Test/TestCandidateService.swift,
-				Services/Test/TestUserService.swift,
 			);
 			target = 370A23342E09A56A00DFF13E /* VitesseTests */;
+		};
+		3FCF6BDE2E44DE89004CB4E8 /* Exceptions for "VitesseTests" folder in "Vitesse" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/TestAuthenticationService.swift,
+				Mocks/TestCandidateService.swift,
+				Mocks/TestUserService.swift,
+			);
+			target = 370A23272E09A56800DFF13E /* Vitesse */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -73,6 +79,9 @@
 		};
 		370A23382E09A56A00DFF13E /* VitesseTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FCF6BDE2E44DE89004CB4E8 /* Exceptions for "VitesseTests" folder in "Vitesse" target */,
+			);
 			path = VitesseTests;
 			sourceTree = "<group>";
 		};

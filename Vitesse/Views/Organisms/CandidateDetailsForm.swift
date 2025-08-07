@@ -30,7 +30,7 @@ struct CandidateDetailsForm: View {
                 CandidateDetailsEditable(candidate: candidate)
                     .onDisappear {
                         Task {
-                            try await viewModel.update(candidate: candidate)
+                            await viewModel.update(candidate: candidate)
                         }
                     }
             } else {

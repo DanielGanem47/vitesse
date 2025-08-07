@@ -10,7 +10,15 @@ import SwiftUI
 final class CandidateDetailsFormViewModel {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-   func update(candidate: CandidateDTO) async throws {
-       try await dependenciesContainer.candidateService.update(candidate: candidate)
+   func update(candidate: CandidateDTO) async {
+       do {
+           try await dependenciesContainer.candidateService.update(candidate: candidate)
+       } catch {
+           handle(error: error)
+       }
+    }
+
+    private func handle(error: Error) {
+
     }
 }

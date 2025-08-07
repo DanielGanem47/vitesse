@@ -2,8 +2,11 @@ import Foundation
 
 class NetworkCandidateService: CandidateService {
     private let authenticationManager: AuthenticationManager
-    
-    init(authenticationManager: AuthenticationManager = .shared) {
+
+    private let urlSession: URLSession
+
+    init(urlSession: URLSession = .shared, authenticationManager: AuthenticationManager = .shared) {
+        self.urlSession = urlSession
         self.authenticationManager = authenticationManager
     }
     
@@ -32,9 +35,9 @@ class NetworkCandidateService: CandidateService {
                 headers: ["Authorization" : "Bearer \(authenticationToken)"]
             )
 
-            let (data, _) = try await URLSession.shared.data(for: request)
+            let (data, _) = try await urlSession.data(for: request)
 
-            let JSON = try JSONDecoder().decode(CandidateDTO.self,
+            let JSON = try JSONDecoder().decode(NetworkCandidate.self,
                                      from: data)
             
             candidate.id = JSON.id
@@ -58,9 +61,11 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
-        return try JSONDecoder().decode([CandidateDTO].self, from: data)
+        let (data, _) = try await urlSession.data(for: request)
+
+        let elements = try JSONDecoder().decode([NetworkCandidate].self, from: data)
+
+        return elements.map { $0.toDomain() }
     }
     
     func get(candidateId: String) async throws -> CandidateDTO {
@@ -78,9 +83,9 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
-        return try JSONDecoder().decode(CandidateDTO.self, from: data)
+        let (data, _) = try await urlSession.data(for: request)
+
+        return try JSONDecoder().decode(NetworkCandidate.self, from: data)
     }
     
     func update(candidate: CandidateDTO) async throws -> CandidateDTO {
@@ -106,9 +111,9 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
-        let candidate = try JSONDecoder().decode(CandidateDTO.self,
+        let (data, _) = try await urlSession.data(for: request)
+
+        let candidate = try JSONDecoder().decode(NetworkCandidate.self,
                                                  from: data)
         
         return candidate
@@ -130,8 +135,8 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (_, response) = try await URLSession.shared.data(for: request)
-        
+        let (_, response) = try await urlSession.data(for: request)
+
         guard let httpResponse = response as? HTTPURLResponse else {
             return
         }
@@ -156,9 +161,9 @@ class NetworkCandidateService: CandidateService {
             parameters: [:],
             headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await urlSession.data(for: request)
 
-        let _ = try JSONDecoder().decode(CandidateDTO.self,
+        let _ = try JSONDecoder().decode(NetworkCandidate.self,
                                          from: data)
     }
 }

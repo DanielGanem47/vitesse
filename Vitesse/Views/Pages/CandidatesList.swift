@@ -47,9 +47,12 @@ struct CandidatesList: View {
                             }
                         }
                     }
+
+                    ContentUnavailableView.search(text: "Not found for this")
                 }
                 .searchable(text: $searchValue,
                             prompt: "Search candidates")
+                .searchPresentationToolbarBehavior(.avoidHidingContent)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading,
                                 content: {
