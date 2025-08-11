@@ -10,7 +10,8 @@ import SwiftUI
 struct CandidatesList: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    @ObservedObject var candidatesViewModel = CandidatesViewModel()
+    var candidatesViewModel = CandidatesViewModel()
+    var userViewModel = UserViewModel()
 
     @State private var isEditing = false
     @State private var showFavorites = false
@@ -27,13 +28,13 @@ struct CandidatesList: View {
                 }
                 .task {
                     candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
-                    candidatesViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
+                    userViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
 
                     await loadTable()
                 }
             } else {
                 List {
-                    ForEach(candidatesViewModel.candidatesToDisplay.filter {searchValue.isEmpty || $0.displayedName.localizedCaseInsensitiveContains(searchValue)}) { candidate in
+                    ForEach(candidatesViewModel.candidatesToDisplay.filter {searchValue.isEmpty || candidatesViewModel.getDisplayedNameFor(networkCandidate: $0).localizedCaseInsensitiveContains(searchValue)}) { candidate in
                         if isEditing {
                             CandidateListRow(candidate: candidate,
                                              isEditing: isEditing,
@@ -50,6 +51,7 @@ struct CandidatesList: View {
                 }
                 .searchable(text: $searchValue,
                             prompt: "Search candidates")
+                .searchPresentationToolbarBehavior(.avoidHidingContent)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading,
                                 content: {

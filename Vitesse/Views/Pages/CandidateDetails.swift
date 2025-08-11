@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct CandidateDetails: View {
-    var candidate: CandidateDTO
+    var candidate: NetworkCandidate
     var candidatesViewModel: CandidatesViewModel
     
-    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel) {
+    init(candidate: NetworkCandidate, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
         self.candidatesViewModel = candidatesViewModel
     }
     
     var body: some View {
         HStack {
-            CandidateDetailsForm(candidate: candidate)
+            CandidateDetailsForm(candidate: candidate,
+                                 candidatesViewModel: candidatesViewModel)
         }
         .toolbar {
             EditButton()
@@ -28,13 +29,13 @@ struct CandidateDetails: View {
 
 #Preview {
     var viewModel: CandidatesViewModel = CandidatesViewModel()
-    CandidateDetails(candidate: CandidateDTO(id: UUID(),
-                                             firstName: "Daniel 1",
-                                             lastName: "Ganem",
-                                             phone: "06 37 93 62 65",
-                                             email: "daniel.ganem@icloud.com",
-                                             linkedin_url: "www.linkedin.com",
-                                             note: "tres bon eleve",
-                                             isFavorite: true),
+    CandidateDetails(candidate: NetworkCandidate(id: UUID(),
+                                                 firstName: "Daniel 1",
+                                                 lastName: "Ganem",
+                                                 phone: "06 37 93 62 65",
+                                                 email: "daniel.ganem@icloud.com",
+                                                 linkedin_url: "www.linkedin.com",
+                                                 note: "tres bon eleve",
+                                                 isFavorite: true),
                      candidatesViewModel: viewModel)
 }

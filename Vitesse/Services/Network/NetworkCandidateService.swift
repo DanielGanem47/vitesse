@@ -2,14 +2,16 @@ import Foundation
 
 class NetworkCandidateService: CandidateService {
     private let authenticationManager: AuthenticationManager
-    
-    init(authenticationManager: AuthenticationManager = .shared) {
+    private let urlSession: URLSession
+
+    init(urlSession: URLSession = .shared, authenticationManager: AuthenticationManager = .shared) {
+        self.urlSession = urlSession
         self.authenticationManager = authenticationManager
     }
-    
+
     #if DEBUG
-    func initTable(candidates: [CandidateDTO]) async throws {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+    func initTable(candidates: [NetworkCandidate]) async throws {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -32,19 +34,18 @@ class NetworkCandidateService: CandidateService {
                 headers: ["Authorization" : "Bearer \(authenticationToken)"]
             )
 
-            let (data, _) = try await URLSession.shared.data(for: request)
-
-            let JSON = try JSONDecoder().decode(CandidateDTO.self,
-                                     from: data)
+            let (data, _) = try await urlSession.data(for: request)
+            let JSON = try JSONDecoder().decode(NetworkCandidate.self,
+                                                from: data)
             
             candidate.id = JSON.id
             candidate.isFavorite = JSON.isFavorite
         }
     }
-    #endif
+#endif
     
-    func getAll() async throws -> [CandidateDTO] {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+    func getAll() async throws -> [NetworkCandidate] {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -58,13 +59,15 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await urlSession.data(for: request)
+        let candidate = try JSONDecoder().decode([NetworkCandidate].self,
+                                                 from: data)
         
-        return try JSONDecoder().decode([CandidateDTO].self, from: data)
+        return candidate
     }
     
-    func get(candidateId: String) async throws -> CandidateDTO {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+    func get(candidateId: String) async throws -> NetworkCandidate {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -78,13 +81,15 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await urlSession.data(for: request)
+        let candidate = try JSONDecoder().decode(NetworkCandidate.self,
+                                                 from: data)
         
-        return try JSONDecoder().decode(CandidateDTO.self, from: data)
+        return candidate
     }
     
-    func update(candidate: CandidateDTO) async throws -> CandidateDTO {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+    func update(candidate: NetworkCandidate) async throws -> NetworkCandidate {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -106,16 +111,15 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
-        let candidate = try JSONDecoder().decode(CandidateDTO.self,
+        let (data, _) = try await urlSession.data(for: request)
+        let candidate = try JSONDecoder().decode(NetworkCandidate.self,
                                                  from: data)
         
         return candidate
     }
     
     func delete(candidateId: UUID) async throws {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -130,7 +134,7 @@ class NetworkCandidateService: CandidateService {
             headers: ["Authorization" : "Bearer \(authenticationToken)"]
         )
         
-        let (_, response) = try await URLSession.shared.data(for: request)
+        let (_, response) = try await urlSession.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             return
@@ -141,8 +145,8 @@ class NetworkCandidateService: CandidateService {
         }
     }
     
-    func updateFavorite(candidate: CandidateDTO) async throws {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+    func updateFavorite(candidate: NetworkCandidate) async throws {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         
@@ -156,9 +160,8 @@ class NetworkCandidateService: CandidateService {
             parameters: [:],
             headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
-        let (data, _) = try await URLSession.shared.data(for: request)
-
-        let _ = try JSONDecoder().decode(CandidateDTO.self,
+        let (data, _) = try await urlSession.data(for: request)
+        let _ = try JSONDecoder().decode(NetworkCandidate.self,
                                          from: data)
     }
 }

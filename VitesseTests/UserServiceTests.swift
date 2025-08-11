@@ -10,14 +10,14 @@ import SwiftUI
 @testable import Vitesse
 
 struct UserServiceTests {
-    @Environment(\.testDependenciesContainer) private var testDependenciesContainer
+    private var testDependenciesContainer = TestDependenciesContainer()
 
     @Test func createUser() async throws {
-        let result = try await testDependenciesContainer.userService.createUser(user: Vitesse.UserDTO(id: UUID(),
-                                                                                                      firstName: "",
-                                                                                                      lastName: "",
-                                                                                                      email: "",
-                                                                                                      password: ""))
+        let result = try await testDependenciesContainer.userService.createUser(user: NetworkUser(id: UUID(),
+                                                                                                  firstName: "",
+                                                                                                  lastName: "",
+                                                                                                  email: "",
+                                                                                                  password: ""))
         #expect (result == true)
     }
 

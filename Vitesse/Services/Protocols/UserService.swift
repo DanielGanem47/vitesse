@@ -8,5 +8,5 @@
 protocol UserService {
     var authenticationManager: AuthenticationManager { get }
     
-    func createUser(user: UserDTO) async throws -> Bool
+    func createUser(user: NetworkUser) async throws -> Bool
 }

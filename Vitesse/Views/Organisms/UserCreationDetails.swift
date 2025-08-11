@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct UserCreationDetails: View {
-    @ObservedObject var user: UserDTO
+    @State var user: NetworkUser = NetworkUser(id: UUID(),
+                                               firstName: "",
+                                               lastName: "",
+                                               email: "",
+                                               password: "")
+    @State var confirmedPassword = ""
     
     var body: some View {
         VStack() {
@@ -30,17 +35,17 @@ struct UserCreationDetails: View {
             
             PasswordFieldWithTitle(title: "Confirm password",
                                    placeholder: "Confirm password",
-                                   storedValue: $user.confirmedPassword)
+                                   storedValue: $confirmedPassword)
         }
         .padding(50)
     }
 }
 
 #Preview {
-    var user: UserDTO = UserDTO(id: UUID(),
-                                firstName: "",
-                                lastName: "",
-                                email: "",
-                                password: "")
+    var user: NetworkUser = NetworkUser(id: UUID(),
+                                        firstName: "",
+                                        lastName: "",
+                                        email: "",
+                                        password: "")
     UserCreationDetails(user: user)
 }

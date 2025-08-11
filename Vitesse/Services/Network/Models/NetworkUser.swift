@@ -1,19 +1,18 @@
 //
-//  User.swift
+//  NetworkUser.swift
 //  Vitesse
 //
-//  Created by daniel ganem on 23/06/2025.
+//  Created by daniel ganem on 11/08/2025.
 //
 
 import Foundation
 
-class UserDTO: Codable, Identifiable {
+class NetworkUser {
     var id: UUID
     var firstName: String
     var lastName: String
     var email: String
     var password: String
-    var confirmedPassword: String
     
     init(id: UUID, firstName: String, lastName: String, email: String, password: String) {
         self.id = id
@@ -21,6 +20,14 @@ class UserDTO: Codable, Identifiable {
         self.lastName = lastName
         self.email = email
         self.password = password
-        self.confirmedPassword = ""
+    }
+    
+    // MARK: Functions
+    func reset() {
+        id = UUID()
+        firstName = ""
+        lastName = ""
+        email = ""
+        password = ""
     }
 }

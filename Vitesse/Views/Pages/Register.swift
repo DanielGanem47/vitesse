@@ -10,13 +10,15 @@ import SwiftUI
 struct Register: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    @ObservedObject var user: UserDTO = UserDTO(id: UUID(),
-                                                firstName: "",
-                                                lastName: "",
-                                                email: "",
-                                                password: "")
+    var user: NetworkUser = NetworkUser(id: UUID(),
+                                        firstName: "",
+                                        lastName: "",
+                                        email: "",
+                                        password: "")
+    
     @State private var showAlertCreationMessageAlert: Bool = false
     @State private var showAlertPasswordMessageAlert: Bool = false
+    @State private var confirmedPassword: String = ""
 
     var body: some View {
         VStack {
@@ -31,7 +33,7 @@ struct Register: View {
                 CustomButton(text: "Create",
                              symbol: "",
                              color: .blue) {
-                    if user.password == user.confirmedPassword {
+                    if user.password == confirmedPassword {
                         Task {
                             let created = try await dependenciesContainer.userService.createUser(user: user)
                             if !created {

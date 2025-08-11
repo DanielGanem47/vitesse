@@ -11,12 +11,13 @@ struct CandidateListRow: View {
     @Environment(\.dependenciesContainer)
     private var dependenciesContainer
 
-    @ObservedObject var candidate: CandidateDTO
-
+    var candidate: NetworkCandidate
     private let isEditing: Bool
     private var candidatesViewModel: CandidatesViewModel
+    
+    @State var isSelected = false
 
-    init(candidate: CandidateDTO, isEditing: Bool, candidatesViewModel: CandidatesViewModel) {
+    init(candidate: NetworkCandidate, isEditing: Bool, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
         self.isEditing = isEditing
         self.candidatesViewModel = candidatesViewModel
@@ -26,13 +27,14 @@ struct CandidateListRow: View {
         HStack {
             if isEditing {
                 Button("",
-                       systemImage: candidate.isSelected ? "checkmark.circle" : "circle") {
-                    candidate.isSelected.toggle()
-                    candidatesViewModel.selectCandidate(candidateId: candidate.id, isSelected: candidate.isSelected)
+                       systemImage: isSelected ? "checkmark.circle" : "circle") {
+                    isSelected.toggle()
+                    candidatesViewModel.selectCandidate(candidateId: candidate.id,
+                                                        isSelected: isSelected)
                 }
             }
             
-            Text(candidate.displayedName)
+            Text(candidatesViewModel.getDisplayedNameFor(networkCandidate: candidate))
                 .frame(alignment: .leading)
             
             Spacer()
@@ -47,28 +49,28 @@ struct CandidateListRow: View {
 
 #Preview("Default mode") {
     var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-    CandidateListRow(candidate: CandidateDTO(id: UUID(),
-                                             firstName: "Daniel 1",
-                                             lastName: "Ganem",
-                                             phone: "06 37 93 62 65",
-                                             email: "daniel.ganem@icloud.com",
-                                             linkedin_url: "www.linkedin.com",
-                                             note: "tres bon eleve",
-                                             isFavorite: true),
+    CandidateListRow(candidate: NetworkCandidate(id: UUID(),
+                                                 firstName: "Daniel 1",
+                                                 lastName: "Ganem",
+                                                 phone: "06 37 93 62 65",
+                                                 email: "daniel.ganem@icloud.com",
+                                                 linkedin_url: "www.linkedin.com",
+                                                 note: "tres bon eleve",
+                                                 isFavorite: true),
                      isEditing: false,
                      candidatesViewModel: candidatesViewModel)
 }
 
 #Preview("Edit mode") {
     var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-    CandidateListRow(candidate: CandidateDTO(id: UUID(),
-                                             firstName: "Daniel 1",
-                                             lastName: "Ganem",
-                                             phone: "06 37 93 62 65",
-                                             email: "daniel.ganem@icloud.com",
-                                             linkedin_url: "www.linkedin.com",
-                                             note: "tres bon eleve",
-                                             isFavorite: true),
+    CandidateListRow(candidate: NetworkCandidate(id: UUID(),
+                                                 firstName: "Daniel 1",
+                                                 lastName: "Ganem",
+                                                 phone: "06 37 93 62 65",
+                                                 email: "daniel.ganem@icloud.com",
+                                                 linkedin_url: "www.linkedin.com",
+                                                 note: "tres bon eleve",
+                                                 isFavorite: true),
                      isEditing: true,
                      candidatesViewModel: candidatesViewModel)
 }

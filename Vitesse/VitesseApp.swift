@@ -21,9 +21,4 @@ extension EnvironmentValues {
     private static let staticDependenciesContainer = NetworkDependenciesContainer()
     
     @Entry var dependenciesContainer = staticDependenciesContainer
-    
-    // Fake singleton
-    private static let testDependenciesContainer = TestDependenciesContainer()
-
-    @Entry var testDependenciesContainer = testDependenciesContainer
 }

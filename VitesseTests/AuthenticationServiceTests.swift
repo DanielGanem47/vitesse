@@ -10,15 +10,17 @@ import SwiftUI
 @testable import Vitesse
 
 struct AuthenticationServiceTests {
-    @Environment(\.testDependenciesContainer) private var testDependenciesContainer
+    private var testDependenciesContainer = TestDependenciesContainer()
 
     @Test func authenticate() async throws {
-        let result = try await testDependenciesContainer.authenticationService.authenticate(email: "", password: "")
+        let result = try await testDependenciesContainer.authenticationService.authenticate(email: "",
+                                                                                            password: "")
         #expect (result == true)
     }
 
     @Test func login() async throws {
-        let result = await testDependenciesContainer.authenticationService.login(email: "", password: "")
+        let result = await testDependenciesContainer.authenticationService.login(email: "",
+                                                                                 password: "")
         #expect (result == true)
     }
 }

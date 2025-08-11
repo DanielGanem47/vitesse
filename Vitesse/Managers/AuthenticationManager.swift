@@ -9,11 +9,11 @@ final class AuthenticationManager : ObservableObject {
     var tokenAdmin = TokenAdminDTO(token: "",
                                    isAdmin: false)
     @Published var isLogged = false
-    @ObservedObject var authenticatedUser: UserDTO = UserDTO(id: UUID(),
-                                                             firstName: "",
-                                                             lastName: "",
-                                                             email: "admin@vitesse.com",
-                                                             password: "test123")
+    var authenticatedUser: UserDTO = UserDTO(id: UUID(),
+                                             firstName: "",
+                                             lastName: "",
+                                             email: "admin@vitesse.com",
+                                             password: "test123")
     var loginError: String? = nil
     
     // MARK: Login

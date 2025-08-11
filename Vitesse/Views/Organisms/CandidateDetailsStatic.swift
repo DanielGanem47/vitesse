@@ -9,18 +9,18 @@ import SwiftUI
 
 struct CandidateDetailsStatic: View {
     private var dependenciesContainer: NetworkDependenciesContainer?
-
-    @ObservedObject private var viewModel: CandidateDetailsStaticViewModel
-    @ObservedObject var candidate: CandidateDTO
+    private var candidatesViewModel: CandidatesViewModel
+    private var loginViewModel: LoginViewModel
+    var candidate: NetworkCandidate
     
     @State var isFavorite: Bool
     
-    init(candidate: CandidateDTO, dependenciesContainer: NetworkDependenciesContainer) {
+    init(candidate: NetworkCandidate, dependenciesContainer: NetworkDependenciesContainer, candidatesViewModel: CandidatesViewModel, loginViewModel: LoginViewModel) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
         self.dependenciesContainer = dependenciesContainer
-        self.viewModel = CandidateDetailsStaticViewModel(candidate: candidate,
-                                                         dependenciesContainer: dependenciesContainer)
+        self.candidatesViewModel = candidatesViewModel
+        self.loginViewModel = loginViewModel
     }
 
     var body: some View {
@@ -28,17 +28,17 @@ struct CandidateDetailsStatic: View {
             Form {
                 Section(header: Text("Name")) {
                     HStack {
-                        Text(viewModel.displayName)
+                        Text(candidatesViewModel.getDisplayedNameFor(networkCandidate: candidate))
                             .font(.title)
                         
                         Spacer()
                         
-                        if viewModel.isAdmin {
+                        if loginViewModel.isAdmin {
                             Button("", systemImage: isFavorite ? "star.fill" : "star") {
                                 Task {
                                     isFavorite.toggle()
                                     candidate.isFavorite = isFavorite
-                                    try await viewModel.toggleFavorite()
+                                    try await candidatesViewModel.toggleFavoriteFor(candidate: candidate)
                                 }
                             }
                         } else {
@@ -106,17 +106,21 @@ struct CandidateDetailsStatic: View {
 #if DEBUG
 
 #Preview {
-    var candidate: CandidateDTO = CandidateDTO(id: UUID(),
-                                               firstName: "Daniel 1",
-                                               lastName: "Ganem",
-                                               phone: "06 37 93 62 65",
-                                               email: "daniel.ganem@icloud.com",
-                                               linkedin_url: "www.linkedin.com",
-                                               note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
-                                               isFavorite: true)
+    var candidate: NetworkCandidate = NetworkCandidate(id: UUID(),
+                                                       firstName: "Daniel 1",
+                                                       lastName: "Ganem",
+                                                       phone: "06 37 93 62 65",
+                                                       email: "daniel.ganem@icloud.com",
+                                                       linkedin_url: "www.linkedin.com",
+                                                       note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
+                                                       isFavorite: true)
     var dependenciesContainer = NetworkDependenciesContainer()
+    var candidatesViewModel = CandidatesViewModel()
+    var loginViewModel = LoginViewModel()
     CandidateDetailsStatic(candidate: candidate,
-                           dependenciesContainer: dependenciesContainer)
+                           dependenciesContainer: dependenciesContainer,
+                           candidatesViewModel: candidatesViewModel,
+                           loginViewModel: loginViewModel)
 }
 
 #endif

@@ -7,7 +7,7 @@ struct NetworkUserService: UserService {
         self.authenticationManager = authenticationManager
     }
 
-    func createUser(user: UserDTO) async throws -> Bool {
+    func createUser(user: NetworkUser) async throws -> Bool {
         guard let url = URL(string: "http://localhost:8080/user/register") else {
             throw URLError(.badURL)
         }

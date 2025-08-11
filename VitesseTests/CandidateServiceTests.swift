@@ -10,7 +10,7 @@ import SwiftUI
 @testable import Vitesse
 
 struct CandidateServiceTests {
-    @Environment(\.testDependenciesContainer) private var testDependenciesContainer
+    private var testDependenciesContainer = TestDependenciesContainer()
 
     @Test func getAll() async throws {
         let candidates = try await testDependenciesContainer.candidateService.getAll()

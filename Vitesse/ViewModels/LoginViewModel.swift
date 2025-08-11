@@ -9,8 +9,11 @@ import Foundation
 
 class LoginViewModel: ObservableObject {
     private var dependenciesContainer: NetworkDependenciesContainer?
-
     private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
+    
+    var isAdmin: Bool {
+        dependenciesContainer?.authenticationService.authenticationManager.tokenAdmin.isAdmin != nil
+    }
 
     init(executeDataRequest: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
         self.executeDataRequest = executeDataRequest
