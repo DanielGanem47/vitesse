@@ -12,8 +12,8 @@ struct UserCreationDetails: View {
                                                firstName: "",
                                                lastName: "",
                                                email: "",
-                                               password: "")
-    @State var confirmedPassword = ""
+                                               password: "",
+                                               confirmedPassword: "")
     
     var body: some View {
         VStack() {
@@ -35,7 +35,7 @@ struct UserCreationDetails: View {
             
             PasswordFieldWithTitle(title: "Confirm password",
                                    placeholder: "Confirm password",
-                                   storedValue: $confirmedPassword)
+                                   storedValue: $user.confirmedPassword)
         }
         .padding(50)
     }
@@ -46,6 +46,7 @@ struct UserCreationDetails: View {
                                         firstName: "",
                                         lastName: "",
                                         email: "",
-                                        password: "")
+                                        password: "",
+                                        confirmedPassword: "")
     UserCreationDetails(user: user)
 }

@@ -29,11 +29,6 @@ struct CandidateDetailsForm: View {
             if editMode?.wrappedValue.isEditing == true {
                 CandidateDetailsEditable(candidate: candidate,
                                          viewModel: candidatesViewModel)
-                    .onDisappear {
-                        Task {
-                            try await candidatesViewModel.update(candidate: candidate)
-                        }
-                    }
             } else {
                 CandidateDetailsStatic(candidate: candidate,
                                        dependenciesContainer: dependenciesContainer,

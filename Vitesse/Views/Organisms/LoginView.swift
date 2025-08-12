@@ -35,31 +35,31 @@ struct LoginView: View {
                 Spacer()
                     .frame(height: 40)
                 
-                VStack(alignment: .leading) {
-                    UserLoginForm()
-                    
-                    Spacer()
-                    
-                    CustomButton(text: "Sign in",
-                                 symbol: "",
-                                 color: .blue) {
-                        Task {
-                            await dependenciesContainer.authenticationService.login(email: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email,
-                                                       password: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password)
-                            if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
-                                showLoginFailedAlert = true
+                    VStack(alignment: .leading) {
+                        UserLoginForm()
+                        
+                        Spacer()
+                        
+                        CustomButton(text: "Sign in",
+                                     symbol: "",
+                                     color: .blue) {
+                            Task {
+                                await dependenciesContainer.authenticationService.login(email: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email,
+                                                                                        password: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password)
+                                if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
+                                    showLoginFailedAlert = true
+                                }
                             }
                         }
-                    }
-                    
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    CustomButton(text: "Register",
-                                 symbol: "",
-                                 color: .blue) {
-                        register = true
-                    }
+                        
+                        Spacer()
+                            .frame(height: 10)
+                        
+                        CustomButton(text: "Register",
+                                     symbol: "",
+                                     color: .blue) {
+                            register = true
+                        }
                 }
                 .padding(40)
                 .navigationDestination(isPresented: $register, destination: {

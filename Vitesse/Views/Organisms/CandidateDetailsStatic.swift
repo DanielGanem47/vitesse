@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CandidateDetailsStatic: View {
-    private var dependenciesContainer: NetworkDependenciesContainer?
     private var candidatesViewModel: CandidatesViewModel
     private var loginViewModel: LoginViewModel
     var candidate: NetworkCandidate
@@ -18,9 +17,10 @@ struct CandidateDetailsStatic: View {
     init(candidate: NetworkCandidate, dependenciesContainer: NetworkDependenciesContainer, candidatesViewModel: CandidatesViewModel, loginViewModel: LoginViewModel) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
-        self.dependenciesContainer = dependenciesContainer
         self.candidatesViewModel = candidatesViewModel
+        self.candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
         self.loginViewModel = loginViewModel
+        self.loginViewModel.initWith(dependenciesContainer: dependenciesContainer)
     }
 
     var body: some View {

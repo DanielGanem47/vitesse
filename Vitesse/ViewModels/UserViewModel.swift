@@ -13,7 +13,8 @@ class UserViewModel {
                                                  firstName: "",
                                                  lastName: "",
                                                  email: "",
-                                                 password: "")
+                                                 password: "",
+                                                 confirmedPassword: "")
     
     // MARK: Functions
     func setConnectedUser(user: NetworkUser) {

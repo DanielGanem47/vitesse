@@ -87,7 +87,6 @@ class CandidatesViewModel: ObservableObject {
         }
         
         candidates = try await dependenciesContainer.candidateService.getAll()
-        
         candidatesToDisplay = candidates
     }
     
@@ -123,13 +122,18 @@ class CandidatesViewModel: ObservableObject {
         return "\(networkCandidate.firstName) \(networkCandidate.lastName.first?.uppercased() ?? "")."
     }
     
+    func getCandidate(candidateId: UUID) async -> NetworkCandidate {
+        return candidatesToDisplay.filter { $0.id == candidateId }.first!
+    }
+    
     func update(candidate: NetworkCandidate) async throws {
         guard let dependenciesContainer else {
             fatalError("Failed to inject dependencies container")
         }
         
         do {
-            try await dependenciesContainer.candidateService.update(candidate: candidate)
+            var _ = try await dependenciesContainer.candidateService.update(candidate: candidate)
+            try await loadTable()
         } catch {
             handle(error: error)
         }
@@ -141,6 +145,8 @@ class CandidatesViewModel: ObservableObject {
         }
         
         try await dependenciesContainer.candidateService.updateFavorite(candidate: candidate)
+        let oldCandidate = candidates.filter { $0.id == candidate.id }.first
+        oldCandidate?.isFavorite = candidate.isFavorite
     }
 
     // MARK: Errors handling

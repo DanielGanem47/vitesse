@@ -13,13 +13,15 @@ class NetworkUser {
     var lastName: String
     var email: String
     var password: String
+    var confirmedPassword: String
     
-    init(id: UUID, firstName: String, lastName: String, email: String, password: String) {
+    init(id: UUID, firstName: String, lastName: String, email: String, password: String, confirmedPassword: String) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.password = password
+        self.confirmedPassword = confirmedPassword
     }
     
     // MARK: Functions
@@ -29,5 +31,6 @@ class NetworkUser {
         lastName = ""
         email = ""
         password = ""
+        confirmedPassword = ""
     }
 }

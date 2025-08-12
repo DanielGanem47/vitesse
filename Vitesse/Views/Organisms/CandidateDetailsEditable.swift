@@ -14,6 +14,8 @@ struct CandidateDetailsEditable: View {
     @State var isFavorite: Bool
     @State var phone: String
     @State var email: String
+    @State var note: String
+    @State var linkedInURL: String
     
     init(candidate: NetworkCandidate, viewModel: CandidatesViewModel) {
         self.candidate = candidate
@@ -21,6 +23,8 @@ struct CandidateDetailsEditable: View {
         self.isFavorite = candidate.isFavorite
         self.phone = candidate.phone
         self.email = candidate.email
+        self.note = candidate.note ?? ""
+        self.linkedInURL = candidate.linkedinURL ?? ""
     }
 
     var body: some View {
@@ -43,15 +47,15 @@ struct CandidateDetailsEditable: View {
                     TextFieldWithTitle(title: "LinkedIn",
                                        placeholder: "LinkedIn",
                                        storedValue: Binding(
-                                        get: { candidate.linkedinURL ?? "" },
-                                        set: { candidate.linkedinURL = $0.isEmpty ? nil : $0 }
+                                        get: { linkedInURL },
+                                        set: { linkedInURL = $0 }
                                        ))
                 }
                 
                 Section(header: Text("Note")) {
                     TextEditor(text: Binding(
-                        get: { candidate.note ?? "" },
-                        set: { candidate.note = $0.isEmpty ? nil : $0 }
+                        get: { note },
+                        set: { note = $0 }
                     ))
                         .padding(4)
                         .frame(height: 300, alignment: .top)
@@ -60,6 +64,15 @@ struct CandidateDetailsEditable: View {
                                 .stroke(Color.black)
                         )
                 }
+            }
+        }
+        .onDisappear {
+            Task {
+                candidate.email = email
+                candidate.note = note
+                candidate.phone = phone
+                candidate.linkedinURL = linkedInURL
+                try await viewModel.update(candidate: candidate)
             }
         }
     }
