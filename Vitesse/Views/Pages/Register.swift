@@ -10,25 +10,28 @@ import SwiftUI
 struct Register: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    @State var user: NetworkUser = NetworkUser(id: UUID(),
-                                               firstName: "",
-                                               lastName: "",
-                                               email: "",
-                                               password: "",
-                                               confirmedPassword: "")
+    var user: NetworkUser = NetworkUser(id: UUID(),
+                                        firstName: "",
+                                        lastName: "",
+                                        email: "",
+                                        password: "",
+                                        confirmedPassword: "")
     
+    @State private var refresh = false
     @State private var showAlertCreationMessageAlert: Bool = false
     @State private var showAlertPasswordMessageAlert: Bool = false
+    @State private var redraw = true
 
     var body: some View {
         VStack {
-            Text("Register")
+            Text("Register new user")
                 .font(.largeTitle)
                 .fontDesign(.default)
                 .fontWeight(.bold)
-
+            
             VStack(alignment: .leading) {
                 UserCreationDetails(user: user)
+                    .padding(10)
 
                 CustomButton(text: "Create",
                              symbol: "",
@@ -40,15 +43,17 @@ struct Register: View {
                                 showAlertCreationMessageAlert = true
                             } else {
                                 user.reset()
+                                refresh.toggle()
                             }
                         }
                     } else {
                         showAlertPasswordMessageAlert = true
                     }
                 }
-                .padding(40)
+                             .padding(40)
             }
         }
+        .id(refresh)
         .padding()
         .alert("User creation failed",
                isPresented: $showAlertCreationMessageAlert) {

@@ -10,14 +10,15 @@ import SwiftUI
 struct CandidatesList: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    var candidatesViewModel = CandidatesViewModel()
     var userViewModel = UserViewModel()
 
+    @ObservedObject var candidatesViewModel = CandidatesViewModel()
     @State private var isEditing = false
     @State private var showFavorites = false
     @State private var deleteCandidates = false
     @State private var isLoading = true
     @State private var searchValue: String = ""
+    @State var redraw = false
         
     var body: some View {
         NavigationStack {
@@ -49,6 +50,7 @@ struct CandidatesList: View {
                         }
                     }
                 }
+                .id(redraw)
                 .searchable(text: $searchValue,
                             prompt: "Search candidates")
                 .searchPresentationToolbarBehavior(.avoidHidingContent)

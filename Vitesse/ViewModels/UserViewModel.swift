@@ -7,14 +7,15 @@
 
 import Foundation
 
-class UserViewModel {
-    var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "", isAdmin: false)
-    var connectedUser: NetworkUser = NetworkUser(id: UUID(),
-                                                 firstName: "",
-                                                 lastName: "",
-                                                 email: "",
-                                                 password: "",
-                                                 confirmedPassword: "")
+class UserViewModel: ObservableObject {
+    @Published var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "",
+                                                             isAdmin: false)
+    @Published var connectedUser: NetworkUser = NetworkUser(id: UUID(),
+                                                            firstName: "",
+                                                            lastName: "",
+                                                            email: "",
+                                                            password: "",
+                                                            confirmedPassword: "")
     
     // MARK: Functions
     func setConnectedUser(user: NetworkUser) {

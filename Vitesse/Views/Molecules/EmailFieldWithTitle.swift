@@ -19,23 +19,16 @@ struct EmailFieldWithTitle: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
+        HStack() {
             Text(title)
-                .font(.title2)
-            
-            Spacer()
-                .frame(height:1)
             
             TextField(placeholder,
                       text: $storedValue)
                 .keyboardType(.emailAddress)
                 .padding(4)
                 .frame(height: 30)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 0)
-                        .stroke(Color.black)
-                )
         }
+        .textFieldStyle(.roundedBorder)
     }
 }
 

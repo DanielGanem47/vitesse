@@ -12,15 +12,11 @@ struct CandidateDetailsForm: View {
     private let loginViewModel: LoginViewModel = LoginViewModel()
     var candidate: NetworkCandidate
 
-    @State var isFavorite: Bool
-    
     @Environment(\.editMode) private var editMode
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     init(candidate: NetworkCandidate, candidatesViewModel: CandidatesViewModel) {
         self.candidate = candidate
-        self.isFavorite = candidate.isFavorite
         self.candidatesViewModel = candidatesViewModel
     }
     
@@ -33,7 +29,7 @@ struct CandidateDetailsForm: View {
                 CandidateDetailsStatic(candidate: candidate,
                                        dependenciesContainer: dependenciesContainer,
                                        candidatesViewModel: candidatesViewModel,
-                                       loginViewModel: loginViewModel)
+                                       isAdmin: dependenciesContainer.authenticationService.authenticationManager.tokenAdmin.isAdmin)
             }
         }
     }

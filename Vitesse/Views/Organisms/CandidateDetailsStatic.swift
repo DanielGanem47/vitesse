@@ -8,19 +8,18 @@
 import SwiftUI
 
 struct CandidateDetailsStatic: View {
-    private var candidatesViewModel: CandidatesViewModel
-    private var loginViewModel: LoginViewModel
+    private var isAdmin: Bool
     var candidate: NetworkCandidate
     
+    @ObservedObject private var candidatesViewModel: CandidatesViewModel
     @State var isFavorite: Bool
     
-    init(candidate: NetworkCandidate, dependenciesContainer: NetworkDependenciesContainer, candidatesViewModel: CandidatesViewModel, loginViewModel: LoginViewModel) {
+    init(candidate: NetworkCandidate, dependenciesContainer: NetworkDependenciesContainer, candidatesViewModel: CandidatesViewModel, isAdmin: Bool) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
         self.candidatesViewModel = candidatesViewModel
+        self.isAdmin = isAdmin
         self.candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
-        self.loginViewModel = loginViewModel
-        self.loginViewModel.initWith(dependenciesContainer: dependenciesContainer)
     }
 
     var body: some View {
@@ -33,7 +32,7 @@ struct CandidateDetailsStatic: View {
                         
                         Spacer()
                         
-                        if loginViewModel.isAdmin {
+                        if isAdmin {
                             Button("", systemImage: isFavorite ? "star.fill" : "star") {
                                 Task {
                                     isFavorite.toggle()
@@ -116,11 +115,10 @@ struct CandidateDetailsStatic: View {
                                                        isFavorite: true)
     var dependenciesContainer = NetworkDependenciesContainer()
     var candidatesViewModel = CandidatesViewModel()
-    var loginViewModel = LoginViewModel()
     CandidateDetailsStatic(candidate: candidate,
                            dependenciesContainer: dependenciesContainer,
                            candidatesViewModel: candidatesViewModel,
-                           loginViewModel: loginViewModel)
+                           isAdmin: dependenciesContainer.authenticationService.authenticationManager.tokenAdmin.isAdmin)
 }
 
 #endif

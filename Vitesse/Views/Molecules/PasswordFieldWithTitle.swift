@@ -19,23 +19,16 @@ struct PasswordFieldWithTitle: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
+        HStack() {
             Text(title)
-                .font(.title2)
-            
-            Spacer()
-                .frame(height:1)
             
             SecureField(placeholder,
                         text: $storedValue,
                         prompt: Text("Required"))
                 .padding(4)
                 .frame(height: 30)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 0)
-                        .stroke(Color.black)
-                )
         }
+        .textFieldStyle(.roundedBorder)
     }
 }
 

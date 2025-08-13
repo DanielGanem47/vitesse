@@ -72,6 +72,7 @@ struct CandidateDetailsEditable: View {
                 candidate.note = note
                 candidate.phone = phone
                 candidate.linkedinURL = linkedInURL
+                candidate.isFavorite = isFavorite
                 try await viewModel.update(candidate: candidate)
             }
         }

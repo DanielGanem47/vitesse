@@ -10,9 +10,9 @@ import SwiftUI
 
 class CandidatesViewModel: ObservableObject {
     private var dependenciesContainer: NetworkDependenciesContainer?
-    private var candidates: [NetworkCandidate] = []
-    var candidatesToDisplay: [NetworkCandidate] = []
-    var selectedCandidates = Set<UUID>()
+    @Published var candidates: [NetworkCandidate] = []
+    @Published var candidatesToDisplay: [NetworkCandidate] = []
+    @Published var selectedCandidates = Set<UUID>()
     
     func initWith(dependenciesContainer: NetworkDependenciesContainer) {
         self.dependenciesContainer = dependenciesContainer
@@ -133,7 +133,6 @@ class CandidatesViewModel: ObservableObject {
         
         do {
             var _ = try await dependenciesContainer.candidateService.update(candidate: candidate)
-            try await loadTable()
         } catch {
             handle(error: error)
         }
@@ -144,9 +143,9 @@ class CandidatesViewModel: ObservableObject {
             fatalError("Failed to inject dependencies container")
         }
         
-        try await dependenciesContainer.candidateService.updateFavorite(candidate: candidate)
         let oldCandidate = candidates.filter { $0.id == candidate.id }.first
         oldCandidate?.isFavorite = candidate.isFavorite
+        try await dependenciesContainer.candidateService.updateFavorite(candidate: candidate)
     }
 
     // MARK: Errors handling

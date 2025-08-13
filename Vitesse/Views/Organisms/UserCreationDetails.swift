@@ -33,7 +33,7 @@ struct UserCreationDetails: View {
                                    placeholder: "Password",
                                    storedValue: $user.password)
             
-            PasswordFieldWithTitle(title: "Confirm password",
+            PasswordFieldWithTitle(title: "Confirm",
                                    placeholder: "Confirm password",
                                    storedValue: $user.confirmedPassword)
         }

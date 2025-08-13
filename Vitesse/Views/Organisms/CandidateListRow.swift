@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct CandidateListRow: View {
-    @Environment(\.dependenciesContainer)
-    private var dependenciesContainer
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     var candidate: NetworkCandidate
     private let isEditing: Bool
-    private var candidatesViewModel: CandidatesViewModel
     
+    @ObservedObject var candidatesViewModel: CandidatesViewModel
     @State var isSelected = false
 
     init(candidate: NetworkCandidate, isEditing: Bool, candidatesViewModel: CandidatesViewModel) {
