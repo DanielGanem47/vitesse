@@ -7,19 +7,34 @@
 
 import SwiftUI
 
+extension CandidateDTO {
+
+    var fullName: String {
+        firstName + " " + lastName
+    }
+}
+
 struct CandidateDetailsStatic: View {
     private var isAdmin: Bool
-    var candidate: NetworkCandidate
-    
+    var candidate: CandidateDTO
+
+    private let onFavoriteStatusChange: (() -> Void)?
+
     @ObservedObject private var candidatesViewModel: CandidatesViewModel
     @State var isFavorite: Bool
     
-    init(candidate: NetworkCandidate, dependenciesContainer: NetworkDependenciesContainer, candidatesViewModel: CandidatesViewModel, isAdmin: Bool) {
+    init(
+        candidate: CandidateDTO,
+        dependenciesContainer: NetworkDependenciesContainer,
+        candidatesViewModel: CandidatesViewModel,
+        isAdmin: Bool,
+        onFavoriteStatusChange: (() -> Void)? = nil
+    ) {
         self.candidate = candidate
         self.isFavorite = candidate.isFavorite
         self.candidatesViewModel = candidatesViewModel
         self.isAdmin = isAdmin
-        self.candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
+        self.onFavoriteStatusChange = onFavoriteStatusChange
     }
 
     var body: some View {
@@ -37,6 +52,9 @@ struct CandidateDetailsStatic: View {
                                 Task {
                                     isFavorite.toggle()
                                     candidate.isFavorite = isFavorite
+
+                                    onFavoriteStatusChange?()
+
                                     try await candidatesViewModel.toggleFavoriteFor(candidate: candidate)
                                 }
                             }
@@ -105,7 +123,7 @@ struct CandidateDetailsStatic: View {
 #if DEBUG
 
 #Preview {
-    var candidate: NetworkCandidate = NetworkCandidate(id: UUID(),
+    var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                        firstName: "Daniel 1",
                                                        lastName: "Ganem",
                                                        phone: "06 37 93 62 65",
@@ -114,7 +132,7 @@ struct CandidateDetailsStatic: View {
                                                        note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
                                                        isFavorite: true)
     var dependenciesContainer = NetworkDependenciesContainer()
-    var candidatesViewModel = CandidatesViewModel()
+    var candidatesViewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
     CandidateDetailsStatic(candidate: candidate,
                            dependenciesContainer: dependenciesContainer,
                            candidatesViewModel: candidatesViewModel,

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Login: View {
+
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     var body: some View {
@@ -15,16 +16,18 @@ struct Login: View {
 
         Content(authenticationManager: authenticationManager)
     }
+}
 
-    struct Content: View {
-        @ObservedObject var authenticationManager: AuthenticationManager
+struct Content: View {
 
-        var body: some View {
-            if !authenticationManager.isLogged {
-                LoginView()
-            } else {
-                CandidatesList()
-            }
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
+    @ObservedObject var authenticationManager: AuthenticationManager
+
+    var body: some View {
+        if !authenticationManager.isLogged {
+            LoginView()
+        } else {
+            CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: dependenciesContainer))
         }
     }
 }

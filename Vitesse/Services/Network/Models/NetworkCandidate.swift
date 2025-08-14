@@ -55,15 +55,15 @@ class NetworkCandidate: Identifiable, Codable {
         try container.encode(note, forKey: .note)
         try container.encode(isFavorite, forKey: .isFavorite)
     }
-    
+
     func toDomain() -> CandidateDTO {
-        return CandidateDTO(id: id,
-                            firstName: firstName,
-                            lastName: lastName,
-                            phone: phone,
-                            email: email,
-                            linkedin_url: linkedinURL ?? "",
-                            note: note ?? "",
-                            isFavorite: isFavorite)
+        CandidateDTO(id: id,
+                     firstName: firstName,
+                     lastName: lastName,
+                     phone: phone,
+                     email: email,
+                     linkedin_url: linkedinURL ?? "",
+                     note: note ?? "",
+                     isFavorite: isFavorite)
     }
 }

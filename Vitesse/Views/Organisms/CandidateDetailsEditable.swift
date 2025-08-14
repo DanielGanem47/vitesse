@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CandidateDetailsEditable: View {
-    var candidate: NetworkCandidate
+    var candidate: CandidateDTO
     var viewModel: CandidatesViewModel
     
     @State var isFavorite: Bool
@@ -17,7 +17,7 @@ struct CandidateDetailsEditable: View {
     @State var note: String
     @State var linkedInURL: String
     
-    init(candidate: NetworkCandidate, viewModel: CandidatesViewModel) {
+    init(candidate: CandidateDTO, viewModel: CandidatesViewModel) {
         self.candidate = candidate
         self.viewModel = viewModel
         self.isFavorite = candidate.isFavorite
@@ -80,8 +80,8 @@ struct CandidateDetailsEditable: View {
 }
 
 #Preview {
-    let viewModel = CandidatesViewModel()
-    var candidate: NetworkCandidate = NetworkCandidate(id: UUID(),
+    let viewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
+    var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                        firstName: "Daniel 1",
                                                        lastName: "Ganem",
                                                        phone: "06 37 93 62 65",

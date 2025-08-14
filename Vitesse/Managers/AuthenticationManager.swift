@@ -20,7 +20,8 @@ final class AuthenticationManager : ObservableObject {
     func updateAuthenticatedToken(_ token: TokenAdminDTO) async {
         tokenAdmin = token
     }
-    
+
+    @MainActor
     func updateIsLoggedAndError(_ logged: Bool, _ error: String?) async {
         isLogged = logged
         loginError = error

@@ -10,13 +10,17 @@ import SwiftUI
 struct CandidateListRow: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    var candidate: NetworkCandidate
+    var candidate: CandidateDTO
     private let isEditing: Bool
-    
+
     @ObservedObject var candidatesViewModel: CandidatesViewModel
     @State var isSelected = false
 
-    init(candidate: NetworkCandidate, isEditing: Bool, candidatesViewModel: CandidatesViewModel) {
+    init(
+        candidate: CandidateDTO,
+        isEditing: Bool,
+        candidatesViewModel: CandidatesViewModel
+    ) {
         self.candidate = candidate
         self.isEditing = isEditing
         self.candidatesViewModel = candidatesViewModel
@@ -30,6 +34,8 @@ struct CandidateListRow: View {
                     isSelected.toggle()
                     candidatesViewModel.selectCandidate(candidateId: candidate.id,
                                                         isSelected: isSelected)
+
+
                 }
             }
             
@@ -47,8 +53,8 @@ struct CandidateListRow: View {
 }
 
 #Preview("Default mode") {
-    var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-    CandidateListRow(candidate: NetworkCandidate(id: UUID(),
+    var candidatesViewModel: CandidatesViewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
+    CandidateListRow(candidate: CandidateDTO(id: UUID(),
                                                  firstName: "Daniel 1",
                                                  lastName: "Ganem",
                                                  phone: "06 37 93 62 65",
@@ -61,8 +67,8 @@ struct CandidateListRow: View {
 }
 
 #Preview("Edit mode") {
-    var candidatesViewModel: CandidatesViewModel = CandidatesViewModel()
-    CandidateListRow(candidate: NetworkCandidate(id: UUID(),
+    var candidatesViewModel: CandidatesViewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
+    CandidateListRow(candidate: CandidateDTO(id: UUID(),
                                                  firstName: "Daniel 1",
                                                  lastName: "Ganem",
                                                  phone: "06 37 93 62 65",

@@ -8,18 +8,25 @@
 import SwiftUI
 
 struct CandidatesList: View {
-    @Environment(\.dependenciesContainer) private var dependenciesContainer
+    @Environment(\.dependenciesContainer)
+    private var dependenciesContainer
 
     var userViewModel = UserViewModel()
 
-    @ObservedObject var candidatesViewModel = CandidatesViewModel()
+    @ObservedObject
+    var candidatesViewModel: CandidatesViewModel
+
     @State private var isEditing = false
     @State private var showFavorites = false
     @State private var deleteCandidates = false
     @State private var isLoading = true
     @State private var searchValue: String = ""
     @State var redraw = false
-        
+
+    init(candidatesViewModel: CandidatesViewModel) {
+        self.candidatesViewModel = candidatesViewModel
+    }
+
     var body: some View {
         NavigationStack {
             if isLoading {
@@ -28,7 +35,6 @@ struct CandidatesList: View {
                     Text("Loading...")
                 }
                 .task {
-                    candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
                     userViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
 
                     await loadTable()
@@ -41,8 +47,11 @@ struct CandidatesList: View {
                                              isEditing: isEditing,
                                              candidatesViewModel: candidatesViewModel)
                         } else {
-                            NavigationLink(destination: CandidateDetails(candidate: candidate,
-                                                                         candidatesViewModel: candidatesViewModel)) {
+                            NavigationLink {
+                                CandidateDetailsForm(candidate: candidate, candidatesViewModel: candidatesViewModel) {
+                                    candidatesViewModel.refreshList()
+                                }
+                            } label: {
                                 CandidateListRow(candidate: candidate,
                                                  isEditing: isEditing,
                                                  candidatesViewModel: candidatesViewModel)
@@ -131,5 +140,5 @@ struct CandidatesList: View {
 }
 
 #Preview("Default mode") {
-    CandidatesList()
+    CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer()))
 }

@@ -16,26 +16,28 @@ struct UserCreationDetails: View {
                                                confirmedPassword: "")
     
     var body: some View {
-        VStack() {
-            TextFieldWithTitle(title: "First Name",
-                               placeholder: "First Name",
-                               storedValue: $user.firstName)
-            
-            TextFieldWithTitle(title: "Last Name",
-                               placeholder: "Last Name",
-                               storedValue: $user.lastName)
-            
-            EmailFieldWithTitle(title: "Email",
-                                placeholder: "Email",
-                                storedValue: $user.email)
-            
-            PasswordFieldWithTitle(title: "Password",
-                                   placeholder: "Password",
-                                   storedValue: $user.password)
-            
-            PasswordFieldWithTitle(title: "Confirm",
-                                   placeholder: "Confirm password",
-                                   storedValue: $user.confirmedPassword)
+        ScrollView {
+            VStack() {
+                TextFieldWithTitle(title: "First Name",
+                                   placeholder: "First Name",
+                                   storedValue: $user.firstName)
+
+                TextFieldWithTitle(title: "Last Name",
+                                   placeholder: "Last Name",
+                                   storedValue: $user.lastName)
+
+                EmailFieldWithTitle(title: "Email",
+                                    placeholder: "Email",
+                                    storedValue: $user.email)
+
+                PasswordFieldWithTitle(title: "Password",
+                                       placeholder: "Password",
+                                       storedValue: $user.password)
+
+                PasswordFieldWithTitle(title: "Confirm",
+                                       placeholder: "Confirm password",
+                                       storedValue: $user.confirmedPassword)
+            }
         }
         .padding(50)
     }

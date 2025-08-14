@@ -1,6 +1,7 @@
 import Foundation
 
 class NetworkCandidateService: CandidateService {
+
     private let authenticationManager: AuthenticationManager
     private let urlSession: URLSession
 
@@ -10,7 +11,7 @@ class NetworkCandidateService: CandidateService {
     }
 
     #if DEBUG
-    func initTable(candidates: [NetworkCandidate]) async throws {
+    func initTable(candidates: [CandidateDTO]) async throws {
         guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
@@ -44,7 +45,7 @@ class NetworkCandidateService: CandidateService {
     }
 #endif
     
-    func getAll() async throws -> [NetworkCandidate] {
+    func getAll() async throws -> [CandidateDTO] {
         guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
@@ -63,10 +64,10 @@ class NetworkCandidateService: CandidateService {
         let candidate = try JSONDecoder().decode([NetworkCandidate].self,
                                                  from: data)
         
-        return candidate
+        return candidate.map { $0.toDomain() }
     }
     
-    func get(candidateId: String) async throws -> NetworkCandidate {
+    func get(candidateId: String) async throws -> CandidateDTO {
         guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
@@ -85,10 +86,10 @@ class NetworkCandidateService: CandidateService {
         let candidate = try JSONDecoder().decode(NetworkCandidate.self,
                                                  from: data)
         
-        return candidate
+        return candidate.toDomain()
     }
     
-    func update(candidate: NetworkCandidate) async throws -> NetworkCandidate {
+    func update(candidate: CandidateDTO) async throws -> CandidateDTO {
         guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
@@ -115,7 +116,7 @@ class NetworkCandidateService: CandidateService {
         let candidate = try JSONDecoder().decode(NetworkCandidate.self,
                                                  from: data)
         
-        return candidate
+        return candidate.toDomain()
     }
     
     func delete(candidateId: UUID) async throws {
@@ -145,7 +146,7 @@ class NetworkCandidateService: CandidateService {
         }
     }
     
-    func updateFavorite(candidate: NetworkCandidate) async throws {
+    func updateFavorite(candidate: CandidateDTO) async throws {
         guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }

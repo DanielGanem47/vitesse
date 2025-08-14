@@ -10,34 +10,47 @@ import SwiftUI
 struct CandidateDetailsForm: View {
     private let candidatesViewModel: CandidatesViewModel
     private let loginViewModel: LoginViewModel = LoginViewModel()
-    var candidate: NetworkCandidate
+
+    private let onFavoriteStatusChange: (() -> Void)?
+
+
+    var candidate: CandidateDTO
 
     @Environment(\.editMode) private var editMode
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    init(candidate: NetworkCandidate, candidatesViewModel: CandidatesViewModel) {
+    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel, onFavoriteStatusChange: (() -> Void)? = nil) {
         self.candidate = candidate
         self.candidatesViewModel = candidatesViewModel
+        self.onFavoriteStatusChange = onFavoriteStatusChange
     }
     
     var body: some View {
         NavigationView {
-            if editMode?.wrappedValue.isEditing == true {
-                CandidateDetailsEditable(candidate: candidate,
-                                         viewModel: candidatesViewModel)
-            } else {
-                CandidateDetailsStatic(candidate: candidate,
-                                       dependenciesContainer: dependenciesContainer,
-                                       candidatesViewModel: candidatesViewModel,
-                                       isAdmin: dependenciesContainer.authenticationService.authenticationManager.tokenAdmin.isAdmin)
+            HStack {
+                if editMode?.wrappedValue.isEditing == true {
+                    CandidateDetailsEditable(candidate: candidate,
+                                             viewModel: candidatesViewModel)
+                } else {
+                    CandidateDetailsStatic(
+                        candidate: candidate,
+                        dependenciesContainer: dependenciesContainer,
+                        candidatesViewModel: candidatesViewModel,
+                        isAdmin: dependenciesContainer.authenticationService.authenticationManager.tokenAdmin.isAdmin,
+                        onFavoriteStatusChange: onFavoriteStatusChange
+                    )
+                }
+            }
+            .toolbar {
+                EditButton()
             }
         }
     }
 }
 
 #Preview {
-    var viewModel: CandidatesViewModel = CandidatesViewModel()
-    var candidate: NetworkCandidate = NetworkCandidate(id: UUID(),
+    var viewModel: CandidatesViewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
+    var candidate: CandidateDTO = CandidateDTO(id: UUID(),
                                                        firstName: "Daniel 1",
                                                        lastName: "Ganem",
                                                        phone: "06 37 93 62 65",
