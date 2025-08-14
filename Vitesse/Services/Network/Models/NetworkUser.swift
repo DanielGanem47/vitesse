@@ -33,4 +33,12 @@ class NetworkUser {
         password = ""
         confirmedPassword = ""
     }
+    
+    func toDomain() -> UserDTO {
+        return UserDTO(id: id,
+                       firstName: firstName,
+                       lastName: lastName,
+                       email: email,
+                       password: password)
+    }
 }

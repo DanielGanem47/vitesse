@@ -13,7 +13,6 @@ class UserDTO: Codable, Identifiable {
     var lastName: String
     var email: String
     var password: String
-    var confirmedPassword: String
     
     init(id: UUID, firstName: String, lastName: String, email: String, password: String) {
         self.id = id
@@ -21,6 +20,5 @@ class UserDTO: Codable, Identifiable {
         self.lastName = lastName
         self.email = email
         self.password = password
-        self.confirmedPassword = ""
     }
 }
