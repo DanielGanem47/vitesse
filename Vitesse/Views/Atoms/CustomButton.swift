@@ -27,7 +27,8 @@ struct CustomButton: View {
         }
         .padding()
         .background(color)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 20,
+                                    style: .continuous))
         .foregroundStyle(.white)
         .fontWeight(.semibold)
         .onTapGesture {

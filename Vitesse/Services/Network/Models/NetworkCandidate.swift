@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetworkCandidate: Identifiable, Codable {
+final class NetworkCandidate: Identifiable, Codable {
     var id: UUID
     var firstName: String
     var lastName: String
@@ -57,13 +57,13 @@ class NetworkCandidate: Identifiable, Codable {
     }
     
     func toDomain() -> CandidateDTO {
-        return CandidateDTO(id: id,
-                            firstName: firstName,
-                            lastName: lastName,
-                            phone: phone,
-                            email: email,
-                            linkedin_url: linkedinURL ?? "",
-                            note: note ?? "",
-                            isFavorite: isFavorite)
+        CandidateDTO(id: id,
+                     firstName: firstName,
+                     lastName: lastName,
+                     phone: phone,
+                     email: email,
+                     linkedin_url: linkedinURL ?? "",
+                     note: note ?? "",
+                     isFavorite: isFavorite)
     }
 }

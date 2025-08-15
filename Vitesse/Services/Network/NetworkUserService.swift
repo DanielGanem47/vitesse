@@ -1,12 +1,6 @@
 import Foundation
 
 struct NetworkUserService: UserService {
-    var authenticationManager: AuthenticationManager
-
-    init(authenticationManager: AuthenticationManager = .shared) {
-        self.authenticationManager = authenticationManager
-    }
-
     func createUser(user: NetworkUser) async throws -> Bool {
         guard let url = URL(string: "http://localhost:8080/user/register") else {
             throw URLError(.badURL)

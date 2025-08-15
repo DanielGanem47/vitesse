@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CandidateDetailsEditable: View {
-    var candidate: NetworkCandidate
+    var candidate: CandidateDTO
     var viewModel: CandidatesViewModel
     
     @State var isFavorite: Bool
@@ -17,7 +17,7 @@ struct CandidateDetailsEditable: View {
     @State var note: String
     @State var linkedInURL: String
     
-    init(candidate: NetworkCandidate, viewModel: CandidatesViewModel) {
+    init(candidate: CandidateDTO, viewModel: CandidatesViewModel) {
         self.candidate = candidate
         self.viewModel = viewModel
         self.isFavorite = candidate.isFavorite
@@ -26,7 +26,7 @@ struct CandidateDetailsEditable: View {
         self.note = candidate.note ?? ""
         self.linkedInURL = candidate.linkedinURL ?? ""
     }
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             Form {
@@ -34,7 +34,7 @@ struct CandidateDetailsEditable: View {
                     Text(viewModel.getDisplayedNameFor(networkCandidate: candidate))
                         .font(.title)
                 }
-
+                
                 Section(header: Text("Details")) {
                     PhoneFieldWithTitle(title: "Phone",
                                         placeholder: "Phone",
@@ -57,12 +57,12 @@ struct CandidateDetailsEditable: View {
                         get: { note },
                         set: { note = $0 }
                     ))
-                        .padding(4)
-                        .frame(height: 300, alignment: .top)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.black)
-                        )
+                    .padding(4)
+                    .frame(height: 300, alignment: .top)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.black)
+                    )
                 }
             }
         }
@@ -80,15 +80,15 @@ struct CandidateDetailsEditable: View {
 }
 
 #Preview {
-    let viewModel = CandidatesViewModel()
-    var candidate: NetworkCandidate = NetworkCandidate(id: UUID(),
-                                                       firstName: "Daniel 1",
-                                                       lastName: "Ganem",
-                                                       phone: "06 37 93 62 65",
-                                                       email: "daniel.ganem@icloud.com",
-                                                       linkedin_url: "www.linkedin.com",
-                                                       note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
-                                                       isFavorite: true)
+    let viewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
+    var candidate: CandidateDTO = CandidateDTO(id: UUID(),
+                                               firstName: "Daniel 1",
+                                               lastName: "Ganem",
+                                               phone: "06 37 93 62 65",
+                                               email: "daniel.ganem@icloud.com",
+                                               linkedin_url: "www.linkedin.com",
+                                               note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
+                                               isFavorite: true)
     CandidateDetailsEditable(candidate: candidate,
                              viewModel: viewModel)
 }

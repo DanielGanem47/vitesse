@@ -32,16 +32,18 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
         return true
     }
 
-    func login(email: String, password: String) async {
+    func login(email: String, password: String) async -> Bool {
         do {
             let _ = try await authenticate(email: email,
                                            password: password)
 
             await authenticationManager.updateIsLoggedAndError(true,
                                                                nil)
+            return true
         } catch {
             await authenticationManager.updateIsLoggedAndError(false,
                                                                "Erreur de connexion: \(error.localizedDescription)")
+            return false
         }
     }
 }

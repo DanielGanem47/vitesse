@@ -7,19 +7,34 @@
 
 import Foundation
 
-struct NetworkLogin {
+final class NetworkLogin {
     var email: String
     var password: String
-}
+    
+    init(email: String, password: String) {
+        self.email = email
+        self.password = password
+    }
 
-extension NetworkLogin {
+    // MARK: Functions
     func toDomain() -> LoginDTO {
         LoginDTO(email: email,
                  password: password)
     }
 }
 
-struct NetworkTokenAdmin {
+final class NetworkTokenAdmin {
     var token: String?
     var isAdmin: Bool
+    
+    init(token: String?, isAdmin: Bool) {
+        self.token = token
+        self.isAdmin = isAdmin
+    }
+
+    // MARK: Functions
+    func toDomain() -> TokenAdminDTO {
+        TokenAdminDTO(token: token,
+                      isAdmin: isAdmin)
+    }
 }

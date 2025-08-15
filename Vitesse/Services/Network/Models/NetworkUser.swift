@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetworkUser {
+final class NetworkUser {
     var id: UUID
     var firstName: String
     var lastName: String

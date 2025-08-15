@@ -10,14 +10,16 @@ import SwiftUI
 struct CandidateDetailsForm: View {
     private let candidatesViewModel: CandidatesViewModel
     private let loginViewModel: LoginViewModel = LoginViewModel()
-    var candidate: NetworkCandidate
+    var candidate: CandidateDTO
+    private let onFavoriteStatusChange: (() -> Void)?
 
     @Environment(\.editMode) private var editMode
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    init(candidate: NetworkCandidate, candidatesViewModel: CandidatesViewModel) {
+    init(candidate: CandidateDTO, candidatesViewModel: CandidatesViewModel, onFavoriteStatusChange: (() -> Void)? = nil) {
         self.candidate = candidate
         self.candidatesViewModel = candidatesViewModel
+        self.onFavoriteStatusChange = onFavoriteStatusChange
     }
     
     var body: some View {
@@ -29,22 +31,26 @@ struct CandidateDetailsForm: View {
                 CandidateDetailsStatic(candidate: candidate,
                                        dependenciesContainer: dependenciesContainer,
                                        candidatesViewModel: candidatesViewModel,
-                                       isAdmin: dependenciesContainer.authenticationService.authenticationManager.tokenAdmin.isAdmin)
+                                       isAdmin: dependenciesContainer.authenticationRepository.isAdmin(),
+                                       onFavoriteStatusChange: onFavoriteStatusChange)
             }
+        }
+        .toolbar {
+            EditButton()
         }
     }
 }
 
 #Preview {
-    var viewModel: CandidatesViewModel = CandidatesViewModel()
-    var candidate: NetworkCandidate = NetworkCandidate(id: UUID(),
-                                                       firstName: "Daniel 1",
-                                                       lastName: "Ganem",
-                                                       phone: "06 37 93 62 65",
-                                                       email: "daniel.ganem@icloud.com",
-                                                       linkedin_url: "www.linkedin.com",
-                                                       note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
-                                                       isFavorite: true)
+    var viewModel: CandidatesViewModel = CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer())
+    var candidate: CandidateDTO = CandidateDTO(id: UUID(),
+                                               firstName: "Daniel 1",
+                                               lastName: "Ganem",
+                                               phone: "06 37 93 62 65",
+                                               email: "daniel.ganem@icloud.com",
+                                               linkedin_url: "www.linkedin.com",
+                                               note: "kjhza dfkljsmglfjkmfslgjk lksdjg lms jdklsdkjglkjsg ml jmlgsjk sld jglkj ljldsfgkj ljgdslfj gsdljg lsffdj lmdgjs lfglkjds glgkj lkjsgd lgjdskg sdsdglfkj lfsdjk s lsgdfjljks dgsl j",
+                                               isFavorite: true)
     CandidateDetailsForm(candidate: candidate,
                          candidatesViewModel: viewModel)
 }

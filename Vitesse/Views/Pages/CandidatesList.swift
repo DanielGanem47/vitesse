@@ -12,15 +12,18 @@ struct CandidatesList: View {
 
     var userViewModel = UserViewModel()
 
-    @ObservedObject var candidatesViewModel = CandidatesViewModel()
+    @ObservedObject var candidatesViewModel: CandidatesViewModel
     @State private var isEditing = false
     @State private var showFavorites = false
     @State private var deleteCandidates = false
     @State private var isLoading = true
     @State private var searchValue: String = ""
-    @State var redraw = false
         
-    var body: some View {
+    init(candidatesViewModel: CandidatesViewModel) {
+        self.candidatesViewModel = candidatesViewModel
+    }
+    
+   var body: some View {
         NavigationStack {
             if isLoading {
                 VStack {
@@ -28,8 +31,7 @@ struct CandidatesList: View {
                     Text("Loading...")
                 }
                 .task {
-                    candidatesViewModel.initWith(dependenciesContainer: dependenciesContainer)
-                    userViewModel.tokenAdmin = dependenciesContainer.authenticationService.authenticationManager.tokenAdmin
+                    userViewModel.tokenAdmin = dependenciesContainer.authenticationRepository.getTokenAdmin()
 
                     await loadTable()
                 }
@@ -41,16 +43,19 @@ struct CandidatesList: View {
                                              isEditing: isEditing,
                                              candidatesViewModel: candidatesViewModel)
                         } else {
-                            NavigationLink(destination: CandidateDetails(candidate: candidate,
-                                                                         candidatesViewModel: candidatesViewModel)) {
-                                CandidateListRow(candidate: candidate,
+                            NavigationLink {
+                                CandidateDetailsForm(candidate: candidate,
+                                                     candidatesViewModel: candidatesViewModel) {
+                                    candidatesViewModel.refreshList()
+                                }
+                            } label: {
+                                 CandidateListRow(candidate: candidate,
                                                  isEditing: isEditing,
                                                  candidatesViewModel: candidatesViewModel)
                             }
                         }
                     }
                 }
-                .id(redraw)
                 .searchable(text: $searchValue,
                             prompt: "Search candidates")
                 .searchPresentationToolbarBehavior(.avoidHidingContent)
@@ -131,5 +136,5 @@ struct CandidatesList: View {
 }
 
 #Preview("Default mode") {
-    CandidatesList()
+    CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer()))
 }

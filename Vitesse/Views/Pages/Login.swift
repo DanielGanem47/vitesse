@@ -9,22 +9,20 @@ import SwiftUI
 
 struct Login: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
+    
+    var body: some View {
+        Content()
+    }
+}
+
+struct Content: View {
+    @Environment(\.dependenciesContainer) private var dependenciesContainer
 
     var body: some View {
-        let authenticationManager = dependenciesContainer.authenticationService.authenticationManager
-
-        Content(authenticationManager: authenticationManager)
-    }
-
-    struct Content: View {
-        @ObservedObject var authenticationManager: AuthenticationManager
-
-        var body: some View {
-            if !authenticationManager.isLogged {
-                LoginView()
-            } else {
-                CandidatesList()
-            }
+        if !dependenciesContainer.authenticationRepository.isLogged() {
+            LoginView()
+        } else {
+            CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: dependenciesContainer))
         }
     }
 }

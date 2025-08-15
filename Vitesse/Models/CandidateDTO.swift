@@ -35,11 +35,3 @@ class CandidateDTO: Identifiable, Codable {
         self.isSelected = false
     }
 }
-
-class Candidates {
-    var list: [CandidateDTO] = []
-    
-    init(list: [CandidateDTO]) {
-        self.list = list
-    }
-}

@@ -19,7 +19,7 @@ struct PhoneFieldWithTitle: View {
     }
     
     var body: some View {
-        HStack() {
+        VStack(alignment: .leading) {
             Text(title)
             
             TextField(placeholder,

@@ -6,7 +6,5 @@
 //
 
 protocol UserService {
-    var authenticationManager: AuthenticationManager { get }
-    
     func createUser(user: NetworkUser) async throws -> Bool
 }

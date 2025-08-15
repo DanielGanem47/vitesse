@@ -19,7 +19,7 @@ struct PasswordFieldWithTitle: View {
     }
     
     var body: some View {
-        HStack() {
+        VStack(alignment: .leading) {
             Text(title)
             
             SecureField(placeholder,

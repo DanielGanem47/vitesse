@@ -15,13 +15,13 @@ enum CandidateServiceError: Error {
 
 protocol CandidateService {
 #if DEBUG
-    func initTable(candidates: [NetworkCandidate]) async throws
+    func initTable(candidates: [CandidateDTO]) async throws
 #endif
     
-    func getAll() async throws -> [NetworkCandidate]
-    func get(candidateId: String) async throws -> NetworkCandidate
-    func update(candidate: NetworkCandidate) async throws -> NetworkCandidate
+    func getAll() async throws -> [CandidateDTO]
+    func get(candidateId: String) async throws -> CandidateDTO
+    func update(candidate: CandidateDTO) async throws -> CandidateDTO
     func delete(candidateId: UUID) async throws
-    func updateFavorite(candidate: NetworkCandidate) async throws
+    func updateFavorite(candidate: CandidateDTO) async throws
 }
 

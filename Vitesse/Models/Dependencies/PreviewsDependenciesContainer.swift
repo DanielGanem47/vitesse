@@ -1,7 +1,7 @@
 #if DEBUG
 final class PreviewsDependenciesContainer: CustomDependenciesContainer {
-    var candidateService: any CandidateService = NetworkCandidateService()
-    var authenticationService: any AuthenticationService = NetworkAuthenticationService()
-    var userService: any UserService = NetworkUserService()
+    var authenticationRepository = AuthenticationRepository()
+    var candidatesRepository = CandidatesRepository()
+    var userRepository = UserRepository()
 }
 #endif

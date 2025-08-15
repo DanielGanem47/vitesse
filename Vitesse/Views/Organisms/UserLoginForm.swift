@@ -17,37 +17,39 @@ struct UserLoginForm: View {
     @State var password: String = ""
 
     var body: some View {
-        VStack(alignment: .leading) {
-            EmailFieldWithTitle(title: "Email",
-                                placeholder: "Email",
-                                storedValue: $email)
-            
-            PasswordFieldWithTitle(title: "Password",
-                                   placeholder: "Password",
-                                   storedValue: $password)
-            
-            Button("Forget password?") {
-                showChangePasswordMessageAlert = true
+        ScrollView {
+            VStack(alignment: .leading) {
+                EmailFieldWithTitle(title: "Email",
+                                    placeholder: "Email",
+                                    storedValue: $email)
+                
+                PasswordFieldWithTitle(title: "Password",
+                                       placeholder: "Password",
+                                       storedValue: $password)
+                
+                Button("Forget password?") {
+                    showChangePasswordMessageAlert = true
+                }
             }
-        }
-        .onAppear(perform: {
-            email = dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email
-            password = dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password
-        })
-        .onChange(of: email, { oldValue, newValue in
-            dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email = newValue
-        })
-        .onChange(of: password, { oldValue, newValue in
-            dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password = newValue
-        })
-        .alert("Reset password",
-               isPresented: $showChangePasswordMessageAlert) {
-            TextField("Email", text: $resetPasswordEmail)
-                .padding(4)
-                .frame(height: 30)
-        }
-        message: {
-            Text("Enter an email address to receive a link to reset your password.")
+            .onAppear(perform: {
+                email = dependenciesContainer.authenticationRepository.getConnectedUser().email
+                password = dependenciesContainer.authenticationRepository.getConnectedUser().password
+            })
+            .onChange(of: email, { oldValue, newValue in
+                dependenciesContainer.authenticationRepository.setNewEmail(email: newValue)
+            })
+            .onChange(of: password, { oldValue, newValue in
+                dependenciesContainer.authenticationRepository.setNewPassword(password: newValue)
+            })
+            .alert("Reset password",
+                   isPresented: $showChangePasswordMessageAlert) {
+                TextField("Email", text: $resetPasswordEmail)
+                    .padding(4)
+                    .frame(height: 30)
+            }
+            message: {
+                Text("Enter an email address to receive a link to reset your password.")
+            }
         }
     }
 }

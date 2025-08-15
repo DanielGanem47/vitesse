@@ -13,7 +13,7 @@ struct LoginView: View {
     @State private var showLoginFailedAlert: Bool = false
     @State private var register: Bool = false
     @State private var imageOffset: CGFloat = -UIScreen.main.bounds.width / 2
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -35,31 +35,31 @@ struct LoginView: View {
                 Spacer()
                     .frame(height: 40)
                 
-                    VStack(alignment: .leading) {
-                        UserLoginForm()
-                        
-                        Spacer()
-                        
-                        CustomButton(text: "Sign in",
-                                     symbol: "",
-                                     color: .blue) {
-                            Task {
-                                await dependenciesContainer.authenticationService.login(email: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.email,
-                                                                                        password: dependenciesContainer.authenticationService.authenticationManager.authenticatedUser.password)
-                                if !dependenciesContainer.authenticationService.authenticationManager.isLogged {
-                                    showLoginFailedAlert = true
-                                }
+                VStack(alignment: .leading) {
+                    UserLoginForm()
+                    
+                    Spacer()
+                    
+                    CustomButton(text: "Sign in",
+                                 symbol: "",
+                                 color: .blue) {
+                        Task {
+                            let logged = try await dependenciesContainer.authenticationRepository.login(email: dependenciesContainer.authenticationRepository.getConnectedUser().email,
+                                                                                                        password: dependenciesContainer.authenticationRepository.getConnectedUser().password)
+                            if !logged {
+                                showLoginFailedAlert = true
                             }
                         }
-                        
-                        Spacer()
-                            .frame(height: 10)
-                        
-                        CustomButton(text: "Register",
-                                     symbol: "",
-                                     color: .blue) {
-                            register = true
-                        }
+                    }
+                    
+                    Spacer()
+                        .frame(height: 10)
+                    
+                    CustomButton(text: "Register",
+                                 symbol: "",
+                                 color: .blue) {
+                        register = true
+                    }
                 }
                 .padding(40)
                 .navigationDestination(isPresented: $register, destination: {
