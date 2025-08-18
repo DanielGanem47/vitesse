@@ -9,7 +9,7 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
     }
 
     // MARK: Login
-    internal func authenticate(email: String, password: String) async throws -> Bool {
+    func authenticate(email: String, password: String) async throws -> Bool {
         guard let url = URL(string: "http://localhost:8080/user/auth") else {
             throw URLError(.badURL)
         }

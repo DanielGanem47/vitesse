@@ -9,7 +9,7 @@ class TestAuthenticationService: AuthenticationService, ObservableObject {
     }
 
     // MARK: Login
-    internal func authenticate(email: String, password: String) async throws -> Bool {
+    func authenticate(email: String, password: String) async throws -> Bool {
         return true
     }
     

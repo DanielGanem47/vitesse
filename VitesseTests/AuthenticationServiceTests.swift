@@ -12,9 +12,15 @@ import SwiftUI
 struct AuthenticationServiceTests {
     private var testDependenciesContainer = TestDependenciesContainer()
 
+    @Test(arguments: "", "") func authenticate(email: String, password: String) -> Bool {
+        let result = authenticate(email: email,
+                                  password: password)
+        #expect (result == false)
+    }
+    
     @Test func login() async throws {
-        let result = try await testDependenciesContainer.authenticationService.login(email: "",
-                                                                                     password: "")
+        let result = try await testDependenciesContainer.authenticationRepository.login(email: "",
+                                                                                        password: "")
         #expect (result == true)
     }
 }

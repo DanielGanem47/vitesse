@@ -1,7 +1,14 @@
-#if DEBUG
+import SwiftUI
+
 final class TestDependenciesContainer: CustomDependenciesContainer {
-    var candidateService: any CandidateService = TestCandidateService()
-    var authenticationService: any AuthenticationService = TestAuthenticationService()
-    var userService: any UserService = TestUserService()
+    var authenticationRepository: AuthenticationRepositoryTests { get }
+    var candidatesRepository: CandidatesRepositoryTests { get }
+    var userRepository: UserRepositoryTests { get }
 }
-#endif
+
+extension EnvironmentValues {
+    // Fake singleton
+    private static let staticDependenciesContainer = TestDependenciesContainer()
+    
+    @Entry var dependenciesContainer = staticDependenciesContainer
+}
