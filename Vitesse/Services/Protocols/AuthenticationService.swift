@@ -9,6 +9,6 @@ protocol AuthenticationService {
     var authenticationManager: AuthenticationManager { get }
 
     func authenticate(email: String, password: String) async throws -> Bool
-    func login(email: String, password: String) async -> Bool
+    func login(email: String, password: String) async throws -> Bool
 }
 

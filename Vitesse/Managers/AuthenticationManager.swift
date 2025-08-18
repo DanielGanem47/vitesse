@@ -2,13 +2,13 @@ import Foundation
 import SwiftUI
 
 final class AuthenticationManager : ObservableObject {
-    static let shared = AuthenticationManager()
+    @Published var isLogged: Bool = false
 
+    static let shared = AuthenticationManager()
     var login = LoginDTO(email: "",
                          password: "")
     var tokenAdmin = TokenAdminDTO(token: "",
                                    isAdmin: false)
-    @Published var isLogged = false
     var authenticatedUser: UserDTO = UserDTO(id: UUID(),
                                              firstName: "",
                                              lastName: "",
@@ -19,10 +19,5 @@ final class AuthenticationManager : ObservableObject {
     // MARK: Login
     func updateAuthenticatedToken(_ token: TokenAdminDTO) async {
         tokenAdmin = token
-    }
-    
-    @MainActor func updateIsLoggedAndError(_ logged: Bool, _ error: String?) async {
-        isLogged = logged
-        loginError = error
     }
 }

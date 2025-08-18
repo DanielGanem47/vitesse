@@ -63,7 +63,7 @@ struct CandidatesList: View {
                     ToolbarItem(placement: .topBarLeading,
                                 content: {
                         Button {
-                            dependenciesContainer.authenticationService.authenticationManager.isLogged = false
+                            dependenciesContainer.authenticationRepository.isLoggedOut()
                         } label: {
                             Text(" Logout")
                         }

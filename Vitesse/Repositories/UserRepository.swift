@@ -7,12 +7,15 @@
 
 import Foundation
 
-final class UserRepository {
+final class UserRepository: ObservableObject {
     private let service: any UserService
-
+    
     init(service: any UserService = NetworkUserService()) {
         self.service = service
     }
-
+    
     // MARK: - Functions
+    func createUser(user: NetworkUser) async throws -> Bool {
+        return try await service.createUser(user: user)
+    }
 }

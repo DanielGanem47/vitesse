@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct VitesseApp: App {
+    let repo = AuthenticationRepository()
+
     var body: some Scene {
         WindowGroup {
-            Login()
+            Login(authenticationRepository: repo)
         }
     }
 }

@@ -1,6 +1,8 @@
 #if DEBUG
+import SwiftUI
+
 final class PreviewsDependenciesContainer: CustomDependenciesContainer {
-    var authenticationRepository = AuthenticationRepository()
+    @ObservedObject var authenticationRepository = AuthenticationRepository()
     var candidatesRepository = CandidatesRepository()
     var userRepository = UserRepository()
 }

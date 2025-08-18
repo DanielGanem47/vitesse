@@ -8,18 +8,11 @@
 import SwiftUI
 
 struct Login: View {
+    @ObservedObject var authenticationRepository: AuthenticationRepository
     @Environment(\.dependenciesContainer) private var dependenciesContainer
     
     var body: some View {
-        Content()
-    }
-}
-
-struct Content: View {
-    @Environment(\.dependenciesContainer) private var dependenciesContainer
-
-    var body: some View {
-        if !dependenciesContainer.authenticationRepository.isLogged() {
+        if !authenticationRepository.isLogged {
             LoginView()
         } else {
             CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: dependenciesContainer))
@@ -28,5 +21,6 @@ struct Content: View {
 }
 
 #Preview {
-    Login()
+    let repo = AuthenticationRepository()
+    Login(authenticationRepository: repo)
 }

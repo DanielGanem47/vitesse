@@ -66,6 +66,7 @@ struct CandidateDetailsEditable: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
         .onDisappear {
             Task {
                 candidate.email = email

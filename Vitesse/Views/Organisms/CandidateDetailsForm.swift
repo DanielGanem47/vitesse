@@ -23,7 +23,7 @@ struct CandidateDetailsForm: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if editMode?.wrappedValue.isEditing == true {
                 CandidateDetailsEditable(candidate: candidate,
                                          viewModel: candidatesViewModel)

@@ -38,7 +38,7 @@ struct Register: View {
                              color: .blue) {
                     if user.password == user.confirmedPassword {
                         Task {
-                            let created = try await dependenciesContainer.userService.createUser(user: user)
+                            let created = try await dependenciesContainer.userRepository.createUser(user: user)
                             if !created {
                                 showAlertCreationMessageAlert = true
                             } else {

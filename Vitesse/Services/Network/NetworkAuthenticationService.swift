@@ -9,7 +9,7 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
     }
 
     // MARK: Login
-    func authenticate(email: String, password: String) async throws -> Bool {
+    internal func authenticate(email: String, password: String) async throws -> Bool {
         guard let url = URL(string: "http://localhost:8080/user/auth") else {
             throw URLError(.badURL)
         }
@@ -32,17 +32,17 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
         return true
     }
 
-    func login(email: String, password: String) async -> Bool {
+    func login(email: String, password: String) async throws -> Bool {
         do {
             let _ = try await authenticate(email: email,
                                            password: password)
 
-            await authenticationManager.updateIsLoggedAndError(true,
-                                                               nil)
+            authenticationManager.isLogged = true
+            authenticationManager.loginError = nil
             return true
         } catch {
-            await authenticationManager.updateIsLoggedAndError(false,
-                                                               "Erreur de connexion: \(error.localizedDescription)")
+            authenticationManager.isLogged = false
+            authenticationManager.loginError = "Erreur de connexion: \(error.localizedDescription)"
             return false
         }
     }
