@@ -15,7 +15,7 @@ final class UserRepository: ObservableObject {
     }
     
     // MARK: - Functions
-    func createUser(user: NetworkUser) async throws -> Bool {
+    func createUser(user: UserDTO) async throws -> Bool {
         return try await service.createUser(user: user)
     }
 }

@@ -9,10 +9,13 @@ class TestAuthenticationService: AuthenticationService, ObservableObject {
     }
 
     // MARK: Login
+    internal func authenticate(email: String, password: String) async throws -> Bool {
+        return true
+    }
+    
     func login(email: String, password: String) async -> Bool {
-        await authenticationManager.updateIsLoggedAndError(true,
-                                                           nil)
-        
+        authenticationManager.isLogged = true
+        authenticationManager.loginError = nil
         return true
     }
 }

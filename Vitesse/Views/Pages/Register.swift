@@ -38,7 +38,7 @@ struct Register: View {
                              color: .blue) {
                     if user.password == user.confirmedPassword {
                         Task {
-                            let created = try await dependenciesContainer.userRepository.createUser(user: user)
+                            let created = try await dependenciesContainer.userRepository.createUser(user: user.toDomain())
                             if !created {
                                 showAlertCreationMessageAlert = true
                             } else {
@@ -66,6 +66,9 @@ struct Register: View {
         }
         message: {
             Text("Your password is not equal to your confirmed password.")
+        }
+        .onDisappear {
+            user.reset()
         }
     }
 }

@@ -9,7 +9,7 @@ class TestCandidateService: CandidateService {
     
     #if DEBUG
     func initTable(candidates: [CandidateDTO]) async throws {
-        guard let authenticationToken = await authenticationManager.tokenAdmin.token else {
+        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
             throw CandidateServiceError.notAuthenticated
         }
         

@@ -6,5 +6,5 @@
 //
 
 protocol UserService {
-    func createUser(user: NetworkUser) async throws -> Bool
+    func createUser(user: UserDTO) async throws -> Bool
 }
