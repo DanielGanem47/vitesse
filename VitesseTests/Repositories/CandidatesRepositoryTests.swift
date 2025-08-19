@@ -1,5 +1,5 @@
 //
-//  CandidatesRepository.swift
+//  CandidatesRepositoryTests.swift
 //  Vitesse
 //
 //  Created by daniel ganem on 15/08/2025.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class CandidatesRepositoryTests: ObservableObject {
+final class CandidatesRepositoryTests: TestCandidateService, ObservableObject {
     @Published private(set) var candidates: [CandidateDTO] = []
 
     private let service: any CandidateService
 
-    init(service: any CandidateService = NetworkCandidateService()) {
+    init(service: any CandidateService = TestCandidateService()) {
         self.service = service
     }
 
@@ -23,6 +23,14 @@ final class CandidatesRepositoryTests: ObservableObject {
     }
     #endif
 
+    func getAll() async throws -> [CandidateDTO] {
+        return try await service.getAll()
+    }
+    
+    func get(candidateId: String) async throws -> CandidateDTO {
+        return try await service.get(candidateId: candidateId)
+    }
+    
     func refresh() async {
         do {
             self.candidates = try await service.getAll()

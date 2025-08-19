@@ -1,6 +1,6 @@
 import SwiftUI
 
-final class TestDependenciesContainer: CustomDependenciesContainer {
+final class TestDependenciesContainer {
     var authenticationRepository: AuthenticationRepositoryTests { get }
     var candidatesRepository: CandidatesRepositoryTests { get }
     var userRepository: UserRepositoryTests { get }
