@@ -21,7 +21,7 @@ struct NetworkCandidateServiceTests {
         
         let urlSession = URLSession(configuration: configuration)
         
-        let networkCandidateService = NetworkCandidateService(urlSession: urlSession)
+        let candidateService = TestCandidateService()
         
         let payload = [NetworkCandidate(id: UUID(),
                                         firstName: "",
@@ -34,7 +34,7 @@ struct NetworkCandidateServiceTests {
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
-        let candidates = try await networkCandidateService.getAll()
+        let candidates = try await candidateService.getAll()
         
         #expect(candidates.count == 6)
     }

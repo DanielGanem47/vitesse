@@ -50,15 +50,11 @@
 				Models/CandidateDTO.swift,
 				Models/LoginDTO.swift,
 				Models/UserDTO.swift,
-				Repositories/AuthenticationRepository.swift,
-				Repositories/CandidatesRepository.swift,
-				Repositories/UserRepository.swift,
 				Services/Network/Models/NetworkCandidate.swift,
 				Services/Network/Models/NetworkLogin.swift,
 				Services/Network/Models/NetworkUser.swift,
 				Services/Protocols/AuthenticationService.swift,
 				Services/Protocols/CandidateService.swift,
-				Services/Protocols/CustomDependenciesContainer.swift,
 				Services/Protocols/UserService.swift,
 			);
 			target = 370A23342E09A56A00DFF13E /* VitesseTests */;
