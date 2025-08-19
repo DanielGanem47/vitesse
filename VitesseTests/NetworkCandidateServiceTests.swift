@@ -8,6 +8,7 @@
 import Testing
 import Foundation
 
+@Suite
 struct NetworkCandidateServiceTests {
     init() {
         MockURLProtocol.payloadToReturn = nil

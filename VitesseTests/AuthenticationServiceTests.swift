@@ -8,6 +8,7 @@
 import Testing
 import SwiftUI
 
+@Suite
 struct AuthenticationServiceTests {
     private var service = TestAuthenticationService()
 

@@ -9,6 +9,7 @@ import Testing
 import SwiftUI
 @testable import Vitesse
 
+@Suite
 struct CandidateServiceTests {
     private var service = TestCandidateService()
 
