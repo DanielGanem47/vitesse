@@ -20,19 +20,15 @@ class NetworkCandidateService: CandidateService {
                 throw URLError(.badURL)
             }
 
-            let request = try URLRequest(
-                url: url,
-                method: .POST,
-                parameters: [
-                    "email": candidate.email,
-                    "note": candidate.note ?? "",
-                    "linkedinURL": candidate.linkedinURL ?? "",
-                    "firstName": candidate.firstName,
-                    "lastName": candidate.lastName,
-                    "phone": candidate.phone
-                ],
-                headers: ["Authorization" : "Bearer \(authenticationToken)"]
-            )
+            let request = try URLRequest(url: url,
+                                         method: .POST,
+                                         parameters: ["email": candidate.email,
+                                                      "note": candidate.note ?? "",
+                                                      "linkedinURL": candidate.linkedinURL ?? "",
+                                                      "firstName": candidate.firstName,
+                                                      "lastName": candidate.lastName,
+                                                      "phone": candidate.phone],
+                                         headers: ["Authorization" : "Bearer \(authenticationToken)"])
 
             let (data, _) = try await urlSession.data(for: request)
             let JSON = try JSONDecoder().decode(NetworkCandidate.self,
@@ -53,11 +49,9 @@ class NetworkCandidateService: CandidateService {
             throw URLError(.badURL)
         }
         
-        let request = try URLRequest(
-            url: url,
-            method: .GET,
-            headers: ["Authorization" : "Bearer \(authenticationToken)"]
-        )
+        let request = try URLRequest(url: url,
+                                     method: .GET,
+                                     headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (data, _) = try await urlSession.data(for: request)
         let candidate = try JSONDecoder().decode([NetworkCandidate].self,
@@ -75,11 +69,9 @@ class NetworkCandidateService: CandidateService {
             throw URLError(.badURL)
         }
         
-        let request = try URLRequest(
-            url: url,
-            method: .GET,
-            headers: ["Authorization" : "Bearer \(authenticationToken)"]
-        )
+        let request = try URLRequest(url: url,
+                                     method: .GET,
+                                     headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (data, _) = try await urlSession.data(for: request)
         let candidate = try JSONDecoder().decode(NetworkCandidate.self,
@@ -97,19 +89,15 @@ class NetworkCandidateService: CandidateService {
             throw URLError(.badURL)
         }
         
-        let request = try URLRequest(
-            url: url,
-            method: .PUT,
-            parameters: [
-                "email": candidate.email,
-                "note": candidate.note ?? "",
-                "linkedinURL": candidate.linkedinURL ?? "",
-                "firstName": candidate.firstName,
-                "lastName": candidate.lastName,
-                "phone": candidate.phone
-            ],
-            headers: ["Authorization" : "Bearer \(authenticationToken)"]
-        )
+        let request = try URLRequest(url: url,
+                                     method: .PUT,
+                                     parameters: ["email": candidate.email,
+                                                  "note": candidate.note ?? "",
+                                                  "linkedinURL": candidate.linkedinURL ?? "",
+                                                  "firstName": candidate.firstName,
+                                                  "lastName": candidate.lastName,
+                                                  "phone": candidate.phone],
+                                     headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (data, _) = try await urlSession.data(for: request)
         let candidate = try JSONDecoder().decode(NetworkCandidate.self,
@@ -127,12 +115,10 @@ class NetworkCandidateService: CandidateService {
             throw URLError(.badURL)
         }
         
-        let request = try URLRequest(
-            url: url,
-            method: .DELETE,
-            parameters: [:],
-            headers: ["Authorization" : "Bearer \(authenticationToken)"]
-        )
+        let request = try URLRequest(url: url,
+                                     method: .DELETE,
+                                     parameters: [:],
+                                     headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (_, response) = try await urlSession.data(for: request)
         
@@ -154,11 +140,10 @@ class NetworkCandidateService: CandidateService {
             throw URLError(.badURL)
         }
         
-        let request = try URLRequest(
-            url: url,
-            method: .PUT,
-            parameters: [:],
-            headers: ["Authorization" : "Bearer \(authenticationToken)"])
+        let request = try URLRequest(url: url,
+                                     method: .PUT,
+                                     parameters: [:],
+                                     headers: ["Authorization" : "Bearer \(authenticationToken)"])
         
         let (data, _) = try await urlSession.data(for: request)
         let _ = try JSONDecoder().decode(NetworkCandidate.self,

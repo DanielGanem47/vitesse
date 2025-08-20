@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		37155D9A2E562C6D00E9A57A /* VitesseTestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 37155D992E562C6D00E9A57A /* VitesseTestPlan.xctestplan */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		370A23362E09A56A00DFF13E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -40,6 +44,7 @@
 		370A23282E09A56800DFF13E /* Vitesse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vitesse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		370A23352E09A56A00DFF13E /* VitesseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		370A233F2E09A56A00DFF13E /* VitesseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		37155D992E562C6D00E9A57A /* VitesseTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = VitesseTestPlan.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -53,9 +58,14 @@
 				Services/Network/Models/NetworkCandidate.swift,
 				Services/Network/Models/NetworkLogin.swift,
 				Services/Network/Models/NetworkUser.swift,
+				Services/Network/NetworkAuthenticationService.swift,
+				Services/Network/NetworkCandidateService.swift,
+				Services/Network/NetworkUserService.swift,
 				Services/Protocols/AuthenticationService.swift,
 				Services/Protocols/CandidateService.swift,
 				Services/Protocols/UserService.swift,
+				ViewModels/HTTPClient/HTTPMethod.swift,
+				ViewModels/HTTPClient/URLRequest.swift,
 			);
 			target = 370A23342E09A56A00DFF13E /* VitesseTests */;
 		};
@@ -110,6 +120,7 @@
 		370A231F2E09A56700DFF13E = {
 			isa = PBXGroup;
 			children = (
+				37155D992E562C6D00E9A57A /* VitesseTestPlan.xctestplan */,
 				370A232A2E09A56800DFF13E /* Vitesse */,
 				370A23382E09A56A00DFF13E /* VitesseTests */,
 				370A23422E09A56A00DFF13E /* VitesseUITests */,
@@ -256,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37155D9A2E562C6D00E9A57A /* VitesseTestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

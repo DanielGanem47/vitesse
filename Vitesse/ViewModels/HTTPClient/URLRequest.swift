@@ -1,12 +1,10 @@
 import Foundation
 
 extension URLRequest {
-    init(
-        url: URL,
+    init(url: URL,
         method: HTTPMethod,
         parameters: [String: Any]? = nil,
-        headers: [String: String]? = nil
-    ) throws {
+        headers: [String: String]? = nil) throws {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             throw URLError(.badURL)
         }
@@ -37,10 +35,8 @@ extension URLRequest {
         }
     }
 
-    private mutating func encodeParametersInURL(
-        _ parameters: [String: Any],
-        components: URLComponents
-    ) {
+    private mutating func encodeParametersInURL(_ parameters: [String: Any],
+                                                components: URLComponents) {
         var components = components
         components.queryItems = parameters
             .map { ($0, "\($1)") }
@@ -48,9 +44,7 @@ extension URLRequest {
         url = components.url
     }
 
-    private mutating func encodeParametersInBody(
-        _ parameters: [String: Any]
-    ) throws {
+    private mutating func encodeParametersInBody(_ parameters: [String: Any]) throws {
         setValue("application/json", forHTTPHeaderField: "Content-Type")
         httpBody = try JSONSerialization.data(
             withJSONObject: parameters,

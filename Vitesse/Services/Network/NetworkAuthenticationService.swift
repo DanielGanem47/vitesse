@@ -3,8 +3,10 @@ import SwiftUI
 
 class NetworkAuthenticationService: AuthenticationService, ObservableObject {
     var authenticationManager: AuthenticationManager
+    private let urlSession: URLSession
 
-    init(authenticationManager: AuthenticationManager = .shared) {
+    init(urlSession: URLSession = .shared, authenticationManager: AuthenticationManager = .shared) {
+        self.urlSession = urlSession
         self.authenticationManager = authenticationManager
     }
 
@@ -14,16 +16,12 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
             throw URLError(.badURL)
         }
 
-        let request = try URLRequest(
-            url: url,
-            method: .POST,
-            parameters: [
-                "email": email,
-                "password": password
-            ]
-        )
+        let request = try URLRequest(url: url,
+                                     method: .POST,
+                                     parameters: ["email": email,
+                                                  "password": password])
 
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await urlSession.data(for: request)
 
         let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self, from: data)
 

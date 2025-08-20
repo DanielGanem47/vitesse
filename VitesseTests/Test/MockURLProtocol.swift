@@ -8,7 +8,6 @@
 import Foundation
 
 final class MockURLProtocol: URLProtocol {
-
     static var payloadToReturn: Data?
     static var errorToReturn: Error?
 
@@ -23,8 +22,20 @@ final class MockURLProtocol: URLProtocol {
             fatalError("No payload provided")
         }
 
+        let response = HTTPURLResponse(
+            url: request.url!,
+            statusCode: 201,
+            httpVersion: nil,
+            headerFields: nil
+        )!
+        client?.urlProtocol(self, didReceive: response,
+                            cacheStoragePolicy: .notAllowed)
         client?.urlProtocol(self, didLoad: data)
         client?.urlProtocolDidFinishLoading(self)
+    }
+    
+    override func stopLoading() {
+        
     }
 
     override class func canInit(with request: URLRequest) -> Bool {
