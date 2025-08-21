@@ -39,10 +39,6 @@ struct NetworkCandidateServiceTests {
         
         let urlSession = URLSession(configuration: configuration)
         
-        let payload = ["Authorization" : "Bearer \(authenticationToken)"]
-        
-        MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
-        
         let service = NetworkCandidateService(urlSession: urlSession)
         
         let candidate = try await service.get(candidateId: "1")

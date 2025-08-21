@@ -20,12 +20,12 @@ struct NetworkAuthenticationServiceTests {
         
         let urlSession = URLSession(configuration: configuration)
         
-        let payload = ["token" : "zaezaresqdfgrdqgrghdfsfhtfs",
-                       "isAdmin" : true]
+        let payload = ["token" : "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U",
+                       "isAdmin" : "true"]
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
-        let service = NetworkAuthenticationServiceTests(urlSession: urlSession)
+        let service = NetworkAuthenticationService(urlSession: urlSession)
         
         let result = try await service.authenticate(email: "admin@vitesse.com",
                                                     password: "test123")
@@ -38,11 +38,11 @@ struct NetworkAuthenticationServiceTests {
         
         let urlSession = URLSession(configuration: configuration)
         
-        let payload = []
+        let payload = [""]
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
-        let service = NetworkAuthenticationServiceTests(urlSession: urlSession)
+        let service = NetworkAuthenticationService(urlSession: urlSession)
         
         let result = try await service.authenticate(email: "",
                                                     password: "")
@@ -55,12 +55,12 @@ struct NetworkAuthenticationServiceTests {
         
         let urlSession = URLSession(configuration: configuration)
         
-        let payload = ["token" : "zaezaresqdfgrdqgrghdfsfhtfs",
-                       "isAdmin" : true]
+        let payload = ["token" : "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U",
+                       "isAdmin" : "true"]
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
-        let service = NetworkAuthenticationServiceTests(urlSession: urlSession)
+        let service = NetworkAuthenticationService(urlSession: urlSession)
         
         let result = try await service.login(email: "admin@vitesse.com",
                                              password: "test123")
@@ -73,11 +73,11 @@ struct NetworkAuthenticationServiceTests {
         
         let urlSession = URLSession(configuration: configuration)
         
-        let payload = []
+        let payload = [""]
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
-        let service = NetworkAuthenticationServiceTests(urlSession: urlSession)
+        let service = NetworkAuthenticationService(urlSession: urlSession)
         
         let result = try await service.login(email: "",
                                              password: "")
