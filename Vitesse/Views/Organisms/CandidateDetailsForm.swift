@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CandidateDetailsForm: View {
     private let candidatesViewModel: CandidatesViewModel
-    private let loginViewModel: LoginViewModel = LoginViewModel()
     var candidate: CandidateDTO
     private let onFavoriteStatusChange: (() -> Void)?
 

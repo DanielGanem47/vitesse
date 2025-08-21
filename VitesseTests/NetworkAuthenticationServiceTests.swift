@@ -8,21 +8,26 @@
 import Testing
 import SwiftUI
 
+@testable import Vitesse
+
+@Suite(.serialized)
 struct NetworkAuthenticationServiceTests {
+
+    private var urlSession: URLSession
+
     init() {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+
+        urlSession = URLSession(configuration: configuration)
+
         MockURLProtocol.payloadToReturn = nil
         MockURLProtocol.errorToReturn = nil
     }
-    
+
     @Test func authenticate() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        
-        let urlSession = URLSession(configuration: configuration)
-        
-        let payload = ["token" : "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U",
-                       "isAdmin" : "true"]
-        
+        let payload = TokenAdminDTO(token: "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U", isAdmin: true)
+
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkAuthenticationService(urlSession: urlSession)
@@ -33,54 +38,38 @@ struct NetworkAuthenticationServiceTests {
     }
     
     @Test func authenticateFailed() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        
-        let urlSession = URLSession(configuration: configuration)
-        
         let payload = [""]
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkAuthenticationService(urlSession: urlSession)
-        
-        let result = try await service.authenticate(email: "",
-                                                    password: "")
+
+        let result = try await service.authenticate(email: "", password: "")
+
         #expect (result == false)
     }
     
     @Test func login() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        
-        let urlSession = URLSession(configuration: configuration)
-        
-        let payload = ["token" : "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U",
-                       "isAdmin" : "true"]
-        
+        let payload = TokenAdminDTO(token: "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U", isAdmin: true)
+
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkAuthenticationService(urlSession: urlSession)
         
-        let result = try await service.login(email: "admin@vitesse.com",
-                                             password: "test123")
+        let result = try await service.login(email: "admin@vitesse.com", password: "test123")
+
         #expect (result == true)
     }
     
     @Test func loginFailed() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        
-        let urlSession = URLSession(configuration: configuration)
-        
         let payload = [""]
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkAuthenticationService(urlSession: urlSession)
         
-        let result = try await service.login(email: "",
-                                             password: "")
+        let result = try await service.login(email: "", password: "")
+
         #expect (result == false)
     }
 }

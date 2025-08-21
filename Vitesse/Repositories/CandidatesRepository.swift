@@ -7,7 +7,16 @@
 
 import Foundation
 
-final class CandidatesRepository: ObservableObject {
+class MockCandidatesRepository: CandidatesRepository {
+
+    var hasCalledDeleteCandidate = false
+
+    override func delete(candidateId: UUID) async throws {
+        hasCalledDeleteCandidate = true
+    }
+}
+
+class CandidatesRepository: ObservableObject {
     @Published private(set) var candidates: [CandidateDTO] = []
 
     private let service: any CandidateService
