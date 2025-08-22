@@ -12,21 +12,24 @@ import SwiftUI
 
 @Suite(.serialized)
 struct NetworkUserServiceTests {
+    private var urlSession: URLSession
+
     init() {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+
+        urlSession = URLSession(configuration: configuration)
+
         MockURLProtocol.payloadToReturn = nil
         MockURLProtocol.errorToReturn = nil
     }
 
     @Test func createUser() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        
-        let urlSession = URLSession(configuration: configuration)
-        
-        let payload = ["email": "",
-                       "password": "",
-                       "firstName": "",
-                       "lastName": ""]
+        let payload = UserDTO(id: UUID(),
+                              firstName: "",
+                              lastName: "",
+                              email: "",
+                              password: "")
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         

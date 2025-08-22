@@ -9,11 +9,13 @@ import SwiftUI
 
 @main
 struct VitesseApp: App {
-    let repo = AuthenticationRepository()
+    // Single instance of your container
+    let dependenciesContainer = NetworkDependenciesContainer()
 
     var body: some Scene {
         WindowGroup {
-            Login(authenticationRepository: repo)
+            Login(authenticationRepository: dependenciesContainer.authenticationRepository)
+                .environment(\.dependenciesContainer, dependenciesContainer)
         }
     }
 }

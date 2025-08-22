@@ -25,9 +25,9 @@ struct NetworkAuthenticationServiceTests {
     }
     
     @Test func authenticate() async throws {
-        let payload = ["token" : "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U",
-                       "isAdmin" : "true"]
-        
+        let payload = TokenAdminDTO(token: "FfdfsdfdF9fdsf.fdsfdf98FDkzfdA3122.J83TqjxRzmuDuruBChNT8sMg5tfRi5iQ6tUlqJb3M9U",
+                                    isAdmin: true)
+
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkAuthenticationService(urlSession: urlSession)

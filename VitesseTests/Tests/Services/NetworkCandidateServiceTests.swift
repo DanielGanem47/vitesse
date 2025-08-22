@@ -13,18 +13,30 @@ import Foundation
 @Suite(.serialized)
 struct NetworkCandidateServiceTests {
     private let authenticationManager: AuthenticationManager
-
+    private var urlSession: URLSession
+    
     init(authenticationManager: AuthenticationManager = .shared) {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+        
+        urlSession = URLSession(configuration: configuration)
+        
         MockURLProtocol.payloadToReturn = nil
         MockURLProtocol.errorToReturn = nil
         self.authenticationManager = authenticationManager
     }
-
+    
     @Test func getAll() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
+        let payload = [CandidateDTO(id: UUID(),
+                                    firstName: "Daniel 1",
+                                    lastName: "Ganem",
+                                    phone: "06 37 93 62 65",
+                                    email: "daniel.ganem@icloud.com",
+                                    linkedin_url: "www.linkedin.com",
+                                    note: "Tres bon eleve",
+                                    isFavorite: true)]
         
-        let urlSession = URLSession(configuration: configuration)
+        MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkCandidateService(urlSession: urlSession)
         
@@ -33,14 +45,16 @@ struct NetworkCandidateServiceTests {
     }
     
     @Test func get() async throws {
-        guard let authenticationToken = authenticationManager.tokenAdmin.token else {
-            throw CandidateServiceError.notAuthenticated
-        }
+        let payload = CandidateDTO(id: UUID(),
+                                   firstName: "Daniel 1",
+                                   lastName: "Ganem",
+                                   phone: "06 37 93 62 65",
+                                   email: "daniel.ganem@icloud.com",
+                                   linkedin_url: "www.linkedin.com",
+                                   note: "Tres bon eleve",
+                                   isFavorite: true)
         
-       let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
-        
-        let urlSession = URLSession(configuration: configuration)
+        MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkCandidateService(urlSession: urlSession)
         
@@ -49,17 +63,19 @@ struct NetworkCandidateServiceTests {
     }
     
     @Test func update() async throws {
-       let configuration = URLSessionConfiguration.default
+        let configuration = URLSessionConfiguration.default
         configuration.protocolClasses = [MockURLProtocol.self]
         
         let urlSession = URLSession(configuration: configuration)
         
-        let payload = ["email": "daniel.ganem@icloud.com",
-                       "note": "tres bon eleve",
-                       "linkedinURL": "www.linkedin.com",
-                       "firstName": "Daniel 1",
-                       "lastName": "Ganem",
-                       "phone": "06 37 93 62 65"]
+        let payload = CandidateDTO(id: UUID(),
+                                   firstName: "Daniel 1",
+                                   lastName: "Ganem",
+                                   phone: "06 37 93 62 65",
+                                   email: "daniel.ganem@icloud.com",
+                                   linkedin_url: "www.linkedin.com",
+                                   note: "Tres bon eleve",
+                                   isFavorite: true)
         
         MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
@@ -77,21 +93,35 @@ struct NetworkCandidateServiceTests {
     }
     
     @Test func delete() async throws {
-       let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
+        let payload = CandidateDTO(id: UUID(),
+                                   firstName: "Daniel 1",
+                                   lastName: "Ganem",
+                                   phone: "06 37 93 62 65",
+                                   email: "daniel.ganem@icloud.com",
+                                   linkedin_url: "www.linkedin.com",
+                                   note: "Tres bon eleve",
+                                   isFavorite: true)
         
-        let urlSession = URLSession(configuration: configuration)
+        MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkCandidateService(urlSession: urlSession)
         
-        try await service.delete(candidateId: UUID())
+        await #expect(throws: CandidateServiceError.candidateNotDeleted) {
+            try await service.delete(candidateId: UUID())
+        }
     }
     
     @Test func updateFavorite() async throws {
-        let configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = [MockURLProtocol.self]
+        let payload = CandidateDTO(id: UUID(),
+                                   firstName: "Daniel 1",
+                                   lastName: "Ganem",
+                                   phone: "06 37 93 62 65",
+                                   email: "daniel.ganem@icloud.com",
+                                   linkedin_url: "www.linkedin.com",
+                                   note: "Tres bon eleve",
+                                   isFavorite: true)
         
-        let urlSession = URLSession(configuration: configuration)
+        MockURLProtocol.payloadToReturn = try JSONEncoder().encode(payload)
         
         let service = NetworkCandidateService(urlSession: urlSession)
         

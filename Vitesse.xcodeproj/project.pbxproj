@@ -47,27 +47,9 @@
 		37155D992E562C6D00E9A57A /* VitesseTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = VitesseTestPlan.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		374810792E410243002B6C2C /* Exceptions for "Vitesse" folder in "VitesseTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Managers/AuthenticationManager.swift,
-				Services/Network/Models/NetworkCandidate.swift,
-				Services/Network/Models/NetworkLogin.swift,
-				Services/Network/Models/NetworkUser.swift,
-				ViewModels/HTTPClient/HTTPMethod.swift,
-				ViewModels/HTTPClient/URLRequest.swift,
-			);
-			target = 370A23342E09A56A00DFF13E /* VitesseTests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		370A232A2E09A56800DFF13E /* Vitesse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				374810792E410243002B6C2C /* Exceptions for "Vitesse" folder in "VitesseTests" target */,
-			);
 			path = Vitesse;
 			sourceTree = "<group>";
 		};
