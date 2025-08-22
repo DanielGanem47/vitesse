@@ -16,15 +16,10 @@ class AuthenticationRepository: ObservableObject {
 
     init(service: any AuthenticationService = NetworkAuthenticationService()) {
         self.service = service
-        if let observableService = service as? NetworkAuthenticationService {
-            observableService.authenticationManager.$isLogged
-                .receive(on: RunLoop.main)
-                .assign(to: &$isLogged)
-        }
     }
 
     // MARK: - Functions
-    func login(email: String, password: String) async throws -> Bool {
+    @MainActor func login(email: String, password: String) async throws -> Bool {
         let result = try await service.login(email: email,
                                              password: password)
         isLogged = result

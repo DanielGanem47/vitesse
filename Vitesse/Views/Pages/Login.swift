@@ -15,7 +15,8 @@ struct Login: View {
         if !authenticationRepository.isLogged {
             LoginView()
         } else {
-            CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: dependenciesContainer))
+            CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: dependenciesContainer),
+                           userViewModel: UserViewModel(dependenciesContainer: dependenciesContainer))
         }
     }
 }

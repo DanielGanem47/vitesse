@@ -9,7 +9,8 @@ import Foundation
 import Testing
 @testable import Vitesse
 
-@Suite struct CandidatesViewModelTests {
+@Suite(.serialized)
+struct CandidatesViewModelTests {
     @Test func testDoSomething() async throws {
         let spyContainer = SpyCustomDependenciesContainer()
 

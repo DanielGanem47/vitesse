@@ -10,7 +10,7 @@ import SwiftUI
 struct CandidatesList: View {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
 
-    var userViewModel = UserViewModel()
+    var userViewModel: UserViewModel
 
     @ObservedObject var candidatesViewModel: CandidatesViewModel
     @State private var isEditing = false
@@ -19,8 +19,9 @@ struct CandidatesList: View {
     @State private var isLoading = true
     @State private var searchValue: String = ""
         
-    init(candidatesViewModel: CandidatesViewModel) {
+    init(candidatesViewModel: CandidatesViewModel, userViewModel: UserViewModel) {
         self.candidatesViewModel = candidatesViewModel
+        self.userViewModel = userViewModel
     }
     
    var body: some View {
@@ -136,5 +137,6 @@ struct CandidatesList: View {
 }
 
 #Preview("Default mode") {
-    CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer()))
+    CandidatesList(candidatesViewModel: CandidatesViewModel(dependenciesContainer: PreviewsDependenciesContainer()),
+                   userViewModel: UserViewModel(dependenciesContainer: PreviewsDependenciesContainer()))
 }

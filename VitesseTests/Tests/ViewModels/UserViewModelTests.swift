@@ -9,16 +9,20 @@ import Foundation
 import Testing
 @testable import Vitesse
 
-@Suite struct UserViewModelTests {
-    @Test func testDoSomething() async throws {
+@Suite(.serialized)
+struct UserViewModelTests {
+    @Test func testCreateUser() async throws {
         // Given
         let spyContainer = SpyCustomDependenciesContainer()
-        let element = CandidatesViewModel(dependenciesContainer: spyContainer)
 
         // When
-        try await element.deleteSelectedCandidates()
+        let _ = try await spyContainer.userRepository.createUser(user: UserDTO(id: UUID(),
+                                                                               firstName: "Daniel",
+                                                                               lastName: "Ganelm",
+                                                                               email: "daniel.ganem@icloud.com",
+                                                                               password: "aze"))
 
         // Then
-        #expect((spyContainer.candidatesRepository as? SpyCandidatesRepository)!.hasCalledDeleteCandidate == true)
+        #expect((spyContainer.userRepository as? SpyUserRepository)!.hasCalledCreateUser == true)
     }
 }

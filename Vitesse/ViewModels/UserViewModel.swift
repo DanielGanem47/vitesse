@@ -8,6 +8,7 @@
 import Foundation
 
 class UserViewModel: ObservableObject {
+    private var dependenciesContainer: any CustomDependenciesContainer
     var tokenAdmin: TokenAdminDTO = TokenAdminDTO(token: "",
                                                   isAdmin: false)
     var connectedUser: UserDTO = UserDTO(id: UUID(),
@@ -16,6 +17,10 @@ class UserViewModel: ObservableObject {
                                          email: "",
                                          password: "")
     
+    init(dependenciesContainer: any CustomDependenciesContainer) {
+        self.dependenciesContainer = dependenciesContainer
+    }
+
     // MARK: Functions
     func setConnectedUser(user: UserDTO) {
         connectedUser = user
