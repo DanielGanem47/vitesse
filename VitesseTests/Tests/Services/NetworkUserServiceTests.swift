@@ -8,6 +8,9 @@
 import Testing
 import SwiftUI
 
+@testable import Vitesse
+
+@Suite(.serialized)
 struct NetworkUserServiceTests {
     init() {
         MockURLProtocol.payloadToReturn = nil

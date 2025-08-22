@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-final class AuthenticationRepository: ObservableObject {
+class AuthenticationRepository: ObservableObject {
     @Environment(\.dependenciesContainer) private var dependenciesContainer
     @Published var isLogged: Bool = false
 

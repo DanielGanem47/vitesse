@@ -14,6 +14,7 @@ class UserDTO: Codable, Identifiable {
     var email: String
     var password: String
     
+    // MARK: - Initializers
     init(id: UUID, firstName: String, lastName: String, email: String, password: String) {
         self.id = id
         self.firstName = firstName

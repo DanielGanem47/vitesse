@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class UserRepository: ObservableObject {
+class UserRepository: ObservableObject {
     private let service: any UserService
     
     init(service: any UserService = NetworkUserService()) {

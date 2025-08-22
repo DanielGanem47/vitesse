@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class CandidatesRepository: ObservableObject {
+class CandidatesRepository: ObservableObject {
     @Published private(set) var candidates: [CandidateDTO] = []
 
     private let service: any CandidateService

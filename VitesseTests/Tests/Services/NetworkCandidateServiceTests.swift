@@ -8,6 +8,9 @@
 import Testing
 import Foundation
 
+@testable import Vitesse
+
+@Suite(.serialized)
 struct NetworkCandidateServiceTests {
     private let authenticationManager: AuthenticationManager
 

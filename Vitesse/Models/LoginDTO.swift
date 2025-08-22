@@ -15,4 +15,10 @@ struct LoginDTO: Codable {
 struct TokenAdminDTO: Codable {
     var token: String?
     var isAdmin: Bool
+
+    // MARK: - Initializers
+    public init(token: String? = nil, isAdmin: Bool) {
+        self.token = token
+        self.isAdmin = isAdmin
+    }
 }

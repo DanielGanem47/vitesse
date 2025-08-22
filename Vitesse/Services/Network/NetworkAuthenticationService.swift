@@ -1,6 +1,10 @@
 import Foundation
 import SwiftUI
 
+enum NetworkAuthenticationServiceError: Error {
+    case invalidResponse
+}
+
 class NetworkAuthenticationService: AuthenticationService, ObservableObject {
     var authenticationManager: AuthenticationManager
     private let urlSession: URLSession
@@ -21,22 +25,28 @@ class NetworkAuthenticationService: AuthenticationService, ObservableObject {
                                      parameters: ["email": email,
                                                   "password": password])
 
-        let (data, _) = try await urlSession.data(for: request)
+        do {
+            let (data, _) = try await urlSession.data(for: request)
 
-        let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self, from: data)
+            let tokenResponse = try JSONDecoder().decode(TokenAdminDTO.self,
+                                                         from: data)
 
-        await authenticationManager.updateAuthenticatedToken(tokenResponse)
-        
-        return true
+            await authenticationManager.updateAuthenticatedToken(tokenResponse)
+
+            return true
+        } catch {
+            return false
+        }
     }
 
     func login(email: String, password: String) async throws -> Bool {
         do {
-            let _ = try await authenticate(email: email,
-                                           password: password)
+            let authenticationResult = try await authenticate(email: email,
+                                                              password: password)
 
-            authenticationManager.isLogged = true
-            authenticationManager.loginError = nil
+            guard authenticationResult else {
+                return false
+            }
             return true
         } catch {
             authenticationManager.isLogged = false

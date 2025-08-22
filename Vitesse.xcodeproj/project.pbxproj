@@ -52,18 +52,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Managers/AuthenticationManager.swift,
-				Models/CandidateDTO.swift,
-				Models/LoginDTO.swift,
-				Models/UserDTO.swift,
 				Services/Network/Models/NetworkCandidate.swift,
 				Services/Network/Models/NetworkLogin.swift,
 				Services/Network/Models/NetworkUser.swift,
-				Services/Network/NetworkAuthenticationService.swift,
-				Services/Network/NetworkCandidateService.swift,
-				Services/Network/NetworkUserService.swift,
-				Services/Protocols/AuthenticationService.swift,
-				Services/Protocols/CandidateService.swift,
-				Services/Protocols/UserService.swift,
 				ViewModels/HTTPClient/HTTPMethod.swift,
 				ViewModels/HTTPClient/URLRequest.swift,
 			);

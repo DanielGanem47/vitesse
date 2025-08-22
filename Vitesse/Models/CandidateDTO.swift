@@ -23,6 +23,7 @@ class CandidateDTO: Identifiable, Codable {
     var isFavorite: Bool
     var isSelected: Bool
     
+    // MARK: - Initializers
     init(id: UUID, firstName: String, lastName: String, phone: String, email: String, linkedin_url: String, note: String, isFavorite: Bool) {
         self.id = id
         self.firstName = firstName
