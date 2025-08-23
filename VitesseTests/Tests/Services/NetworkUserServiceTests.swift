@@ -10,7 +10,7 @@ import SwiftUI
 
 @testable import Vitesse
 
-@Suite(.serialized)
+@Suite
 struct NetworkUserServiceTests {
     private var urlSession: URLSession
 

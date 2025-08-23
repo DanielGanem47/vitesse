@@ -10,7 +10,7 @@ import Foundation
 
 @testable import Vitesse
 
-@Suite(.serialized)
+@Suite
 struct NetworkCandidateServiceTests {
     private let authenticationManager: AuthenticationManager
     private var urlSession: URLSession
